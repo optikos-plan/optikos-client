@@ -10,7 +10,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@tmkelly28/tk-css": "^1.0.1",
+    "@tmkelly28/tk-css": "^1.0.2",
     "axios": "^0.18.0",
     "normalizr": "^3.2.4",
     "react": "^16.2.0",

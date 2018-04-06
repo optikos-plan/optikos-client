@@ -8,7 +8,7 @@ import store from './store'
 
 ReactDOM.render(
   <Provider store={store}>
-    <div id='demo' className='fill-xy bg-purple white column center-xy'>
+    <div id='demo' className='fill-xy bg-violet white column center-xy'>
       <div>
         <div>Actions&</div>
         <div>Reducers&</div>
