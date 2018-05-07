@@ -3,19 +3,19 @@ import './index.css'
 
 import React from 'react'
 import ReactDOM from 'react-dom'
+import { HashRouter as Router } from 'react-router-dom'
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 import {Provider} from 'react-redux'
 import store from './store'
+import Main from './Main'
 
 ReactDOM.render(
   <Provider store={store}>
-    <div id='demo' className='fill-xy bg-violet white column center-xy'>
-      <div>
-        <div>Actions&</div>
-        <div>Reducers&</div>
-        <div>Middleware&</div>
-        <div>Redux.</div>
-      </div>
-    </div>
+    <MuiThemeProvider>
+      <Router>
+        <Main />
+      </Router>
+    </MuiThemeProvider>
   </Provider>,
   document.getElementById('app')
 )
