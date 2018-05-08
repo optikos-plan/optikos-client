@@ -19,14 +19,20 @@
 }
 
 .sidenav {
-  background-color: #2196f3;
+  background-color: #2196F3;
   padding-top: 20px;
   color: white;
   flex-basis: 2;
   height: 100vh;
 }
 
+.navbar {
+  background-color: #2196f3;
+}
+
 .srd-diagram {
   flex-basis: 3;
+
   background-color: #cccc;
+
 }
