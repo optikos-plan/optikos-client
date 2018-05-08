@@ -17,7 +17,7 @@ class Sidebar extends Component {
   if (taskSelected){
     return (
       <div className="sidenav">
-        <h3>Task Name</h3>
+        <h4>Task Name</h4>
         <Checkbox
           label="Completed"
           checked={taskCompleted}
