@@ -52,23 +52,21 @@ export default class TaskNode extends React.Component {
         nodeContainer[task.id] = node
         this.model.addNode(node)
         // does the tasks have children
-        if (task.children.length > 0) {
-          const parentPort = node.getPort('bottom')
-          for (let i = task.children.length - 1 ; i >= 0; i--) {
-            // avoid duplication of nodes
-            if (!(task.children[i].id in nodeContainer)) {
-              // preventing error on load
-              if (task.children[i]) {
-                const childNode = new TaskNodeModel(task.children[i])
-                nodeContainer[task.children[i].id] = childNode
-                this.model.addNode(childNode)
-                const childPort = childNode.getPort('top')
-                const link = parentPort.link(childPort)
-                links.push(link)
-              }
+        const parentPort = node.getPort('bottom')
+        task.children.forEach(child => {
+          // avoid duplication of nodes
+          if (!(child.id in nodeContainer)) {
+            // preventing error on load
+            if (child) {
+              const childNode = new TaskNodeModel(child)
+              nodeContainer[child.id] = childNode
+              this.model.addNode(childNode)
             }
           }
-        }
+          const childPort = nodeContainer[child.id].getPort('top')
+          const link = parentPort.link(childPort)
+          links.push(link)
+        })
       }
     })
 
