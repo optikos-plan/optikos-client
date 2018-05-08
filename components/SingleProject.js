@@ -28,7 +28,7 @@ export default class SingleProject extends Component {
           <div>
             <Sidebar taskSelected={taskSelected} taskCompleted={taskCompleted} updateTaskCompleted={this.updateTaskCompleted} />
           </div>
-          <div>
+          <div style={{display: 'flex', width: '100%', height: '100vw'}}>
             <TaskNode />
           </div>
         </div>
