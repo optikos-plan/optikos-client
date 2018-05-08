@@ -40,14 +40,47 @@ export default class TaskNode extends React.Component {
   }
 
   updateTasks() {
-    console.log(this.state.tasks)
+    console.log('This state tasks: ', this.state.tasks)
     const nodeContainer = {}
     const ports = []
     const links = []
+
     this.state.tasks.forEach(task => {
-      const node = new TaskNodeModel(task)
-      this.model.addNode(node)
+      if (!nodeContainer[task.id]) {
+        const node = new TaskNodeModel(task)
+        nodeContainer[task.id] = node
+        this.model.addNode(node)
+        // does the tasks have children
+        if (task.children.length > 0) {
+          const parentPort = node.getPort('bottom')
+          ports.push(parentPort)
+          for (let i = 0; i < task.children.length; i++) {
+            if (!nodeContainer[task.children[i].id]) {
+              if (task.children[i]) {
+                const childNode = new TaskNodeModel(task.children[i])
+                nodeContainer[task.children[i].id] = childNode
+                this.model.addNode(childNode)
+                const childPort = childNode.getPort('top')
+                ports.push(childPort)
+                const link = parentPort.link(childPort)
+                links.push(link)
+              }
+            }
+          }
+        }
+      }
     })
+    // if (nodeContainer[1]) {
+    //   const parentPort = nodeContainer[1].getPort('bottom')
+    //   const childPort = nodeContainer[2].getPort('top')
+    //   const link = parentPort.link(childPort)
+    //   links.push(link)
+    // }
+
+    this.model.addAll(...ports, ...links)
+    console.log('Node container: ', nodeContainer)
+    console.log('Links: ', links)
+    console.log('Ports: ', ports)
   }
 
   async componentDidMount() {
