@@ -40,14 +40,39 @@ export default class TaskNode extends React.Component {
   }
 
   updateTasks() {
-    console.log(this.state.tasks)
+    console.log('This state tasks: ', this.state.tasks)
     const nodeContainer = {}
-    const ports = []
     const links = []
+
     this.state.tasks.forEach(task => {
-      const node = new TaskNodeModel(task)
-      this.model.addNode(node)
+      // do not duplicate nodes
+      // console.log('Test: ', task.id, nodeContainer)
+      if (!(task.id in nodeContainer)) {
+        const node = new TaskNodeModel(task)
+        nodeContainer[task.id] = node
+        this.model.addNode(node)
+        // does the tasks have children
+        const parentPort = node.getPort('bottom')
+        task.children.forEach(child => {
+          // avoid duplication of nodes
+          if (!(child.id in nodeContainer)) {
+            // preventing error on load
+            if (child) {
+              const childNode = new TaskNodeModel(child)
+              nodeContainer[child.id] = childNode
+              this.model.addNode(childNode)
+            }
+          }
+          const childPort = nodeContainer[child.id].getPort('top')
+          const link = parentPort.link(childPort)
+          links.push(link)
+        })
+      }
     })
+
+    this.model.addAll(...links)
+    console.log('Node container: ', nodeContainer)
+    console.log('Links: ', links)
   }
 
   async componentDidMount() {
