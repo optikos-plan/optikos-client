@@ -10,23 +10,23 @@
   font-weight: 800;
 }
 
-.three-width {
-  width: 33vw;
+#textcolor {
+  color: white;
+}
+
+.testFlex {
+  display: flex;
 }
 
 .sidenav {
-  height: 100%; /* Full-height: remove this if you want "auto" height */
-  width: 255px; /* Set the width of the sidebar */
-  position: fixed; /* Fixed Sidebar (stay in place on scroll) */
-  z-index: 1; /* Stay on top */
-  top: 80px; /* Stay at the top */
-  left: 0;
-  background-color: #2196F3;
-  overflow-x: visible; /* Disable horizontal scroll */
+  background-color: #2196f3;
   padding-top: 20px;
   color: white;
+  flex-basis: 2;
+  height: 100vh;
 }
 
-#textcolor{
-  color: white;
+.srd-diagram {
+  flex-basis: 3;
+  background-color: #e1f5fe;
 }

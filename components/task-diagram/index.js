@@ -41,16 +41,13 @@ export default class TaskNode extends React.Component {
 
   updateTasks() {
     console.log(this.state.tasks)
-    const nodeContainer = {
-    }
+    const nodeContainer = {}
     const ports = []
     const links = []
     this.state.tasks.forEach(task => {
-
       const node = new TaskNodeModel(task)
       this.model.addNode(node)
     })
-    
   }
 
   async componentDidMount() {
@@ -62,12 +59,6 @@ export default class TaskNode extends React.Component {
   }
 
   render() {
-    return (
-      <DiagramWidget
-        className="srd-demo-canvas custom"
-        model={this.model}
-        diagramEngine={this.engine}
-      />
-    )
+    return <DiagramWidget model={this.model} diagramEngine={this.engine} />
   }
 }
