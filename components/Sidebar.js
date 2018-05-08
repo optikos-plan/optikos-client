@@ -8,13 +8,8 @@ import TextField from 'material-ui/TextField'
 class Sidebar extends Component {
   constructor() {
     super()
-    this.updateCheck = this.updateCheck.bind(this)
+    this.state = {}
   }
-
-  updateCheck(event) {
-
-  }
-
 
   render () {
     const {taskSelected, taskCompleted, updateTaskCompleted} = this.props;
