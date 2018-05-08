@@ -13,24 +13,24 @@ export default class SingleProject extends Component {
     this.updateTaskCompleted = this.updateTaskCompleted.bind(this)
   }
 
-  updateTaskCompleted () {
+  updateTaskCompleted() {
     this.setState({
       taskCompleted: !this.state.taskCompleted
     })
   }
 
   render() {
-    const {taskSelected, taskCompleted} = this.state
+    const { taskSelected, taskCompleted } = this.state
     return (
       <div id="singleProject">
         <Navbar />
-        <div>
-          <div>
-            <Sidebar taskSelected={taskSelected} taskCompleted={taskCompleted} updateTaskCompleted={this.updateTaskCompleted} />
-          </div>
-          <div style={{display: 'flex', width: '100%', height: '100vw'}}>
-            <TaskNode />
-          </div>
+        <div className="testFlex">
+          <Sidebar
+            taskSelected={taskSelected}
+            taskCompleted={taskCompleted}
+            updateTaskCompleted={this.updateTaskCompleted}
+          />
+          <TaskNode />
         </div>
       </div>
     )
