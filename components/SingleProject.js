@@ -23,7 +23,14 @@ export default class SingleProject extends Component {
     return (
       <div id="singleProject">
         <Navbar />
-        <Sidebar taskSelected={taskSelected} taskCompleted={taskCompleted} updateTaskCompleted={this.updateTaskCompleted} />
+        <div>
+          <div>
+            <Sidebar taskSelected={taskSelected} taskCompleted={taskCompleted} updateTaskCompleted={this.updateTaskCompleted} />
+          </div>
+          <div>
+            <h5>Diagrams go here</h5>
+          </div>
+        </div>
       </div>
     )
   }
