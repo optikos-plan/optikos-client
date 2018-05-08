@@ -23,11 +23,22 @@ class Sidebar extends Component {
           checked={taskCompleted}
           onCheck={updateTaskCompleted}
           style={styles.checkbox}
+          labelStyle={styles.label}
+          iconStyle={{fill: 'white'}}
         />
 
-        <DatePicker hintText="Set deadline" underlineStyle={{display: 'none'}} />
-        <TextField hintText="Set owner" underlineStyle={{display: 'none'}} /><br />
+        <DatePicker
+          hintText="Set deadline"
+          underlineStyle={{display: 'none'}}
+          hintStyle={{color: 'white'}}
+        />
         <TextField
+          hintStyle={{color: 'white'}}
+          hintText="Set owner"
+          underlineStyle={{display: 'none'}} /><br />
+        <TextField
+          inputStyle={{color: 'white'}}
+          hintStyle={{color: 'white'}}
           underlineStyle={{display: 'none'}}
           hintText="Enter comments"
           multiLine={true}
@@ -69,6 +80,9 @@ const styles = {
   },
   checkbox: {
     marginBottom: 16,
+  },
+  label: {
+    color: 'white'
   }
 };
 
