@@ -42,26 +42,27 @@ export default class TaskNode extends React.Component {
   updateTasks() {
     console.log('This state tasks: ', this.state.tasks)
     const nodeContainer = {}
-    const ports = []
     const links = []
 
     this.state.tasks.forEach(task => {
-      if (!nodeContainer[task.id]) {
+      // do not duplicate nodes
+      // console.log('Test: ', task.id, nodeContainer)
+      if (!(task.id in nodeContainer)) {
         const node = new TaskNodeModel(task)
         nodeContainer[task.id] = node
         this.model.addNode(node)
         // does the tasks have children
         if (task.children.length > 0) {
           const parentPort = node.getPort('bottom')
-          ports.push(parentPort)
-          for (let i = 0; i < task.children.length; i++) {
-            if (!nodeContainer[task.children[i].id]) {
+          for (let i = task.children.length - 1 ; i >= 0; i--) {
+            // avoid duplication of nodes
+            if (!(task.children[i].id in nodeContainer)) {
+              // preventing error on load
               if (task.children[i]) {
                 const childNode = new TaskNodeModel(task.children[i])
                 nodeContainer[task.children[i].id] = childNode
                 this.model.addNode(childNode)
                 const childPort = childNode.getPort('top')
-                ports.push(childPort)
                 const link = parentPort.link(childPort)
                 links.push(link)
               }
@@ -70,17 +71,10 @@ export default class TaskNode extends React.Component {
         }
       }
     })
-    // if (nodeContainer[1]) {
-    //   const parentPort = nodeContainer[1].getPort('bottom')
-    //   const childPort = nodeContainer[2].getPort('top')
-    //   const link = parentPort.link(childPort)
-    //   links.push(link)
-    // }
 
-    this.model.addAll(...ports, ...links)
+    this.model.addAll(...links)
     console.log('Node container: ', nodeContainer)
     console.log('Links: ', links)
-    console.log('Ports: ', ports)
   }
 
   async componentDidMount() {
