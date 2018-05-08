@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import Navbar from './Navbar'
 import Sidebar from './Sidebar'
+import TaskNode from './task-diagram'
 
 export default class SingleProject extends Component {
   constructor() {
@@ -28,7 +29,7 @@ export default class SingleProject extends Component {
             <Sidebar taskSelected={taskSelected} taskCompleted={taskCompleted} updateTaskCompleted={this.updateTaskCompleted} />
           </div>
           <div>
-            <h5>Diagrams go here</h5>
+            <TaskNode />
           </div>
         </div>
       </div>

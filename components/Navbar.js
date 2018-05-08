@@ -12,6 +12,7 @@ import {
   ToolbarSeparator,
   ToolbarTitle
 } from "material-ui/Toolbar";
+import {NavLink} from 'react-router-dom'
 
 export default class Navbar extends React.Component {
   constructor(props) {
@@ -31,7 +32,7 @@ export default class Navbar extends React.Component {
           <FontIcon className="muidocs-icon-custom-sort" />
         </ToolbarGroup>
         <ToolbarGroup className="three-width">
-          <RaisedButton label="Project Plan" primary={true} />
+          <NavLink to='/projects/1'><RaisedButton label="Project Plan" primary={true} /></NavLink>
           <RaisedButton label="People" primary={true} />
         </ToolbarGroup >
         <ToolbarGroup className="three-width">
