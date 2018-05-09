@@ -19,9 +19,7 @@ import 'storm-react-diagrams/dist/style.min.css'
 export default class TaskNode extends React.Component {
   constructor() {
     super()
-
     this.state = { tasks: [] }
-
     this.registerEngine()
   }
 
@@ -40,13 +38,12 @@ export default class TaskNode extends React.Component {
   }
 
   updateTasks() {
-    console.log('This state tasks: ', this.state.tasks)
+    // FIXME: eager loading only on first level 'task' and not its children... GraphQL is going to fix this for us
     const nodeContainer = {}
     const links = []
 
     this.state.tasks.forEach(task => {
       // do not duplicate nodes
-      // console.log('Test: ', task.id, nodeContainer)
       if (!(task.id in nodeContainer)) {
         const node = new TaskNodeModel(task)
         nodeContainer[task.id] = node
@@ -69,18 +66,25 @@ export default class TaskNode extends React.Component {
         })
       }
     })
-
     this.model.addAll(...links)
-    console.log('Node container: ', nodeContainer)
-    console.log('Links: ', links)
   }
 
   async componentDidMount() {
-    const { data } = await axios.get(
-      'https://optikos-data-db.herokuapp.com/api/tasks'
-    )
-    this.setState({ tasks: data }, () => this.updateTasks())
-    this.forceUpdate()
+    // TODO: change back to remote server after testing
+    // const { data } = await axios.get(
+    //   'https://optikos-data-db.herokuapp.com/api/tasks'
+    // )
+    const { data } = await axios.get('http://localhost:3000/api/tasks')
+    console.log('index.js: 77; Fresh data: ', data)
+    // create a dictionary that maps userId -> user object
+    // walk through the data
+    // insert user as necessary
+    //
+    // TODO: this right here
+    this.setState({ tasks: data }, async () => {
+      await this.updateTasks()
+      await this.forceUpdate()
+    })
   }
 
   render() {

@@ -32,7 +32,42 @@
 
 .srd-diagram {
   flex-basis: 3;
-
   background-color: #cccc;
+}
 
+.srd-port:hover {
+  background: lightcoral !important;
+  border-radius: 15px !important;
+  opacity: 0.8 !important;
+}
+
+.srd-port {
+  background: rgba(255,255,255,0) !important;
+}
+
+/* Node Styling */
+
+.nodeBody {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  align-items: center;
+}
+
+.nodeTitleAndDate {
+  width: 70%;
+}
+
+.nodeAssignee {
+  height: 75%;
+  width: 25%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 3rem;
+  border-style: dashed;
+  margin-right: 0.5rem;
+  border-color: lightgray;
 }
