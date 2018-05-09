@@ -4,6 +4,7 @@ import {List, ListItem} from 'material-ui/List'
 import Checkbox from 'material-ui/Checkbox'
 import DatePicker from 'material-ui/DatePicker'
 import TextField from 'material-ui/TextField'
+import RaisedButton from 'material-ui/RaisedButton';
 
 class Sidebar extends Component {
   constructor() {
@@ -44,7 +45,10 @@ class Sidebar extends Component {
           multiLine={true}
           rows={1}
           rowsMax={4}
-        /><br />
+        /><br /><br />
+        <div>
+        <RaisedButton label="SUBMIT" primary={true} />
+        </div>
       </div>
     )
   } else {

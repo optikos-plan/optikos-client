@@ -19,7 +19,7 @@ const PeopleList = props => {
   const { type } = props
   return (
     <div className="card-display">
-      <RaisedButton label={type} style={style} secondary={true} />
+      <RaisedButton label={type} style={style} primary={true} />
       {items.map(item => {
         return (<Card key={item}>
           <CardHeader
