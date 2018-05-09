@@ -32,9 +32,6 @@
 
 .srd-diagram {
   flex-basis: 3;
-  background-color: 'white';
-}
+  background-color: #cccc;
 
-.white {
-  color: white;
 }
