@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import Navbar from './Navbar'
+import Navbar from '../Navbar'
 import PeopleList from './PeopleList'
 
 export default class AllPeople extends Component {
