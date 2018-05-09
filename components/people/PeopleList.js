@@ -16,10 +16,9 @@ const items = [
 ]
 
 const PeopleList = props => {
-  const { type } = props
   return (
     <div className="card-display">
-      <RaisedButton label={type} style={style} primary={true} />
+      <RaisedButton label="ADD NEW PERSON" style={style} primary={true} />
       {items.map(item => {
         return (<Card key={item}>
           <CardHeader

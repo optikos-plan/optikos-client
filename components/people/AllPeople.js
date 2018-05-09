@@ -11,7 +11,7 @@ export default class AllPeople extends Component {
     return (
       <div id="allPeople">
         <Navbar />
-        <PeopleList type="ADD NEW PERSON" />
+        <PeopleList />
       </div>
     )
   }

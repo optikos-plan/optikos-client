@@ -11,7 +11,7 @@ export default class AllProjects extends Component {
     return (
       <div id="allProjects">
         <Navbar />
-        <ProjectList type="ADD NEW PROJECT" />
+        <ProjectList />
       </div>
     )
   }
