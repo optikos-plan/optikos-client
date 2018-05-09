@@ -1,17 +1,17 @@
 import React, { Component } from 'react'
 import Navbar from './Navbar'
-import ProjectList from './ProjectList'
+import PeopleList from './PeopleList'
 
-export default class AllProjects extends Component {
+export default class AllPeople extends Component {
   constructor() {
     super()
   }
 
   render() {
     return (
-      <div id="allProjects">
+      <div id="allPeople">
         <Navbar />
-        <ProjectList type="ADD NEW PROJECT" />
+        <PeopleList type="ADD NEW PERSON" />
       </div>
     )
   }

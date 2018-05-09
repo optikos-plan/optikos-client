@@ -24,21 +24,21 @@ class Sidebar extends Component {
           onCheck={updateTaskCompleted}
           style={styles.checkbox}
           labelStyle={styles.label}
-          iconStyle={{fill: 'white'}}
+          iconStyle={{fill: '#424242'}}
         />
 
         <DatePicker
           hintText="Set deadline"
           underlineStyle={{display: 'none'}}
-          hintStyle={{color: 'white'}}
+          hintStyle={{color: '#424242'}}
         />
         <TextField
-          hintStyle={{color: 'white'}}
+          hintStyle={{color: '#424242'}}
           hintText="Set owner"
           underlineStyle={{display: 'none'}} /><br />
         <TextField
-          inputStyle={{color: 'white'}}
-          hintStyle={{color: 'white'}}
+          inputStyle={{color: '#424242'}}
+          hintStyle={{color: '#424242'}}
           underlineStyle={{display: 'none'}}
           hintText="Enter comments"
           multiLine={true}
@@ -51,21 +51,21 @@ class Sidebar extends Component {
     return (
       <div className="sidenav">
       <List >
-        <ListItem style={{color: 'white'}} primaryText="Completed Tasks" />
-        <ListItem style={{color: '#E0E0E0', fontSize: '12px'}} primaryText="Completed Task 1" />
-        <ListItem style={{color: '#E0E0E0', fontSize: '12px'}} primaryText="Completed Task 2" />
+        <ListItem style={{color: '#424242'}} primaryText="Completed Tasks" />
+        <ListItem style={{color: '#424242', fontSize: '12px'}} primaryText="Completed Task 1" />
+        <ListItem style={{color: '#424242', fontSize: '12px'}} primaryText="Completed Task 2" />
       </List>
       <Divider  />
       <List>
-        <ListItem style={{color: 'white'}} primaryText="Current Tasks"  />
-        <ListItem style={{color: '#E0E0E0', fontSize: '12px'}} primaryText="Current Task 1" />
-        <ListItem style={{color: '#E0E0E0', fontSize: '12px'}} primaryText="Current Task 2" />
+        <ListItem style={{color: '#424242'}} primaryText="Current Tasks"  />
+        <ListItem style={{color: '#424242', fontSize: '12px'}} primaryText="Current Task 1" />
+        <ListItem style={{color: '#424242', fontSize: '12px'}} primaryText="Current Task 2" />
       </List>
       <Divider />
       <List>
-        <ListItem style={{color: 'white'}} primaryText="Future Tasks" />
-        <ListItem style={{color: '#E0E0E0', fontSize: '12px'}} primaryText="Future Task 1" />
-        <ListItem style={{color: '#E0E0E0', fontSize: '12px'}} primaryText="Future Task 2" />
+        <ListItem style={{color: '#424242'}} primaryText="Future Tasks" />
+        <ListItem style={{color: '#424242', fontSize: '12px'}} primaryText="Future Task 1" />
+        <ListItem style={{color: '#424242', fontSize: '12px'}} primaryText="Future Task 2" />
       </List>
       </div>
     )
@@ -82,7 +82,7 @@ const styles = {
     marginBottom: 16,
   },
   label: {
-    color: 'white'
+    color: '#424242'
   }
 };
 
