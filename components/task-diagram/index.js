@@ -7,6 +7,7 @@ import * as React from 'react'
 
 // import the custom models
 import { TaskNodeModel } from './TaskNodeModel'
+import Sidebar from '../Sidebar'
 import { TaskNodeFactory } from './TaskNodeFactory'
 import { SimplePortFactory } from './SimplePortFactory'
 import { TaskPortModel } from './TaskPortModel'
@@ -21,9 +22,10 @@ export default class TaskNode extends React.Component {
     super()
 
     this.state = { tasks: [],
-    ports: [] }
+    taskSelected: false }
 
     this.registerEngine()
+    this.selectedCheck = this.selectedCheck.bind(this)
   }
 
   registerEngine() {
@@ -74,8 +76,19 @@ export default class TaskNode extends React.Component {
     })
   
     this.model.addAll(...links)
-    console.log('Node container: ', nodeContainer)
-    console.log('Links: ', links)
+  }
+
+  selectedCheck() {
+    const nodes = this.model.nodes
+
+    for (let x of Object.keys(nodes)) {
+      if (nodes[x].selected) {
+        this.setState({taskSelected: true})
+        return true
+      }
+    }
+    this.setState({taskSelected: false})
+    return false
   }
 
   // grab data from heroku server
@@ -121,8 +134,11 @@ export default class TaskNode extends React.Component {
     // return <DiagramWidget model={this.model} diagramEngine={this.engine} />
     return (
       <div className="srd-diagram">
+        <Sidebar taskSelected={this.state.taskSelected}/>
         <button onClick={this.saveLayout}>SAVE</button>
+      <div className="srd-diagram" onClick={this.selectedCheck} >
         <DiagramWidget model={this.model} diagramEngine={this.engine} />
+   </div>
       </div>
     )
   }

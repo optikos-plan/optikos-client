@@ -16,6 +16,7 @@ class Sidebar extends Component {
     const {taskSelected, taskCompleted, updateTaskCompleted} = this.props;
 
   if (taskSelected){
+    console.log("task selected")
     return (
       <div className="sidenav">
         <h4>Task Name</h4>
