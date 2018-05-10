@@ -20,7 +20,8 @@ export default class TaskNode extends React.Component {
   constructor() {
     super()
 
-    this.state = { tasks: [] }
+    this.state = { tasks: [],
+    ports: [] }
 
     this.registerEngine()
   }
@@ -53,6 +54,7 @@ export default class TaskNode extends React.Component {
         this.model.addNode(node)
         // does the tasks have children
         const parentPort = node.getPort('bottom')
+
         task.children.forEach(child => {
           // avoid duplication of nodes
           if (!(child.id in nodeContainer)) {
@@ -64,12 +66,13 @@ export default class TaskNode extends React.Component {
             }
           }
           const childPort = nodeContainer[child.id].getPort('top')
+  
           const link = parentPort.link(childPort)
           links.push(link)
         })
       }
     })
-
+  
     this.model.addAll(...links)
     console.log('Node container: ', nodeContainer)
     console.log('Links: ', links)
@@ -77,7 +80,7 @@ export default class TaskNode extends React.Component {
 
   // grab data from heroku server
   //
-  async xxxcomponentDidMount() {
+  async componentDidMount() {
     const DB_URL = 'https://optikos-data-db.herokuapp.com/api/tasks'
 
     // get data from database
@@ -89,7 +92,7 @@ export default class TaskNode extends React.Component {
 
   // grab from local server for testing purposes
   //
-  async componentDidMount() {
+  async xxxcomponentDidMount() {
     const DB_URL = 'http://localhost:3000/api/serialize'
 
     console.log(DB_URL)
@@ -114,6 +117,7 @@ export default class TaskNode extends React.Component {
   }
 
   render() {
+
     // return <DiagramWidget model={this.model} diagramEngine={this.engine} />
     return (
       <div className="srd-diagram">
