@@ -20,7 +20,8 @@ export default class TaskNode extends React.Component {
   constructor() {
     super()
 
-    this.state = { tasks: [] }
+    this.state = { tasks: [],
+    ports: [] }
 
     this.registerEngine()
   }
@@ -53,6 +54,7 @@ export default class TaskNode extends React.Component {
         this.model.addNode(node)
         // does the tasks have children
         const parentPort = node.getPort('bottom')
+
         task.children.forEach(child => {
           // avoid duplication of nodes
           if (!(child.id in nodeContainer)) {
@@ -64,26 +66,64 @@ export default class TaskNode extends React.Component {
             }
           }
           const childPort = nodeContainer[child.id].getPort('top')
+  
           const link = parentPort.link(childPort)
           links.push(link)
         })
       }
     })
-
+  
     this.model.addAll(...links)
     console.log('Node container: ', nodeContainer)
     console.log('Links: ', links)
   }
 
+  // grab data from heroku server
+  //
   async componentDidMount() {
-    const { data } = await axios.get(
-      'https://optikos-data-db.herokuapp.com/api/tasks'
-    )
+    const DB_URL = 'https://optikos-data-db.herokuapp.com/api/tasks'
+
+    // get data from database
+    const { data } = await axios.get(DB_URL)
     this.setState({ tasks: data }, () => this.updateTasks())
+
     this.forceUpdate()
   }
 
+  // grab from local server for testing purposes
+  //
+  async xxxcomponentDidMount() {
+    const DB_URL = 'http://localhost:3000/api/serialize'
+
+    console.log(DB_URL)
+    const { data } = await axios.get(DB_URL)
+    console.log('DATA from Server', data)
+
+    // deserialize data
+    this.model = new DiagramModel()
+    this.model.deSerializeDiagram(data, this.engine)
+    this.engine.setDiagramModel(this.model)
+
+    this.forceUpdate()
+  }
+
+  saveLayout = async () => {
+    //
+    const serialized = this.model.serializeDiagram()
+    console.log(JSON.stringify(serialized, undefined, 2))
+    const DB_URL = 'http://localhost:3000/api/serialize'
+    const res = await axios.post(DB_URL, serialized)
+    console.log('Response from serialize Post', res)
+  }
+
   render() {
-    return <DiagramWidget model={this.model} diagramEngine={this.engine} />
+
+    // return <DiagramWidget model={this.model} diagramEngine={this.engine} />
+    return (
+      <div className="srd-diagram">
+        <button onClick={this.saveLayout}>SAVE</button>
+        <DiagramWidget model={this.model} diagramEngine={this.engine} />
+      </div>
+    )
   }
 }

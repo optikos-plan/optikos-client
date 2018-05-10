@@ -17,6 +17,22 @@ export class TaskNodeModel extends NodeModel {
     })
   }
 
+  deSerialize(ob, engine) {
+    console.log('TaskNodeModel::deSerialize', ob)
+    super.deSerialize(ob, engine)
+    this.x = ob.x
+    this.y = ob.y
+    this.task = ob.task
+    this.extras = ob.extras
+
+    // do ports
+    _.forEach(ob.ports, port => {
+      let portOb = engine.getPortFactory(port.type).getNewInstance()
+      portOb.deSerialize(port, engine)
+      this.addPort(portOb)
+    })
+  }
+
   getInPorts() {
     return _.filter(this.ports, portModel => portModel.in)
   }
