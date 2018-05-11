@@ -3,6 +3,7 @@ import FlatButton from 'material-ui/FlatButton'
 import RaisedButton from 'material-ui/RaisedButton'
 import Dialog from 'material-ui/Dialog'
 import NodeAssigneeList from './NodeAssigneeList'
+import nameToInitial from '../../utils/nameToInitial'
 
 export default class NodeAssigneeDialog extends React.Component {
   state = {
@@ -34,17 +35,28 @@ export default class NodeAssigneeDialog extends React.Component {
       />
     ]
 
+    const {assignee} = this.props
+
     return (
-      <div className="nodeAssignee">
+      <div className={
+        assignee ?
+        "nodeAsignee-chosen"
+        : "nodeAssignee-choose"}>
       <FlatButton
-        label="+"
-        labelStyle={{
-          fontSize: '3rem',
-        }}
+        label={
+          assignee ?
+          nameToInitial(assignee.name)
+          : '+'
+        }
+        labelStyle={
+          assignee ?
+          {fontSize: '2rem', fontWeight: 'bold'}
+          : {fontSize: '3rem'}
+        }
         disableFocusRipple={true}
         disableTouchRipple={true}
         style={{
-          width:"100%",
+          width:"50px",
           height:"50px",
           minWidth: "0px",
           display: 'flex',
@@ -67,4 +79,3 @@ export default class NodeAssigneeDialog extends React.Component {
     )
   }
 }
-

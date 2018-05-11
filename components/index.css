@@ -107,14 +107,22 @@
   transition-duration: 500ms !important;
 } */
 
-.nodeAssignee {
+.nodeAssignee-choose {
+  height: 75% !important;
+  width: 100% !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  border-style: dashed !important;
+  margin-right: 0.5rem !important;
+  border-color: lightgray !important;
+}
+
+.nodeAssignee-chosen {
   height: 75% !important;
   width: 25% !important;
   display: flex !important;
   align-items: center !important;
   justify-content: center !important;
-  font-size: 3rem !important;
-  border-style: dashed !important;
   margin-right: 0.5rem !important;
-  border-color: lightgray !important;
 }

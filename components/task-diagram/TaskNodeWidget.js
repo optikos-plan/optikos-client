@@ -5,7 +5,6 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 import getMuiTheme from 'material-ui/styles/getMuiTheme'
 import DatePicker from 'material-ui/DatePicker'
 import NodeAssigneeDialog from './NodeAssigneeDialog'
-import nameToInitial from '../../utils/nameToInitial'
 
 import moment from 'moment'
 
@@ -33,7 +32,7 @@ export class TaskNodeWidget extends React.Component {
       showTitle: true,
       title: node.task.title,
       dueDate: node.task.endDate,
-      assignee: node.task.user.name,
+      assignee: node.task.user,
       titleChanged: false
     }
     if (node.task.user && node.task.user.name) {
@@ -152,7 +151,21 @@ export class TaskNodeWidget extends React.Component {
             }
           </div>
           {/* Node Assignee Section */}
-          {assignee ? (
+          {
+            <div
+              style={{
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                width: '30%'
+              }}
+            >
+              <NodeAssigneeDialog
+            assignee={assignee}
+              />
+            </div>
+          }
+          {/* {assignee ? (
             <div
               style={{
                 display: 'flex',
@@ -172,7 +185,7 @@ export class TaskNodeWidget extends React.Component {
             </div>
           ) : (
             <NodeAssigneeDialog />
-          )}
+          )} */}
         </div>
         {/* Node Shape */}
         <svg
