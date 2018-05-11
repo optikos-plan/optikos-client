@@ -136,7 +136,7 @@ export class TaskNodeWidget extends React.Component {
                     formatDate={date => moment(date).format('MMM Do YYYY')}
                     hintText={
                       dueDate ? (
-                        dueDate
+                        moment(dueDate).format('MMM Do YYYY')
                       ) : (
                         <span className="nodeDatePop">Enter Due Date</span>
                       )

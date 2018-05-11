@@ -5,6 +5,8 @@ import Dialog from 'material-ui/Dialog'
 import NodeAssigneeList from './NodeAssigneeList'
 import nameToInitial from '../../utils/nameToInitial'
 
+// TODO: update database based on user selected
+
 export default class NodeAssigneeDialog extends React.Component {
   state = {
     open: false
