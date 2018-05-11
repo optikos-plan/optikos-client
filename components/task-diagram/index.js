@@ -76,7 +76,6 @@ export default class TaskNode extends React.Component {
     //   'https://optikos-data-db.herokuapp.com/api/tasks'
     // )
     const { data } = await axios.get('http://localhost:3000/api/tasks')
-    console.log('index.js: 77; Fresh data: ', data)
     // create a dictionary that maps userId -> user object
     // walk through the data
     // insert user as necessary

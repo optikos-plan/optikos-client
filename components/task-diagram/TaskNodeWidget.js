@@ -27,7 +27,6 @@ export class TaskNodeWidget extends React.Component {
     // should also send in a changeTitleFn() as prop
     super(props)
     const { node } = props
-    console.log('TaskNodeWidget:14; Node: ', node)
     this.state = {
       showTitle: true,
       title: node.task.title,
@@ -69,8 +68,7 @@ export class TaskNodeWidget extends React.Component {
     })
   }
 
-  async nodePersistDate(date) {
-    const { node } = this.props
+  async nodePersistDate(date) { const { node } = this.props
     await axios.put(`http://localhost:3000/api/tasks/${node.task.id}`, {
       endDate: date
     })
