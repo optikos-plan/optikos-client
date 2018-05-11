@@ -38,8 +38,7 @@ export default class NodeAssigneeDialog extends React.Component {
     ]
 
     const { assignee, changeAssignee, deltaAssignee, node } = this.props
-    console.log('Delta: ', deltaAssignee)
-    console.log('PRops: ', this.props)
+
     return (
       <div className={assignee ? 'nodeAsignee-chosen' : 'nodeAssignee-choose'}>
         <FlatButton

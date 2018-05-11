@@ -5,13 +5,6 @@ import axios from 'axios'
 
 // TODO: get team from database, input as props
 
-// const team = [
-//   {id: 1, name: 'Benito Suriano'},
-//   {id: 2, name: 'Amal Sudama'},
-//   {id: 3, name: 'Horacio Gutiérrez'},
-//   {id: 4, name: 'Jason Yang'},
-// ]
-
 export default class NodeAssigneeList extends React.Component {
   constructor() {
     super()

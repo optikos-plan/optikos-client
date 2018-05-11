@@ -24,7 +24,6 @@ const muiTheme = getMuiTheme({
 
 export class TaskNodeWidget extends React.Component {
   constructor(props) {
-    // should also send in a changeTitleFn() as prop
     super(props)
     const { node } = props
     this.state = {
@@ -35,7 +34,6 @@ export class TaskNodeWidget extends React.Component {
       titleChanged: false
     }
 
-    // this.switchToEdit = this.switchToEdit.bind(this)
     this.handleKeyUp = this.handleKeyUp.bind(this)
     this.handleChange = this.handleChange.bind(this)
     this.toggleTitle = this.toggleTitle.bind(this)
@@ -167,27 +165,6 @@ export class TaskNodeWidget extends React.Component {
               />
             </div>
           }
-          {/* {assignee ? (
-            <div
-              style={{
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-                width: '30%'
-              }}
-            >
-              <h1
-                style={{
-                  width: '100%',
-                  'text-align': 'center'
-                }}
-              >
-                {nameToInitial(assignee)}
-              </h1>
-            </div>
-          ) : (
-            <NodeAssigneeDialog />
-          )} */}
         </div>
         {/* Node Shape */}
         <svg
