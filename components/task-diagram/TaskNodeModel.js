@@ -2,7 +2,7 @@ import { NodeModel } from 'storm-react-diagrams'
 import { TaskPortModel } from './TaskPortModel'
 
 export class TaskNodeModel extends NodeModel {
-  constructor(task, updateLink) {
+  constructor(task, updateLink, switchToEdit) {
     super('task')
     this.addPort(new TaskPortModel('top'))
     this.addPort(new TaskPortModel('left'))
@@ -10,12 +10,14 @@ export class TaskNodeModel extends NodeModel {
     this.addPort(new TaskPortModel('right'))
     this.task = task
     this.updateLink = updateLink
+    this.switchToEdit = switchToEdit
   }
 
   serialize() {
     return _.merge(super.serialize(), {
       task: this.task,
-      updateLink: this.updateLink
+      updateLink: this.updateLink,
+      switchToEdit: this.switchToEdit
     })
   }
 
@@ -26,6 +28,7 @@ export class TaskNodeModel extends NodeModel {
     this.y = ob.y
     this.task = ob.task
     this.updateLink = ob.updateLink
+    this.switchToEdit = ob.switchToEdit
     this.extras = ob.extras
 
     // do ports

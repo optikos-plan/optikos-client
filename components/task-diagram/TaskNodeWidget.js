@@ -1,4 +1,3 @@
-
 import * as React from 'react'
 import { PortWidget } from 'storm-react-diagrams'
 import axios from 'axios'
@@ -24,7 +23,6 @@ const muiTheme = getMuiTheme({
 })
 
 export class TaskNodeWidget extends React.Component {
-
   constructor(props) {
     // should also send in a changeTitleFn() as prop
     super(props)
@@ -37,25 +35,12 @@ export class TaskNodeWidget extends React.Component {
       titleChanged: false
     }
 
-    this.switchToEdit = this.switchToEdit.bind(this)
+    // this.switchToEdit = this.switchToEdit.bind(this)
     this.handleKeyUp = this.handleKeyUp.bind(this)
     this.handleChange = this.handleChange.bind(this)
     this.nodePersistDate = this.nodePersistDate.bind(this)
     this.changeAssignee = this.changeAssignee.bind(this)
-  }
-
-  async switchToEdit() {
-    const { node } = this.props
-    const { titleChanged, showTitle, title } = this.state
-    if (titleChanged) {
-      // TODO: move request to whatever remote server we're going to use
-      await axios.put(`http://localhost:3000/api/tasks/${node.task.id}`, {
-        title: title
-      })
-    }
-    this.setState({
-      showTitle: !showTitle
-    })
+    this.toggleTitle = this.toggleTitle.bind(this)
   }
 
   handleKeyUp(evt) {
@@ -88,9 +73,15 @@ export class TaskNodeWidget extends React.Component {
     })
   }
 
+  toggleTitle() {
+    this.setState({
+      showTitle: !this.state.showTitle
+    })
+  }
+
   render() {
     const { size, node } = this.props
-    const { showTitle, title, dueDate, assignee } = this.state
+    const { showTitle, title, dueDate, assignee, titleChanged } = this.state
 
     return (
       // Entire node
@@ -113,7 +104,10 @@ export class TaskNodeWidget extends React.Component {
           <div className="nodeTitleAndDate">
             {showTitle ? (
               <strong
-                onDoubleClick={this.switchToEdit}
+                onDoubleClick={() => {
+                  node.switchToEdit(node, titleChanged, showTitle, title)
+                  this.toggleTitle()
+                }}
                 style={{ position: 'absolute', top: 15, left: 8 }}
               >
                 {/* {node.task.title} */}
@@ -126,7 +120,11 @@ export class TaskNodeWidget extends React.Component {
                 autoFocus={true}
                 defaultValue={title}
                 onChange={this.handleChange}
-                onBlur={this.switchToEdit}
+                onBlur={() => {
+                  node.switchToEdit(node, titleChanged, showTitle, title)
+
+                  this.toggleTitle()
+                }}
                 type="text"
                 style={{ position: 'absolute', top: 5, left: 5 }}
               />
@@ -227,7 +225,7 @@ export class TaskNodeWidget extends React.Component {
           <PortWidget name="left" node={node} />
         </div>
         <div
-          onMouseUp={(event)=> node.updateLink(event, node)}
+          onMouseUp={event => node.updateLink(event, node)}
           style={{
             position: 'absolute',
             zIndex: 10,
@@ -248,7 +246,7 @@ export class TaskNodeWidget extends React.Component {
           <PortWidget name="right" node={node} />
         </div>
         <div
-         onMouseUp={(event)=> node.updateLink(event, node)}
+          onMouseUp={event => node.updateLink(event, node)}
           style={{
             position: 'absolute',
             zIndex: 10,
@@ -266,4 +264,3 @@ TaskNodeWidget.defaultProps = {
   size: 225,
   node: null
 }
-
