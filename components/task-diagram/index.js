@@ -30,6 +30,8 @@ export default class TaskNode extends React.Component {
     this.selectedCheck = this.selectedCheck.bind(this)
     this.updateLink = this.updateLink.bind(this)
     this.switchToEdit = this.switchToEdit.bind(this)
+    this.nodePersistDate = this.nodePersistDate.bind(this)
+    this.changeAssignee = this.changeAssignee.bind(this)
   }
 
   registerEngine() {
@@ -55,7 +57,13 @@ export default class TaskNode extends React.Component {
     this.state.tasks.forEach(task => {
       // do not duplicate nodes
       if (!(task.id in nodeContainer)) {
-        const node = new TaskNodeModel(task, this.updateLink, this.switchToEdit)
+        const node = new TaskNodeModel(
+          task,
+          this.updateLink,
+          this.switchToEdit,
+          this.nodePersistDate,
+          this.changeAssignee
+        )
         nodeContainer[task.id] = node
         this.model.addNode(node)
         // does the tasks have children
@@ -66,7 +74,13 @@ export default class TaskNode extends React.Component {
           if (!(child.id in nodeContainer)) {
             // preventing error on load
             if (child) {
-              const childNode = new TaskNodeModel(child, this.updateLink, this.switchToEdit)
+              const childNode = new TaskNodeModel(
+                child,
+                this.updateLink,
+                this.switchToEdit,
+                this.nodePersistDate,
+                this.changeAssignee
+              )
               nodeContainer[child.id] = childNode
               this.model.addNode(childNode)
             }
@@ -173,13 +187,27 @@ export default class TaskNode extends React.Component {
     }, 0)
   }
 
-  async switchToEdit (node, titleChanged, showTitle, title) {
+  async switchToEdit(node, titleChanged, showTitle, title) {
     if (titleChanged) {
       // TODO: move request to whatever remote server we're going to use
       await axios.put(`http://localhost:3000/api/tasks/${node.task.id}`, {
         title: title
       })
     }
+  }
+
+  // TODO: change to online server
+  async nodePersistDate(node, date) {
+    await axios.put(`http://localhost:3000/api/tasks/${node.task.id}`, {
+      endDate: date
+    })
+  }
+
+  // TODO: change to online server
+  async changeAssignee(_, node, member) {
+    await axios.put(`http://localhost:3000/api/tasks/${node.task.id}`, {
+      userId: member.id
+    })
   }
 
   render() {

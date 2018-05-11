@@ -38,9 +38,8 @@ export class TaskNodeWidget extends React.Component {
     // this.switchToEdit = this.switchToEdit.bind(this)
     this.handleKeyUp = this.handleKeyUp.bind(this)
     this.handleChange = this.handleChange.bind(this)
-    this.nodePersistDate = this.nodePersistDate.bind(this)
-    this.changeAssignee = this.changeAssignee.bind(this)
     this.toggleTitle = this.toggleTitle.bind(this)
+    this.deltaAssignee = this.deltaAssignee.bind(this)
   }
 
   handleKeyUp(evt) {
@@ -54,28 +53,15 @@ export class TaskNodeWidget extends React.Component {
     })
   }
 
-  // TODO: change to online server
-  async nodePersistDate(date) {
-    const { node } = this.props
-    await axios.put(`http://localhost:3000/api/tasks/${node.task.id}`, {
-      endDate: date
-    })
-  }
-
-  // TODO: change to online server
-  async changeAssignee(evt, member) {
-    const { node } = this.props
-    this.setState({
-      assignee: member
-    })
-    await axios.put(`http://localhost:3000/api/tasks/${node.task.id}`, {
-      userId: member.id
-    })
-  }
-
   toggleTitle() {
     this.setState({
       showTitle: !this.state.showTitle
+    })
+  }
+
+  deltaAssignee(member) {
+    this.setState({
+      assignee: member
     })
   }
 
@@ -153,7 +139,10 @@ export class TaskNodeWidget extends React.Component {
                     }
                     container="inline"
                     onChange={(_, date) =>
-                      this.nodePersistDate(moment(date).format('YYYY-MM-DD'))
+                      node.nodePersistDate(
+                        node,
+                        moment(date).format('YYYY-MM-DD')
+                      )
                     }
                   />
                 </MuiThemeProvider>
@@ -172,7 +161,9 @@ export class TaskNodeWidget extends React.Component {
             >
               <NodeAssigneeDialog
                 assignee={assignee}
-                changeAssignee={this.changeAssignee}
+                changeAssignee={node.changeAssignee}
+                deltaAssignee={this.deltaAssignee}
+                node={node}
               />
             </div>
           }
