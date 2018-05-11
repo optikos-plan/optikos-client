@@ -108,13 +108,13 @@
 } */
 
 .nodeAssignee {
-  height: 75%;
-  width: 25%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 3rem;
-  border-style: dashed;
-  margin-right: 0.5rem;
-  border-color: lightgray;
+  height: 75% !important;
+  width: 25% !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  font-size: 3rem !important;
+  border-style: dashed !important;
+  margin-right: 0.5rem !important;
+  border-color: lightgray !important;
 }

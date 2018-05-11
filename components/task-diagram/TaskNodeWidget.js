@@ -4,6 +4,9 @@ import axios from 'axios'
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 import getMuiTheme from 'material-ui/styles/getMuiTheme'
 import DatePicker from 'material-ui/DatePicker'
+import NodeAssigneeDialog from './NodeAssigneeDialog'
+import nameToInitial from '../../utils/nameToInitial'
+
 import moment from 'moment'
 
 /**
@@ -76,9 +79,10 @@ export class TaskNodeWidget extends React.Component {
 
   render() {
     const { size, node } = this.props
-    const { showTitle, title, dueDate } = this.state
+    const { showTitle, title, dueDate, assignee } = this.state
 
     return (
+      // Entire node
       <div
         className={'task-node'}
         style={{
@@ -87,12 +91,14 @@ export class TaskNodeWidget extends React.Component {
           height: size / 3
         }}
       >
+        {/* Node Content */}
         <div
           className="nodeBody"
           style={{
             position: 'absolute'
           }}
         >
+          {/* Title and Date Section */}
           <div className="nodeTitleAndDate">
             {showTitle ? (
               <strong
@@ -103,6 +109,7 @@ export class TaskNodeWidget extends React.Component {
                 {title}
               </strong>
             ) : (
+              // Input field to change title
               <input
                 onKeyUp={this.handleKeyUp}
                 autoFocus={true}
@@ -113,6 +120,7 @@ export class TaskNodeWidget extends React.Component {
                 style={{ position: 'absolute', top: 5, left: 5 }}
               />
             )}
+            {/* Date Picker */}
             {
               <div
                 className="nodeDatePicker"
@@ -125,24 +133,48 @@ export class TaskNodeWidget extends React.Component {
               >
                 <MuiThemeProvider muiTheme={muiTheme}>
                   <DatePicker
-                    id={(node.task.id).toString()}
+                    id={node.task.id.toString()}
                     formatDate={date => moment(date).format('MMM Do YYYY')}
                     hintText={
-                      dueDate ?
-                      dueDate
-                      : <span className="nodeDatePop">Enter Due Date</span>
+                      dueDate ? (
+                        dueDate
+                      ) : (
+                        <span className="nodeDatePop">Enter Due Date</span>
+                      )
                     }
                     container="inline"
-                    onChange={(_, date) => this.nodePersistDate(moment(date).format('YYYY-MM-DD'))}
+                    onChange={(_, date) =>
+                      this.nodePersistDate(moment(date).format('YYYY-MM-DD'))
+                    }
                   />
                 </MuiThemeProvider>
               </div>
             }
           </div>
-          <div className="nodeAssignee">
-            <span className="nodeAssigneePlaceHolder">+</span>
-          </div>
+          {/* Node Assignee Section */}
+          {assignee ? (
+            <div
+              style={{
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                width: '30%'
+              }}
+            >
+              <h1
+                style={{
+                  width: '100%',
+                  'text-align': 'center'
+                }}
+              >
+                {nameToInitial(assignee)}
+              </h1>
+            </div>
+          ) : (
+            <NodeAssigneeDialog />
+          )}
         </div>
+        {/* Node Shape */}
         <svg
           width={size}
           height={size / 3}
@@ -157,6 +189,7 @@ export class TaskNodeWidget extends React.Component {
         `
           }}
         />
+        {/* Port Widget Declaration */}
         <div
           style={{
             position: 'absolute',
