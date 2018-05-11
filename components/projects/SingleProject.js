@@ -25,11 +25,11 @@ export default class SingleProject extends Component {
       <div id="singleProject">
         <Navbar />
         <div className="testFlex">
-          <Sidebar
+          {/* <Sidebar
             taskSelected={taskSelected}
             taskCompleted={taskCompleted}
             updateTaskCompleted={this.updateTaskCompleted}
-          />
+          /> */}
           <TaskNode />
         </div>
       </div>

@@ -7,6 +7,7 @@ import * as React from 'react'
 
 // import the custom models
 import { TaskNodeModel } from './TaskNodeModel'
+import Sidebar from '../Sidebar'
 import { TaskNodeFactory } from './TaskNodeFactory'
 import { SimplePortFactory } from './SimplePortFactory'
 import { TaskPortModel } from './TaskPortModel'
@@ -19,10 +20,14 @@ import 'storm-react-diagrams/dist/style.min.css'
 export default class TaskNode extends React.Component {
   constructor() {
     super()
+    this.state = { tasks: [],
+    taskSelected: false,
+    taskSelectedData: {},
+}
 
-    this.state = { tasks: [] }
 
     this.registerEngine()
+    this.selectedCheck = this.selectedCheck.bind(this)
   }
 
   registerEngine() {
@@ -73,6 +78,21 @@ export default class TaskNode extends React.Component {
     })
 
     this.model.addAll(...links)
+
+  }
+
+  selectedCheck() {
+    const nodes = this.model.nodes
+
+    for (let x of Object.keys(nodes)) {
+      if (nodes[x].selected) {
+        this.setState({taskSelected: true})
+        this.setState({taskSelectedData: nodes[x].task})
+        return true
+      }
+    }
+    this.setState({taskSelected: false})
+    return false
   }
 
   // grab data from heroku server
@@ -119,11 +139,15 @@ export default class TaskNode extends React.Component {
   }
 
   render() {
+    const task = this.state.taskSelectedData
 
     return (
       <div className="srd-diagram">
+        <Sidebar  allTasks={this.state.tasks} task={task} taskSelected={this.state.taskSelected}git/>
         <button onClick={this.saveLayout}>SAVE</button>
+      <div className="srd-diagram" onClick={this.selectedCheck} >
         <DiagramWidget model={this.model} diagramEngine={this.engine} />
+   </div>
       </div>
     )
   }
