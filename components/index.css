@@ -19,9 +19,9 @@
 }
 
 .sidenav {
-  background-color: #2196F3;
+  background-color: #E0E0E0;
   padding-top: 20px;
-  color: white;
+  color: #424242;
   flex-basis: 2;
   height: 100vh;
 }

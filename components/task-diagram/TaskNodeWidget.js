@@ -1,3 +1,4 @@
+
 import * as React from 'react'
 import { PortWidget } from 'storm-react-diagrams'
 import axios from 'axios'
@@ -23,6 +24,7 @@ const muiTheme = getMuiTheme({
 })
 
 export class TaskNodeWidget extends React.Component {
+
   constructor(props) {
     // should also send in a changeTitleFn() as prop
     super(props)
@@ -40,6 +42,7 @@ export class TaskNodeWidget extends React.Component {
     this.handleChange = this.handleChange.bind(this)
     this.nodePersistDate = this.nodePersistDate.bind(this)
     this.changeAssignee = this.changeAssignee.bind(this)
+    this.updateLink = this.updateLink.bind(this)
   }
 
   async switchToEdit() {
@@ -85,6 +88,42 @@ export class TaskNodeWidget extends React.Component {
       userId: member.id
     })
   }
+
+  // race condition scenario
+	// event listener responsible for updating links runs after our MouseUp listener
+	// need to use setTimeout to correct order
+	updateLink(event) {
+		const target = event.target.dataset.name;
+		const port = this.props.node.ports[target];
+		const links = port.links;
+
+		//create hash of old Links
+		const oldLinks = {};
+
+		for (let x of Object.keys(links)) {
+			oldLinks[x] = links[x];
+    }
+
+		setTimeout(() => {
+			let parent = {};
+			let child = {};
+			for (let x in links) {
+				if (!(x in oldLinks)) {
+					// console.log("new link", links[x])
+					if (target === 'top') {
+						parent = links[x].sourcePort.parent;
+						child = links[x].targetPort.parent;
+					} else if (target === 'bottom') {
+						parent = links[x].targetPort.parent;
+						child = links[x].sourcePort.parent;
+					}
+				}
+			}
+			console.log('parent node is: ', parent);
+			console.log('new child to add:', child);
+		}, 0);
+	}
+
 
   render() {
     const { size, node } = this.props
@@ -225,6 +264,7 @@ export class TaskNodeWidget extends React.Component {
           <PortWidget name="left" node={node} />
         </div>
         <div
+          onMouseUp={this.updateLink}
           style={{
             position: 'absolute',
             zIndex: 10,
@@ -245,6 +285,7 @@ export class TaskNodeWidget extends React.Component {
           <PortWidget name="right" node={node} />
         </div>
         <div
+          onMouseUp={this.updateLink}
           style={{
             position: 'absolute',
             zIndex: 10,
@@ -262,3 +303,4 @@ TaskNodeWidget.defaultProps = {
   size: 225,
   node: null
 }
+

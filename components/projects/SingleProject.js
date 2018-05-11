@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
-import Navbar from './Navbar'
-import Sidebar from './Sidebar'
-import TaskNode from './task-diagram'
+import Navbar from '../Navbar'
+import Sidebar from '../Sidebar'
+import TaskNode from '../task-diagram'
 
 export default class SingleProject extends Component {
   constructor() {
