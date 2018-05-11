@@ -20,8 +20,7 @@ export default class TaskNode extends React.Component {
   constructor() {
     super()
 
-    this.state = { tasks: [],
-    ports: [] }
+    this.state = { tasks: [] }
 
     this.registerEngine()
   }
@@ -41,13 +40,13 @@ export default class TaskNode extends React.Component {
   }
 
   updateTasks() {
-    console.log('This state tasks: ', this.state.tasks)
+    // FIXME: eager loading only on first level 'task' and not its children... GraphQL is going to fix this for us
+
     const nodeContainer = {}
     const links = []
 
     this.state.tasks.forEach(task => {
       // do not duplicate nodes
-      // console.log('Test: ', task.id, nodeContainer)
       if (!(task.id in nodeContainer)) {
         const node = new TaskNodeModel(task)
         nodeContainer[task.id] = node
@@ -72,22 +71,25 @@ export default class TaskNode extends React.Component {
         })
       }
     })
-  
+
     this.model.addAll(...links)
-    console.log('Node container: ', nodeContainer)
-    console.log('Links: ', links)
   }
 
   // grab data from heroku server
   //
   async componentDidMount() {
-    const DB_URL = 'https://optikos-data-db.herokuapp.com/api/tasks'
+    // TODO: change back to remote server after testing
+    // const { data } = await axios.get(
+    //   'https://optikos-data-db.herokuapp.com/api/tasks'
+    // )
+    const { data } = await axios.get('http://localhost:3000/api/tasks')
 
-    // get data from database
-    const { data } = await axios.get(DB_URL)
-    this.setState({ tasks: data }, () => this.updateTasks())
+    // TODO: this right here
+    this.setState({ tasks: data }, async () => {
+      await this.updateTasks()
+      await this.forceUpdate()
+    })
 
-    this.forceUpdate()
   }
 
   // grab from local server for testing purposes
@@ -118,7 +120,6 @@ export default class TaskNode extends React.Component {
 
   render() {
 
-    // return <DiagramWidget model={this.model} diagramEngine={this.engine} />
     return (
       <div className="srd-diagram">
         <button onClick={this.saveLayout}>SAVE</button>

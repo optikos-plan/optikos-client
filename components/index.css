@@ -33,5 +33,96 @@
 .srd-diagram {
   flex-basis: 3;
   background-color: #cccc;
+}
 
+.srd-port:hover {
+  background: lightcoral !important;
+  border-radius: 15px !important;
+  opacity: 0.8 !important;
+}
+
+.srd-port {
+  background: rgba(255,255,255,0) !important;
+}
+
+/* Node Styling */
+
+.nodeBody {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  align-items: center;
+}
+
+.nodeDatePicker {
+  display: flex;
+  align-items: center;
+  align-items: center;
+  width: 45%;
+}
+
+.nodeDatePicker div {
+  width: 100% !important;
+  height: 1.5rem !important;
+}
+
+.nodeDatePicker div div {
+  font-size: 0.70rem !important;
+  height: 1.5rem !important;
+}
+
+.nodeDatePicker div div div {
+  color:  rgb(233, 233, 27) !important;
+}
+
+.nodeDatePicker div div div hr {
+  border-bottom: none !important;
+}
+
+.nodeDatePicker div div input {
+  width: 100% !important;
+  margin: 0 !important;
+  font-size: 0.70rem !important;
+  position: absolute !important;
+  top: -10px;
+  left: 3px;
+  color:  rgb(233, 233, 27) !important;
+}
+
+.nodeDate {
+  color: rgb(233, 233, 27) !important;
+  font-size: 0.70rem !important;
+}
+
+.nodeDatePop {
+  color: rgba(10, 48, 94, 0.708) !important;
+}
+
+/* .nodeDatePop:hover {
+  font-size: 0.65rem !important;
+  color: rgb(223, 223, 37) !important;
+  transition: ease-in-out !important;
+  transition-duration: 500ms !important;
+} */
+
+.nodeAssignee-choose {
+  height: 75% !important;
+  width: 100% !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  border-style: dashed !important;
+  margin-right: 0.5rem !important;
+  border-color: lightgray !important;
+}
+
+.nodeAssignee-chosen {
+  height: 75% !important;
+  width: 25% !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  margin-right: 0.5rem !important;
 }
