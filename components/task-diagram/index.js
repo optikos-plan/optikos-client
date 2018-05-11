@@ -28,6 +28,7 @@ export default class TaskNode extends React.Component {
 
     this.registerEngine()
     this.selectedCheck = this.selectedCheck.bind(this)
+    this.updateLink = this.updateLink.bind(this)
   }
 
   registerEngine() {
@@ -53,7 +54,7 @@ export default class TaskNode extends React.Component {
     this.state.tasks.forEach(task => {
       // do not duplicate nodes
       if (!(task.id in nodeContainer)) {
-        const node = new TaskNodeModel(task)
+        const node = new TaskNodeModel(task, this.updateLink)
         nodeContainer[task.id] = node
         this.model.addNode(node)
         // does the tasks have children
@@ -64,7 +65,7 @@ export default class TaskNode extends React.Component {
           if (!(child.id in nodeContainer)) {
             // preventing error on load
             if (child) {
-              const childNode = new TaskNodeModel(child)
+              const childNode = new TaskNodeModel(child, this.updateLink)
               nodeContainer[child.id] = childNode
               this.model.addNode(childNode)
             }
@@ -137,6 +138,42 @@ export default class TaskNode extends React.Component {
     const res = await axios.post(DB_URL, serialized)
     console.log('Response from serialize Post', res)
   }
+
+  // race condition scenario
+	// event listener responsible for updating links runs after our MouseUp listener
+	// need to use setTimeout to correct order
+  updateLink(event, node) {
+		const target = event.target.dataset.name;
+		const port = node.ports[target];
+		const links = port.links;
+
+		//create hash of old Links
+		const oldLinks = {};
+
+		for (let x of Object.keys(links)) {
+			oldLinks[x] = links[x];
+    }
+
+		setTimeout(() => {
+			let parent = {};
+			let child = {};
+			for (let x in links) {
+				if (!(x in oldLinks)) {
+					// console.log("new link", links[x])
+					if (target === 'top') {
+						parent = links[x].sourcePort.parent;
+						child = links[x].targetPort.parent;
+					} else if (target === 'bottom') {
+						parent = links[x].targetPort.parent;
+						child = links[x].sourcePort.parent;
+					}
+				}
+			}
+			console.log('parent node is: ', parent);
+			console.log('new child to add:', child);
+		}, 0);
+	}
+
 
   render() {
     const task = this.state.taskSelectedData
