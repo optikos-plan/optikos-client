@@ -5,13 +5,6 @@ import axios from 'axios'
 
 // TODO: get team from database, input as props
 
-// const team = [
-//   {id: 1, name: 'Benito Suriano'},
-//   {id: 2, name: 'Amal Sudama'},
-//   {id: 3, name: 'Horacio Gutiérrez'},
-//   {id: 4, name: 'Jason Yang'},
-// ]
-
 export default class NodeAssigneeList extends React.Component {
   constructor() {
     super()
@@ -30,8 +23,10 @@ export default class NodeAssigneeList extends React.Component {
   }
 
   render() {
-    const { changeAssignee } = this.props
+    const { changeAssignee, deltaAssignee, node } = this.props
     const { team } = this.state
+
+    console.log('Props: ', this.props)
     return (
       <List
         style={{
@@ -41,7 +36,10 @@ export default class NodeAssigneeList extends React.Component {
         {team.map(member => {
           return (
             <ListItem
-              onClick={event => changeAssignee(event, member)}
+              onClick={event => {
+                changeAssignee(event, node, member)
+                deltaAssignee(member)
+              }}
               primaryText={
                 <div
                   style={{
