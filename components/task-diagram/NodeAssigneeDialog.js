@@ -37,7 +37,7 @@ export default class NodeAssigneeDialog extends React.Component {
       />
     ]
 
-    const {assignee} = this.props
+    const {assignee, changeAssignee} = this.props
 
     return (
       <div className={
@@ -74,8 +74,9 @@ export default class NodeAssigneeDialog extends React.Component {
         open={this.state.open}
         onRequestClose={this.handleClose}
         autoScrollBodyContent={true}
+        autoDetectWindowHeight={true}
       >
-        <NodeAssigneeList />
+        <NodeAssigneeList changeAssignee={changeAssignee} />
       </Dialog>
       </div>
     )

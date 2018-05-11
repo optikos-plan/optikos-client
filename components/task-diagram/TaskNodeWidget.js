@@ -34,13 +34,12 @@ export class TaskNodeWidget extends React.Component {
       assignee: node.task.user,
       titleChanged: false
     }
-    if (node.task.user && node.task.user.name) {
-      console.log(node.task.user.name)
-    }
+
     this.switchToEdit = this.switchToEdit.bind(this)
     this.handleKeyUp = this.handleKeyUp.bind(this)
     this.handleChange = this.handleChange.bind(this)
     this.nodePersistDate = this.nodePersistDate.bind(this)
+    this.changeAssignee = this.changeAssignee.bind(this)
   }
 
   async switchToEdit() {
@@ -68,9 +67,22 @@ export class TaskNodeWidget extends React.Component {
     })
   }
 
-  async nodePersistDate(date) { const { node } = this.props
+  // TODO: change to online server
+  async nodePersistDate(date) {
+    const { node } = this.props
     await axios.put(`http://localhost:3000/api/tasks/${node.task.id}`, {
       endDate: date
+    })
+  }
+
+  // TODO: change to online server
+  async changeAssignee(evt, member) {
+    const { node } = this.props
+    this.setState({
+      assignee: member
+    })
+    await axios.put(`http://localhost:3000/api/tasks/${node.task.id}`, {
+      userId: member.id
     })
   }
 
@@ -159,7 +171,8 @@ export class TaskNodeWidget extends React.Component {
               }}
             >
               <NodeAssigneeDialog
-            assignee={assignee}
+                assignee={assignee}
+                changeAssignee={this.changeAssignee}
               />
             </div>
           }

@@ -1,5 +1,5 @@
 import React from 'react'
-import {List, ListItem} from 'material-ui/List'
+import { List, ListItem } from 'material-ui/List'
 import nameToInitial from '../../utils/nameToInitial'
 import axios from 'axios'
 
@@ -13,22 +13,24 @@ import axios from 'axios'
 // ]
 
 export default class NodeAssigneeList extends React.Component {
-  constructor () {
+  constructor() {
     super()
     this.state = {
       team: []
     }
   }
 
-async componentDidMount () {
-  const { data } = await axios.get(`http://localhost:3000/api/users`)
+  async componentDidMount() {
+    // TODO: change to online server
+    const { data } = await axios.get(`http://localhost:3000/api/users`)
 
-  this.setState({
-    team: data
-  })
-}
+    this.setState({
+      team: data
+    })
+  }
 
-  render () {
+  render() {
+    const { changeAssignee } = this.props
     const { team } = this.state
     return (
       <List
@@ -36,33 +38,32 @@ async componentDidMount () {
           width: '100%'
         }}
       >
-        {
-          team.map(member => {
-            return (
-              <ListItem
-                primaryText={
-                  <div
+        {team.map(member => {
+          return (
+            <ListItem
+              onClick={event => changeAssignee(event, member)}
+              primaryText={
+                <div
+                  style={{
+                    display: 'flex',
+                    justifyContent: 'flex-start',
+                    alignItems: 'center'
+                  }}
+                >
+                  <h1
                     style={{
-                      display: 'flex',
-                      justifyContent: 'flex-start',
-                      alignItems: 'center'
+                      width: '10%'
                     }}
                   >
-                    <h1
-                      style={{
-                        width: '10%'
-                      }}
-                    >
-                      {nameToInitial(member.name)}
-                    </h1>
-                    <h3>{member.name}</h3>
-                  </div>
-                }
-                key={member.id}
-              />
-            )
-          })
-        }
+                    {nameToInitial(member.name)}
+                  </h1>
+                  <h3>{member.name}</h3>
+                </div>
+              }
+              key={member.id}
+            />
+          )
+        })}
       </List>
     )
   }
