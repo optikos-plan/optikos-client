@@ -75,15 +75,13 @@ export class TaskNodeWidget extends React.Component {
           position: 'relative',
           width: size,
           height: size / 3
-        }}
-      >
+        }}>
         {/* Node Content */}
         <div
           className="nodeBody"
           style={{
             position: 'absolute'
-          }}
-        >
+          }}>
           {/* Title and Date Section */}
           <div className="nodeTitleAndDate">
             {showTitle ? (
@@ -92,8 +90,7 @@ export class TaskNodeWidget extends React.Component {
                   node.switchToEdit(node, titleChanged, showTitle, title)
                   this.toggleTitle()
                 }}
-                style={{ position: 'absolute', top: 15, left: 8 }}
-              >
+                style={{ position: 'absolute', top: 15, left: 8 }}>
                 {/* {node.task.title} */}
                 {title}
               </strong>
@@ -122,8 +119,7 @@ export class TaskNodeWidget extends React.Component {
                   top: 65,
                   left: 8,
                   height: '1rem'
-                }}
-              >
+                }}>
                 <MuiThemeProvider muiTheme={muiTheme}>
                   <DatePicker
                     id={node.task.id.toString()}
@@ -155,8 +151,7 @@ export class TaskNodeWidget extends React.Component {
                 justifyContent: 'center',
                 alignItems: 'center',
                 width: '30%'
-              }}
-            >
+              }}>
               <NodeAssigneeDialog
                 assignee={assignee}
                 changeAssignee={node.changeAssignee}
@@ -188,8 +183,7 @@ export class TaskNodeWidget extends React.Component {
             zIndex: 10,
             top: size / 6 - 8,
             left: -8
-          }}
-        >
+          }}>
           <PortWidget name="left" node={node} />
         </div>
         <div
@@ -199,8 +193,7 @@ export class TaskNodeWidget extends React.Component {
             zIndex: 10,
             left: size / 2 - 8,
             top: -8
-          }}
-        >
+          }}>
           <PortWidget name="top" node={node} />
         </div>
         <div
@@ -209,8 +202,7 @@ export class TaskNodeWidget extends React.Component {
             zIndex: 10,
             left: size - 8,
             top: size / 6 - 8
-          }}
-        >
+          }}>
           <PortWidget name="right" node={node} />
         </div>
         <div
@@ -220,8 +212,7 @@ export class TaskNodeWidget extends React.Component {
             zIndex: 10,
             left: size / 2 - 8,
             top: size / 3 - 8
-          }}
-        >
+          }}>
           <PortWidget name="bottom" node={node} />
         </div>
       </div>

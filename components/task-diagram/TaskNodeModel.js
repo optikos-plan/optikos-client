@@ -26,7 +26,6 @@ export class TaskNodeModel extends NodeModel {
   }
 
   deSerialize(ob, engine) {
-    console.log('TaskNodeModel::deSerialize', ob)
     super.deSerialize(ob, engine)
     this.x = ob.x
     this.y = ob.y

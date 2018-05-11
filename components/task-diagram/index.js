@@ -14,14 +14,10 @@ import { TaskPortModel } from './TaskPortModel'
 import axios from 'axios'
 
 import 'storm-react-diagrams/dist/style.min.css'
-/**
- * @Author Dylan Vorster
- */
 export default class TaskNode extends React.Component {
-  constructor() {
-    super()
+  constructor(props) {
+    super(props)
     this.state = {
-      tasks: [],
       taskSelected: false,
       taskSelectedData: {}
     }
@@ -49,12 +45,10 @@ export default class TaskNode extends React.Component {
   }
 
   updateTasks() {
-    // FIXME: eager loading only on first level 'task' and not its children... GraphQL is going to fix this for us
-
     const nodeContainer = {}
     const links = []
 
-    this.state.tasks.forEach(task => {
+    this.props.tasks.forEach(task => {
       // do not duplicate nodes
       if (!(task.id in nodeContainer)) {
         const node = new TaskNodeModel(
@@ -110,48 +104,6 @@ export default class TaskNode extends React.Component {
     return false
   }
 
-  // grab data from heroku server
-  //
-  async componentDidMount() {
-    // TODO: change back to remote server after testing
-    // const { data } = await axios.get(
-    //   'https://optikos-data-db.herokuapp.com/api/tasks'
-    // )
-    const { data } = await axios.get('http://localhost:3000/api/tasks')
-
-    // TODO: this right here
-    this.setState({ tasks: data }, async () => {
-      await this.updateTasks()
-      await this.forceUpdate()
-    })
-  }
-
-  // grab from local server for testing purposes
-  //
-  async xxxcomponentDidMount() {
-    const DB_URL = 'http://localhost:3000/api/serialize'
-
-    console.log(DB_URL)
-    const { data } = await axios.get(DB_URL)
-    console.log('DATA from Server', data)
-
-    // deserialize data
-    this.model = new DiagramModel()
-    this.model.deSerializeDiagram(data, this.engine)
-    this.engine.setDiagramModel(this.model)
-
-    this.forceUpdate()
-  }
-
-  saveLayout = async () => {
-    //
-    const serialized = this.model.serializeDiagram()
-    console.log(JSON.stringify(serialized, undefined, 2))
-    const DB_URL = 'http://localhost:3000/api/serialize'
-    const res = await axios.post(DB_URL, serialized)
-    console.log('Response from serialize Post', res)
-  }
-
   // race condition scenario
   // event listener responsible for updating links runs after our MouseUp listener
   // need to use setTimeout to correct order
@@ -172,7 +124,6 @@ export default class TaskNode extends React.Component {
       let child = {}
       for (let x in links) {
         if (!(x in oldLinks)) {
-          // console.log("new link", links[x])
           if (target === 'top') {
             parent = links[x].sourcePort.parent
             child = links[x].targetPort.parent
@@ -216,7 +167,7 @@ export default class TaskNode extends React.Component {
     return (
       <div className="srd-diagram">
         <Sidebar
-          allTasks={this.state.tasks}
+          allTasks={this.props.tasks}
           task={task}
           taskSelected={this.state.taskSelected}
           git

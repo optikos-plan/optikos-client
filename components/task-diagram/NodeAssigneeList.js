@@ -26,13 +26,11 @@ export default class NodeAssigneeList extends React.Component {
     const { changeAssignee, deltaAssignee, node } = this.props
     const { team } = this.state
 
-    console.log('Props: ', this.props)
     return (
       <List
         style={{
           width: '100%'
-        }}
-      >
+        }}>
         {team.map(member => {
           return (
             <ListItem
@@ -46,13 +44,11 @@ export default class NodeAssigneeList extends React.Component {
                     display: 'flex',
                     justifyContent: 'flex-start',
                     alignItems: 'center'
-                  }}
-                >
+                  }}>
                   <h1
                     style={{
                       width: '10%'
-                    }}
-                  >
+                    }}>
                     {nameToInitial(member.name)}
                   </h1>
                   <h3>{member.name}</h3>
