@@ -22,7 +22,9 @@ export default class TaskNode extends React.Component {
     super()
 
     this.state = { tasks: [],
-    taskSelected: false }
+    taskSelected: false,
+    taskSelectedData: {},
+}
 
     this.registerEngine()
     this.selectedCheck = this.selectedCheck.bind(this)
@@ -84,6 +86,7 @@ export default class TaskNode extends React.Component {
     for (let x of Object.keys(nodes)) {
       if (nodes[x].selected) {
         this.setState({taskSelected: true})
+        this.setState({taskSelectedData: nodes[x].task})
         return true
       }
     }
@@ -130,11 +133,12 @@ export default class TaskNode extends React.Component {
   }
 
   render() {
+    const task = this.state.taskSelectedData
 
     // return <DiagramWidget model={this.model} diagramEngine={this.engine} />
     return (
       <div className="srd-diagram">
-        <Sidebar taskSelected={this.state.taskSelected}/>
+        <Sidebar  allTasks={this.state.tasks} task={task} taskSelected={this.state.taskSelected}git/>
         <button onClick={this.saveLayout}>SAVE</button>
       <div className="srd-diagram" onClick={this.selectedCheck} >
         <DiagramWidget model={this.model} diagramEngine={this.engine} />
