@@ -56,9 +56,56 @@
   align-items: center;
 }
 
-.nodeTitleAndDate {
-  width: 70%;
+.nodeDatePicker {
+  display: flex;
+  align-items: center;
+  align-items: center;
+  width: 45%;
 }
+
+.nodeDatePicker div {
+  width: 100% !important;
+  height: 1.5rem !important;
+}
+
+.nodeDatePicker div div {
+  font-size: 0.70rem !important;
+  height: 1.5rem !important;
+}
+
+.nodeDatePicker div div div {
+  color:  rgb(233, 233, 27) !important;
+}
+
+.nodeDatePicker div div div hr {
+  border-bottom: none !important;
+}
+
+.nodeDatePicker div div input {
+  width: 100% !important;
+  margin: 0 !important;
+  font-size: 0.70rem !important;
+  position: absolute !important;
+  top: -10px;
+  left: 3px;
+  color:  rgb(233, 233, 27) !important;
+}
+
+.nodeDate {
+  color: rgb(233, 233, 27) !important;
+  font-size: 0.70rem !important;
+}
+
+.nodeDatePop {
+  color: rgba(10, 48, 94, 0.708) !important;
+}
+
+/* .nodeDatePop:hover {
+  font-size: 0.65rem !important;
+  color: rgb(223, 223, 37) !important;
+  transition: ease-in-out !important;
+  transition-duration: 500ms !important;
+} */
 
 .nodeAssignee {
   height: 75%;

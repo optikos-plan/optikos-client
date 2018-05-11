@@ -39,6 +39,7 @@ export default class TaskNode extends React.Component {
 
   updateTasks() {
     // FIXME: eager loading only on first level 'task' and not its children... GraphQL is going to fix this for us
+
     const nodeContainer = {}
     const links = []
 
