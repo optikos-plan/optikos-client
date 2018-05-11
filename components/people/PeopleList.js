@@ -3,18 +3,25 @@ import gql from 'graphql-tag'
 import { graphql } from 'react-apollo'
 import RaisedButton from 'material-ui/RaisedButton'
 import { Card, CardActions, CardHeader, CardText } from 'material-ui/Card'
-import FlatButton from 'material-ui/FlatButton'
+import CircularProgress from 'material-ui/CircularProgress'
 
 const style = {
-  margin: 12
+  margin: 12,
+  center: {
+    display: 'block',
+    margin: '0 auto'
+  }
 }
 
-const items = ['person1', 'person2', 'person3', 'person4', 'person5']
+const Loading = () => (
+  <div style={{ padding: '150px' }}>
+    <CircularProgress style={style.center} size={80} thickness={5} />
+  </div>
+)
 
 const PeopleList = ({ data }) => {
-  if (data.loading) return 'Loading...'
-  if (data.error) return <div>OOPsie!</div>
-  console.log('data ', data)
+  if (data.loading) return <Loading />
+  if (data.error) return <div>Error !</div>
 
   const { users } = data
 
