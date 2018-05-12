@@ -1,12 +1,9 @@
 import * as React from 'react'
 import { PortWidget } from 'storm-react-diagrams'
-// import axios from 'axios'
 import NodeAssigneeDialog from './NodeAssigneeDialog'
-import DatePicker from './calendar'
 
-/**
- * @author Optikos Team
- */
+import DatePicker from './mutations/calendar'
+import UpdateTitle from './mutations/updateTitle'
 
 export class TaskNodeWidget extends React.Component {
   constructor(props) {
@@ -16,8 +13,7 @@ export class TaskNodeWidget extends React.Component {
       showTitle: true,
       title: node.task.title,
       dueDate: node.task.endDate,
-      assignee: node.task.user,
-      titleChanged: false
+      assignee: node.task.user
     }
 
     this.handleKeyUp = this.handleKeyUp.bind(this)
@@ -32,8 +28,7 @@ export class TaskNodeWidget extends React.Component {
 
   handleChange(evt) {
     this.setState({
-      title: evt.target.value,
-      titleChanged: true
+      title: evt.target.value
     })
   }
 
@@ -51,7 +46,7 @@ export class TaskNodeWidget extends React.Component {
 
   render() {
     const { size, node } = this.props
-    const { showTitle, title, dueDate, assignee, titleChanged } = this.state
+    const { showTitle, title, dueDate, assignee } = this.state
 
     return (
       // Entire node
@@ -70,32 +65,15 @@ export class TaskNodeWidget extends React.Component {
           }}>
           {/* Title and Date Section */}
           <div className="nodeTitleAndDate">
-            {showTitle ? (
-              <strong
-                onDoubleClick={() => {
-                  node.switchToEdit(node, titleChanged, showTitle, title)
-                  this.toggleTitle()
-                }}
-                style={{ position: 'absolute', top: 15, left: 8 }}>
-                {/* {node.task.title} */}
-                {title}
-              </strong>
-            ) : (
-              // Input field to change title
-              <input
-                onKeyUp={this.handleKeyUp}
-                autoFocus={true}
-                defaultValue={title}
-                onChange={this.handleChange}
-                onBlur={() => {
-                  node.switchToEdit(node, titleChanged, showTitle, title)
+            <UpdateTitle
+              handleChange={this.handleChange}
+              handleKeyUp={this.handleKeyUp}
+              showTitle={showTitle}
+              node={node}
+              title={title}
+              toggleTitle={this.toggleTitle}
+            />
 
-                  this.toggleTitle()
-                }}
-                type="text"
-                style={{ position: 'absolute', top: 5, left: 5 }}
-              />
-            )}
             {/* Date Picker */}
             <DatePicker node={node} dueDate={dueDate} />
           </div>
