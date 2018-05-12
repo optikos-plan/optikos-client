@@ -29,6 +29,11 @@ export default class TaskNode extends React.Component {
     this.selectedCheck = this.selectedCheck.bind(this)
     this.updateLink = this.updateLink.bind(this)
     this.switchToEdit = this.switchToEdit.bind(this)
+
+    // TODO: These functions need to be extracted. It will be some work
+    // as there seems to be some dependency based on how they're passed
+    // down as positional arguments to some functions.
+    //
     this.nodePersistDate = NOP
     this.changeAssignee = NOP
   }
