@@ -14,6 +14,9 @@ import { TaskPortModel } from './TaskPortModel'
 import axios from 'axios'
 
 import 'storm-react-diagrams/dist/style.min.css'
+
+const NOP = () => console.log(`oi, this should have been nop'd`)
+
 export default class TaskNode extends React.Component {
   constructor(props) {
     super(props)
@@ -26,7 +29,7 @@ export default class TaskNode extends React.Component {
     this.selectedCheck = this.selectedCheck.bind(this)
     this.updateLink = this.updateLink.bind(this)
     this.switchToEdit = this.switchToEdit.bind(this)
-    this.nodePersistDate = this.nodePersistDate.bind(this)
+    this.nodePersistDate = NOP
     this.changeAssignee = this.changeAssignee.bind(this)
   }
 
@@ -145,13 +148,6 @@ export default class TaskNode extends React.Component {
         title: title
       })
     }
-  }
-
-  // TODO: change to online server
-  async nodePersistDate(node, date) {
-    await axios.put(`http://localhost:3000/api/tasks/${node.task.id}`, {
-      endDate: date
-    })
   }
 
   // TODO: change to online server

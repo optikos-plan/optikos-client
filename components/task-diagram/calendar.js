@@ -26,32 +26,41 @@ const muiTheme = getMuiTheme({
 })
 
 const picker = ({ node, dueDate }) => (
-  <div
-    className="nodeDatePicker"
-    style={{
-      position: 'absolute',
-      top: 65,
-      left: 8,
-      height: '1rem'
-    }}>
-    <MuiThemeProvider muiTheme={muiTheme}>
-      <DatePicker
-        id={node.task.id.toString()}
-        formatDate={date => moment(date).format('MMM Do YYYY')}
-        hintText={
-          dueDate ? (
-            moment(dueDate).format('MMM Do YYYY')
-          ) : (
-            <span className="nodeDatePop">Enter Due Date</span>
-          )
-        }
-        container="inline"
-        onChange={(_, date) =>
-          node.nodePersistDate(node, moment(date).format('YYYY-MM-DD'))
-        }
-      />
-    </MuiThemeProvider>
-  </div>
+  <Mutation mutation={SET_DATE}>
+    {setDate => (
+      <div
+        className="nodeDatePicker"
+        style={{
+          position: 'absolute',
+          top: 65,
+          left: 8,
+          height: '1rem'
+        }}>
+        <MuiThemeProvider muiTheme={muiTheme}>
+          <DatePicker
+            id={node.task.id.toString()}
+            formatDate={date => moment(date).format('MMM Do YYYY')}
+            hintText={
+              dueDate ? (
+                moment(dueDate).format('MMM Do YYYY')
+              ) : (
+                <span className="nodeDatePop">Enter Due Date</span>
+              )
+            }
+            container="inline"
+            onChange={(_, date) =>
+              setDate({
+                variables: {
+                  id: node.task.id,
+                  date: moment(date).format('YYYY-MM-DD')
+                }
+              })
+            }
+          />
+        </MuiThemeProvider>
+      </div>
+    )}
+  </Mutation>
 )
 
 export default picker
