@@ -107,38 +107,44 @@ export default class TaskNode extends React.Component {
     return false
   }
 
-  // race condition scenario
-  // event listener responsible for updating links runs after our MouseUp listener
-  // need to use setTimeout to correct order
   updateLink(event, node) {
     const target = event.target.dataset.name
     const port = node.ports[target]
     const links = port.links
 
-    //create hash of old Links
     const oldLinks = {}
-
-    for (let x of Object.keys(links)) {
-      oldLinks[x] = links[x]
+    for (let key of Object.keys(links)) {
+      oldLinks[key] = links[key]
     }
 
-    setTimeout(() => {
-      let parent = {}
-      let child = {}
-      for (let x in links) {
-        if (!(x in oldLinks)) {
-          if (target === 'top') {
-            parent = links[x].sourcePort.parent
-            child = links[x].targetPort.parent
-          } else if (target === 'bottom') {
-            parent = links[x].targetPort.parent
-            child = links[x].sourcePort.parent
+    /* There is a Race condition/timing issue where the mouseUp event is
+     * dispatched to our component prior to react-diagram which mutates data our
+     * component needs.  We defer execution to the next event tick to ensure the
+     * mutated data is available.
+     *
+     * Use a Promise in order to await the result from the deferred/timeout
+     * function.
+     */
+    const prettyPlease = new Promise(resolve => {
+      setTimeout(() => {
+        let parent = {}
+        let child = {}
+        for (let key in links) {
+          if (!(key in oldLinks)) {
+            if (target === 'top') {
+              parent = links[key].sourcePort.parent
+              child = links[key].targetPort.parent
+            } else if (target === 'bottom') {
+              parent = links[key].targetPort.parent
+              child = links[key].sourcePort.parent
+            }
           }
         }
-      }
-      console.log('parent node is: ', parent)
-      console.log('new child to add:', child)
-    }, 0)
+        return resolve({ childId: child.task.id, parentId: parent.task.id })
+      }, 0)
+    })
+
+    return prettyPlease
   }
 
   async switchToEdit(node, titleChanged, showTitle, title) {

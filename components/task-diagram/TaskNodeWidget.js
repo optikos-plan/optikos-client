@@ -4,6 +4,7 @@ import NodeAssigneeDialog from './NodeAssigneeDialog'
 
 import DatePicker from './mutations/calendar'
 import UpdateTitle from './mutations/updateTitle'
+import UpdateLink from './mutations/updateLink'
 
 export class TaskNodeWidget extends React.Component {
   constructor(props) {
@@ -120,16 +121,16 @@ export class TaskNodeWidget extends React.Component {
           }}>
           <PortWidget name="left" node={node} />
         </div>
-        <div
-          onMouseUp={event => node.updateLink(event, node)}
+        <UpdateLink
+          node={node}
+          portName="top"
           style={{
             position: 'absolute',
             zIndex: 10,
             left: size / 2 - 8,
             top: -8
-          }}>
-          <PortWidget name="top" node={node} />
-        </div>
+          }}
+        />
         <div
           style={{
             position: 'absolute',
@@ -139,16 +140,17 @@ export class TaskNodeWidget extends React.Component {
           }}>
           <PortWidget name="right" node={node} />
         </div>
-        <div
-          onMouseUp={event => node.updateLink(event, node)}
+
+        <UpdateLink
+          node={node}
+          portName="bottom"
           style={{
             position: 'absolute',
             zIndex: 10,
             left: size / 2 - 8,
             top: size / 3 - 8
-          }}>
-          <PortWidget name="bottom" node={node} />
-        </div>
+          }}
+        />
       </div>
     )
   }
