@@ -12,6 +12,7 @@ const Main = ({ data }) => {
   if (data.error) return <div>Error...</div>
 
   const { tasks } = data
+  console.log('Tasks', tasks)
 
   return (
     <div id="main">
