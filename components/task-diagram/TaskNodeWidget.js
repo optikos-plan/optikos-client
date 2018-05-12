@@ -1,26 +1,12 @@
 import * as React from 'react'
 import { PortWidget } from 'storm-react-diagrams'
-import axios from 'axios'
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
-import getMuiTheme from 'material-ui/styles/getMuiTheme'
-import DatePicker from 'material-ui/DatePicker'
+// import axios from 'axios'
 import NodeAssigneeDialog from './NodeAssigneeDialog'
-
-import moment from 'moment'
+import DatePicker from './calendar'
 
 /**
  * @author Optikos Team
  */
-
-const muiTheme = getMuiTheme({
-  datePicker: {
-    selectColor: 'rgb(223, 223, 27)',
-    headerColor: 'steelblue'
-  },
-  textField: {
-    className: 'nodeDatePop'
-  }
-})
 
 export class TaskNodeWidget extends React.Component {
   constructor(props) {
@@ -111,37 +97,7 @@ export class TaskNodeWidget extends React.Component {
               />
             )}
             {/* Date Picker */}
-            {
-              <div
-                className="nodeDatePicker"
-                style={{
-                  position: 'absolute',
-                  top: 65,
-                  left: 8,
-                  height: '1rem'
-                }}>
-                <MuiThemeProvider muiTheme={muiTheme}>
-                  <DatePicker
-                    id={node.task.id.toString()}
-                    formatDate={date => moment(date).format('MMM Do YYYY')}
-                    hintText={
-                      dueDate ? (
-                        moment(dueDate).format('MMM Do YYYY')
-                      ) : (
-                        <span className="nodeDatePop">Enter Due Date</span>
-                      )
-                    }
-                    container="inline"
-                    onChange={(_, date) =>
-                      node.nodePersistDate(
-                        node,
-                        moment(date).format('YYYY-MM-DD')
-                      )
-                    }
-                  />
-                </MuiThemeProvider>
-              </div>
-            }
+            <DatePicker node={node} dueDate={dueDate} />
           </div>
           {/* Node Assignee Section */}
           {
