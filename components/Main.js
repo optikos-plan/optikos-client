@@ -38,12 +38,14 @@ const query = gql`
     tasks {
       id
       title
+      endDate
       user {
         ...details
       }
       children {
         id
         title
+        endDate
         user {
           ...details
         }
