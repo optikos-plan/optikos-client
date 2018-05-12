@@ -4,6 +4,30 @@ import nameToInitial from '../../utils/nameToInitial'
 import axios from 'axios'
 
 // TODO: get team from database, input as props
+//
+// <Query ...>
+//   <Mutation>
+//   {
+//   }
+//   </Mutation>
+// </Query>
+
+const primaryText = ({ name }) => (
+  <div
+    style={{
+      display: 'flex',
+      justifyContent: 'flex-start',
+      alignItems: 'center'
+    }}>
+    <h1
+      style={{
+        width: '10%'
+      }}>
+      {nameToInitial(name)}
+    </h1>
+    <h3>{name}</h3>
+  </div>
+)
 
 export default class NodeAssigneeList extends React.Component {
   constructor() {
@@ -15,10 +39,19 @@ export default class NodeAssigneeList extends React.Component {
 
   async componentDidMount() {
     // TODO: change to online server
-    const { data } = await axios.get(`http://localhost:3000/api/users`)
+    // const { data } = await axios.get(`http://localhost:3000/api/users`)
 
     this.setState({
-      team: data
+      team: [
+        {
+          id: '1',
+          name: 'Jason Yang'
+        },
+        {
+          id: '2',
+          name: 'Amal Sudama'
+        }
+      ]
     })
   }
 
@@ -38,22 +71,7 @@ export default class NodeAssigneeList extends React.Component {
                 changeAssignee(event, node, member)
                 deltaAssignee(member)
               }}
-              primaryText={
-                <div
-                  style={{
-                    display: 'flex',
-                    justifyContent: 'flex-start',
-                    alignItems: 'center'
-                  }}>
-                  <h1
-                    style={{
-                      width: '10%'
-                    }}>
-                    {nameToInitial(member.name)}
-                  </h1>
-                  <h3>{member.name}</h3>
-                </div>
-              }
+              primaryText={primaryText(member)}
               key={member.id}
             />
           )
