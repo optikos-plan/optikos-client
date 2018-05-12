@@ -1,16 +1,43 @@
 import React from 'react'
 import { List, ListItem } from 'material-ui/List'
 import nameToInitial from '../../utils/nameToInitial'
-import axios from 'axios'
 
-// TODO: get team from database, input as props
-//
-// <Query ...>
-//   <Mutation>
-//   {
-//   }
-//   </Mutation>
-// </Query>
+import { Mutation, Query } from 'react-apollo'
+import gql from 'graphql-tag'
+
+const queryAllUsers = gql`
+  {
+    users {
+      id
+      name
+    }
+  }
+`
+
+const mutationUpdateTaskOwner = gql`
+  mutation setOwner($id: ID!, $user: ID!) {
+    updateTaskOwner(id: $id, user: $user) {
+      id
+    }
+  }
+`
+
+const ListItemMutation = ({ deltaAssignee, member, node }) => {
+  return (
+    <Mutation mutation={mutationUpdateTaskOwner}>
+      {setOwner => (
+        <ListItem
+          onClick={() => {
+            setOwner({ variables: { id: node.task.id, user: member.id } })
+            deltaAssignee(member)
+          }}
+          primaryText={primaryText(member)}
+          key={member.id}
+        />
+      )}
+    </Mutation>
+  )
+}
 
 const primaryText = ({ name }) => (
   <div
@@ -29,54 +56,37 @@ const primaryText = ({ name }) => (
   </div>
 )
 
-export default class NodeAssigneeList extends React.Component {
-  constructor() {
-    super()
-    this.state = {
-      team: []
-    }
-  }
+const NodeAssigneeList = props => {
+  const { deltaAssignee, node } = props
 
-  async componentDidMount() {
-    // TODO: change to online server
-    // const { data } = await axios.get(`http://localhost:3000/api/users`)
+  return (
+    <Query query={queryAllUsers}>
+      {({ loading, error, data }) => {
+        if (loading) return <p>Loading...</p>
+        if (error) return <p>Error :(</p>
 
-    this.setState({
-      team: [
-        {
-          id: '1',
-          name: 'Jason Yang'
-        },
-        {
-          id: '2',
-          name: 'Amal Sudama'
-        }
-      ]
-    })
-  }
+        const { users: team } = data
 
-  render() {
-    const { changeAssignee, deltaAssignee, node } = this.props
-    const { team } = this.state
-
-    return (
-      <List
-        style={{
-          width: '100%'
-        }}>
-        {team.map(member => {
-          return (
-            <ListItem
-              onClick={event => {
-                changeAssignee(event, node, member)
-                deltaAssignee(member)
-              }}
-              primaryText={primaryText(member)}
-              key={member.id}
-            />
-          )
-        })}
-      </List>
-    )
-  }
+        return (
+          <List
+            style={{
+              width: '100%'
+            }}>
+            {team.map(member => {
+              return (
+                <ListItemMutation
+                  deltaAssignee={deltaAssignee}
+                  member={member}
+                  node={node}
+                  key={member.id}
+                />
+              )
+            })}
+          </List>
+        )
+      }}
+    </Query>
+  )
 }
+
+export default NodeAssigneeList

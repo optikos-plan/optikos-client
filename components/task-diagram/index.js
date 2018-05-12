@@ -30,7 +30,7 @@ export default class TaskNode extends React.Component {
     this.updateLink = this.updateLink.bind(this)
     this.switchToEdit = this.switchToEdit.bind(this)
     this.nodePersistDate = NOP
-    this.changeAssignee = this.changeAssignee.bind(this)
+    this.changeAssignee = NOP
   }
 
   registerEngine() {
@@ -148,13 +148,6 @@ export default class TaskNode extends React.Component {
         title: title
       })
     }
-  }
-
-  // TODO: change to online server
-  async changeAssignee(_, node, member) {
-    await axios.put(`http://localhost:3000/api/tasks/${node.task.id}`, {
-      userId: member.id
-    })
   }
 
   render() {
