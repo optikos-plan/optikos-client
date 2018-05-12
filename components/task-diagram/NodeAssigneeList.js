@@ -3,8 +3,31 @@ import { List } from 'material-ui/List'
 
 import ListItemMutation from './mutations/listItemMutation'
 
-import { Query } from 'react-apollo'
+import { graphql } from 'react-apollo'
 import gql from 'graphql-tag'
+
+const NodeAssigneeList = ({ deltaAssignee, node, data }) => {
+  if (data.loading) return <p>Loading...</p>
+  if (data.error) return <p>Error :(</p>
+
+  const { users: team } = data
+
+  return (
+    <List
+      style={{
+        width: '100%'
+      }}>
+      {team.map(member => (
+        <ListItemMutation
+          deltaAssignee={deltaAssignee}
+          member={member}
+          node={node}
+          key={member.id}
+        />
+      ))}
+    </List>
+  )
+}
 
 const queryAllUsers = gql`
   {
@@ -15,37 +38,4 @@ const queryAllUsers = gql`
   }
 `
 
-const NodeAssigneeList = props => {
-  const { deltaAssignee, node } = props
-
-  return (
-    <Query query={queryAllUsers}>
-      {({ loading, error, data }) => {
-        if (loading) return <p>Loading...</p>
-        if (error) return <p>Error :(</p>
-
-        const { users: team } = data
-
-        return (
-          <List
-            style={{
-              width: '100%'
-            }}>
-            {team.map(member => {
-              return (
-                <ListItemMutation
-                  deltaAssignee={deltaAssignee}
-                  member={member}
-                  node={node}
-                  key={member.id}
-                />
-              )
-            })}
-          </List>
-        )
-      }}
-    </Query>
-  )
-}
-
-export default NodeAssigneeList
+export default graphql(queryAllUsers)(NodeAssigneeList)
