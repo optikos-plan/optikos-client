@@ -24,7 +24,6 @@ const UpdateTitle = ({
       return showTitle ? (
         <strong
           onDoubleClick={() => {
-            updateTitle({ variables: { id: node.task.id, title: title } })
             toggleTitle()
           }}
           style={{ position: 'absolute', top: 15, left: 8 }}>
