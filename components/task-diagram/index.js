@@ -174,7 +174,11 @@ export default class TaskNode extends React.Component {
         />
         <button onClick={this.saveLayout}>SAVE</button>
         <div className="srd-diagram" onClick={this.selectedCheck}>
-          <DiagramWidget model={this.model} diagramEngine={this.engine} />
+          <DiagramWidget
+            model={this.model}
+            diagramEngine={this.engine}
+            maxNumberPointsPerLink={0}
+          />
         </div>
       </div>
     )
