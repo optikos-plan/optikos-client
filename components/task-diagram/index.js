@@ -14,14 +14,13 @@ import { TaskPortModel } from './TaskPortModel'
 import axios from 'axios'
 
 import 'storm-react-diagrams/dist/style.min.css'
-/**
- * @Author Dylan Vorster
- */
+
+const NOP = () => console.log(`oi, this should have been nop'd`)
+
 export default class TaskNode extends React.Component {
-  constructor() {
-    super()
+  constructor(props) {
+    super(props)
     this.state = {
-      tasks: [],
       taskSelected: false,
       taskSelectedData: {}
     }
@@ -30,8 +29,13 @@ export default class TaskNode extends React.Component {
     this.selectedCheck = this.selectedCheck.bind(this)
     this.updateLink = this.updateLink.bind(this)
     this.switchToEdit = this.switchToEdit.bind(this)
-    this.nodePersistDate = this.nodePersistDate.bind(this)
-    this.changeAssignee = this.changeAssignee.bind(this)
+
+    // TODO: These functions need to be extracted. It will be some work
+    // as there seems to be some dependency based on how they're passed
+    // down as positional arguments to some functions.
+    //
+    this.nodePersistDate = NOP
+    this.changeAssignee = NOP
   }
 
   registerEngine() {
@@ -49,12 +53,10 @@ export default class TaskNode extends React.Component {
   }
 
   updateTasks() {
-    // FIXME: eager loading only on first level 'task' and not its children... GraphQL is going to fix this for us
-
     const nodeContainer = {}
     const links = []
 
-    this.state.tasks.forEach(task => {
+    this.props.tasks.forEach(task => {
       // do not duplicate nodes
       if (!(task.id in nodeContainer)) {
         const node = new TaskNodeModel(
@@ -110,81 +112,44 @@ export default class TaskNode extends React.Component {
     return false
   }
 
-  // grab data from heroku server
-  //
-  async componentDidMount() {
-    // TODO: change back to remote server after testing
-    // const { data } = await axios.get(
-    //   'https://optikos-data-db.herokuapp.com/api/tasks'
-    // )
-    const { data } = await axios.get('http://localhost:3000/api/tasks')
-
-    // TODO: this right here
-    this.setState({ tasks: data }, async () => {
-      await this.updateTasks()
-      await this.forceUpdate()
-    })
-  }
-
-  // grab from local server for testing purposes
-  //
-  async xxxcomponentDidMount() {
-    const DB_URL = 'http://localhost:3000/api/serialize'
-
-    console.log(DB_URL)
-    const { data } = await axios.get(DB_URL)
-    console.log('DATA from Server', data)
-
-    // deserialize data
-    this.model = new DiagramModel()
-    this.model.deSerializeDiagram(data, this.engine)
-    this.engine.setDiagramModel(this.model)
-
-    this.forceUpdate()
-  }
-
-  saveLayout = async () => {
-    //
-    const serialized = this.model.serializeDiagram()
-    console.log(JSON.stringify(serialized, undefined, 2))
-    const DB_URL = 'http://localhost:3000/api/serialize'
-    const res = await axios.post(DB_URL, serialized)
-    console.log('Response from serialize Post', res)
-  }
-
-  // race condition scenario
-  // event listener responsible for updating links runs after our MouseUp listener
-  // need to use setTimeout to correct order
   updateLink(event, node) {
     const target = event.target.dataset.name
     const port = node.ports[target]
     const links = port.links
 
-    //create hash of old Links
     const oldLinks = {}
-
-    for (let x of Object.keys(links)) {
-      oldLinks[x] = links[x]
+    for (let key of Object.keys(links)) {
+      oldLinks[key] = links[key]
     }
 
-    setTimeout(() => {
-      let parent = {}
-      let child = {}
-      for (let x in links) {
-        if (!(x in oldLinks)) {
-          // console.log("new link", links[x])
-          if (target === 'top') {
-            parent = links[x].sourcePort.parent
-            child = links[x].targetPort.parent
-          } else if (target === 'bottom') {
-            parent = links[x].targetPort.parent
-            child = links[x].sourcePort.parent
+    /* There is a Race condition/timing issue where the mouseUp event is
+     * dispatched to our component prior to react-diagram which mutates data our
+     * component needs.  We defer execution to the next event tick to ensure the
+     * mutated data is available.
+     *
+     * Use a Promise in order to await the result from the deferred/timeout
+     * function.
+     */
+    const prettyPlease = new Promise(resolve => {
+      setTimeout(() => {
+        let parent = {}
+        let child = {}
+        for (let key in links) {
+          if (!(key in oldLinks)) {
+            if (target === 'top') {
+              parent = links[key].sourcePort.parent
+              child = links[key].targetPort.parent
+            } else if (target === 'bottom') {
+              parent = links[key].targetPort.parent
+              child = links[key].sourcePort.parent
+            }
           }
         }
-      }
-      console.log('parent node is: ', parent)
-      console.log('new child to add:', child)
-    }, 0)
+        return resolve({ childId: child.task.id, parentId: parent.task.id })
+      }, 0)
+    })
+
+    return prettyPlease
   }
 
   async switchToEdit(node, titleChanged, showTitle, title) {
@@ -196,27 +161,13 @@ export default class TaskNode extends React.Component {
     }
   }
 
-  // TODO: change to online server
-  async nodePersistDate(node, date) {
-    await axios.put(`http://localhost:3000/api/tasks/${node.task.id}`, {
-      endDate: date
-    })
-  }
-
-  // TODO: change to online server
-  async changeAssignee(_, node, member) {
-    await axios.put(`http://localhost:3000/api/tasks/${node.task.id}`, {
-      userId: member.id
-    })
-  }
-
   render() {
     const task = this.state.taskSelectedData
 
     return (
       <div className="srd-diagram">
         <Sidebar
-          allTasks={this.state.tasks}
+          allTasks={this.props.tasks}
           task={task}
           taskSelected={this.state.taskSelected}
           git

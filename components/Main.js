@@ -4,14 +4,56 @@ import AllProjects from './projects/AllProjects'
 import SingleProject from './projects/SingleProject'
 import AllPeople from './people/AllPeople'
 
-const Main = () => {
+import { graphql } from 'react-apollo'
+import gql from 'graphql-tag'
+
+const Main = ({ data }) => {
+  if (data.loading) return <div>Loading...</div>
+  if (data.error) return <div>Error...</div>
+
+  const { tasks } = data
+  console.log('Tasks', tasks)
+
   return (
     <div id="main">
-      <Route path="/projects/:id" component={SingleProject} />
+      <Route
+        path="/projects/:id"
+        render={() => <SingleProject tasks={tasks} />}
+      />
       <Route exact path="/people" component={AllPeople} />
       <Route exact path="/projects" component={AllProjects} />
       <Route exact path="/" component={AllProjects} />
     </div>
   )
 }
-export default Main
+
+const details = gql`
+  fragment details on User {
+    id
+    name
+  }
+`
+
+const query = gql`
+  {
+    tasks {
+      id
+      title
+      endDate
+      user {
+        ...details
+      }
+      children {
+        id
+        title
+        endDate
+        user {
+          ...details
+        }
+      }
+    }
+  }
+  ${details}
+`
+
+export default graphql(query)(Main)

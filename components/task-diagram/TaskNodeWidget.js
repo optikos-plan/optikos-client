@@ -1,26 +1,10 @@
 import * as React from 'react'
 import { PortWidget } from 'storm-react-diagrams'
-import axios from 'axios'
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
-import getMuiTheme from 'material-ui/styles/getMuiTheme'
-import DatePicker from 'material-ui/DatePicker'
 import NodeAssigneeDialog from './NodeAssigneeDialog'
 
-import moment from 'moment'
-
-/**
- * @author Optikos Team
- */
-
-const muiTheme = getMuiTheme({
-  datePicker: {
-    selectColor: 'rgb(223, 223, 27)',
-    headerColor: 'steelblue'
-  },
-  textField: {
-    className: 'nodeDatePop'
-  }
-})
+import DatePicker from './mutations/calendar'
+import UpdateTitle from './mutations/updateTitle'
+import UpdateLink from './mutations/updateLink'
 
 export class TaskNodeWidget extends React.Component {
   constructor(props) {
@@ -30,8 +14,7 @@ export class TaskNodeWidget extends React.Component {
       showTitle: true,
       title: node.task.title,
       dueDate: node.task.endDate,
-      assignee: node.task.user,
-      titleChanged: false
+      assignee: node.task.user
     }
 
     this.handleKeyUp = this.handleKeyUp.bind(this)
@@ -46,8 +29,7 @@ export class TaskNodeWidget extends React.Component {
 
   handleChange(evt) {
     this.setState({
-      title: evt.target.value,
-      titleChanged: true
+      title: evt.target.value
     })
   }
 
@@ -65,7 +47,7 @@ export class TaskNodeWidget extends React.Component {
 
   render() {
     const { size, node } = this.props
-    const { showTitle, title, dueDate, assignee, titleChanged } = this.state
+    const { showTitle, title, dueDate, assignee } = this.state
 
     return (
       // Entire node
@@ -75,77 +57,26 @@ export class TaskNodeWidget extends React.Component {
           position: 'relative',
           width: size,
           height: size / 3
-        }}
-      >
+        }}>
         {/* Node Content */}
         <div
           className="nodeBody"
           style={{
             position: 'absolute'
-          }}
-        >
+          }}>
           {/* Title and Date Section */}
           <div className="nodeTitleAndDate">
-            {showTitle ? (
-              <strong
-                onDoubleClick={() => {
-                  node.switchToEdit(node, titleChanged, showTitle, title)
-                  this.toggleTitle()
-                }}
-                style={{ position: 'absolute', top: 15, left: 8 }}
-              >
-                {/* {node.task.title} */}
-                {title}
-              </strong>
-            ) : (
-              // Input field to change title
-              <input
-                onKeyUp={this.handleKeyUp}
-                autoFocus={true}
-                defaultValue={title}
-                onChange={this.handleChange}
-                onBlur={() => {
-                  node.switchToEdit(node, titleChanged, showTitle, title)
+            <UpdateTitle
+              handleChange={this.handleChange}
+              handleKeyUp={this.handleKeyUp}
+              showTitle={showTitle}
+              node={node}
+              title={title}
+              toggleTitle={this.toggleTitle}
+            />
 
-                  this.toggleTitle()
-                }}
-                type="text"
-                style={{ position: 'absolute', top: 5, left: 5 }}
-              />
-            )}
             {/* Date Picker */}
-            {
-              <div
-                className="nodeDatePicker"
-                style={{
-                  position: 'absolute',
-                  top: 65,
-                  left: 8,
-                  height: '1rem'
-                }}
-              >
-                <MuiThemeProvider muiTheme={muiTheme}>
-                  <DatePicker
-                    id={node.task.id.toString()}
-                    formatDate={date => moment(date).format('MMM Do YYYY')}
-                    hintText={
-                      dueDate ? (
-                        moment(dueDate).format('MMM Do YYYY')
-                      ) : (
-                        <span className="nodeDatePop">Enter Due Date</span>
-                      )
-                    }
-                    container="inline"
-                    onChange={(_, date) =>
-                      node.nodePersistDate(
-                        node,
-                        moment(date).format('YYYY-MM-DD')
-                      )
-                    }
-                  />
-                </MuiThemeProvider>
-              </div>
-            }
+            <DatePicker node={node} dueDate={dueDate} />
           </div>
           {/* Node Assignee Section */}
           {
@@ -155,8 +86,7 @@ export class TaskNodeWidget extends React.Component {
                 justifyContent: 'center',
                 alignItems: 'center',
                 width: '30%'
-              }}
-            >
+              }}>
               <NodeAssigneeDialog
                 assignee={assignee}
                 changeAssignee={node.changeAssignee}
@@ -188,42 +118,39 @@ export class TaskNodeWidget extends React.Component {
             zIndex: 10,
             top: size / 6 - 8,
             left: -8
-          }}
-        >
+          }}>
           <PortWidget name="left" node={node} />
         </div>
-        <div
-          onMouseUp={event => node.updateLink(event, node)}
+        <UpdateLink
+          node={node}
+          portName="top"
           style={{
             position: 'absolute',
             zIndex: 10,
             left: size / 2 - 8,
             top: -8
           }}
-        >
-          <PortWidget name="top" node={node} />
-        </div>
+        />
         <div
           style={{
             position: 'absolute',
             zIndex: 10,
             left: size - 8,
             top: size / 6 - 8
-          }}
-        >
+          }}>
           <PortWidget name="right" node={node} />
         </div>
-        <div
-          onMouseUp={event => node.updateLink(event, node)}
+
+        <UpdateLink
+          node={node}
+          portName="bottom"
           style={{
             position: 'absolute',
             zIndex: 10,
             left: size / 2 - 8,
             top: size / 3 - 8
           }}
-        >
-          <PortWidget name="bottom" node={node} />
-        </div>
+        />
       </div>
     )
   }

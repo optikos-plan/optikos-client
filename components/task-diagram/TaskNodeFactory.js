@@ -4,7 +4,7 @@ import { TaskNodeModel } from './TaskNodeModel'
 import * as React from 'react'
 
 export class TaskNodeFactory extends SRD.AbstractNodeFactory {
-  constructor(props) {
+  constructor() {
     super('task')
   }
 

@@ -1,68 +1,41 @@
 import React from 'react'
-import { List, ListItem } from 'material-ui/List'
-import nameToInitial from '../../utils/nameToInitial'
-import axios from 'axios'
+import { List } from 'material-ui/List'
 
-// TODO: get team from database, input as props
+import ListItemMutation from './mutations/listItemMutation'
 
-export default class NodeAssigneeList extends React.Component {
-  constructor() {
-    super()
-    this.state = {
-      team: []
+import { graphql } from 'react-apollo'
+import gql from 'graphql-tag'
+
+const NodeAssigneeList = ({ deltaAssignee, node, data }) => {
+  if (data.loading) return <p>Loading...</p>
+  if (data.error) return <p>Error :(</p>
+
+  const { users: team } = data
+
+  return (
+    <List
+      style={{
+        width: '100%'
+      }}>
+      {team.map(member => (
+        <ListItemMutation
+          deltaAssignee={deltaAssignee}
+          member={member}
+          node={node}
+          key={member.id}
+        />
+      ))}
+    </List>
+  )
+}
+
+const queryAllUsers = gql`
+  {
+    users {
+      id
+      name
     }
   }
+`
 
-  async componentDidMount() {
-    // TODO: change to online server
-    const { data } = await axios.get(`http://localhost:3000/api/users`)
-
-    this.setState({
-      team: data
-    })
-  }
-
-  render() {
-    const { changeAssignee, deltaAssignee, node } = this.props
-    const { team } = this.state
-
-    console.log('Props: ', this.props)
-    return (
-      <List
-        style={{
-          width: '100%'
-        }}
-      >
-        {team.map(member => {
-          return (
-            <ListItem
-              onClick={event => {
-                changeAssignee(event, node, member)
-                deltaAssignee(member)
-              }}
-              primaryText={
-                <div
-                  style={{
-                    display: 'flex',
-                    justifyContent: 'flex-start',
-                    alignItems: 'center'
-                  }}
-                >
-                  <h1
-                    style={{
-                      width: '10%'
-                    }}
-                  >
-                    {nameToInitial(member.name)}
-                  </h1>
-                  <h3>{member.name}</h3>
-                </div>
-              }
-              key={member.id}
-            />
-          )
-        })}
-      </List>
-    )
-  }
-}
+export default graphql(queryAllUsers)(NodeAssigneeList)
