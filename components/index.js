@@ -10,8 +10,6 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 
 import Main from './Main'
 
-const GRAPHQL_URI = GRAPHQL_URI || 'http://localhost:3999/graphql'
-
 const client = new ApolloClient({
   uri: GRAPHQL_URI
 })
