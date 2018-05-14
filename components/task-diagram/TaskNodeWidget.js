@@ -10,6 +10,7 @@ import UpdateLink from './mutations/updateLink'
 import Dialog from 'material-ui/Dialog'
 import FlatButton from 'material-ui/FlatButton'
 import NodeAssigneeList from './NodeAssigneeList'
+import nameToInitial from '../../utils/nameToInitial';
 
 export class TaskNodeWidget extends React.Component {
   constructor(props) {
@@ -96,28 +97,18 @@ export class TaskNodeWidget extends React.Component {
         >
           {/* Title and Date Section */}
           <div className="nodeTitleAndDate">
-            <strong
-              style={{
-                position: 'absolute',
-                top: 15,
-                left: 8
-              }}
-            >
+            <h5>
               {title}
-            </strong>
+            </h5>
 
             {/* Due Date */}
-            <strong
-              style={{
-                fontSize: '0.65rem',
-                color: 'rgb(223, 223, 27)',
-                position: 'absolute',
-                left: '10px',
-                top: '50px'
-              }}
-            >
-              {moment(dueDate).format('MMM Do YYYY')}
-            </strong>
+            <p>
+              {
+                dueDate ?
+                moment(dueDate).format('MMM Do YYYY') :
+                'Enter due Date'
+              }
+            </p>
           </div>
           {/* Node Assignee Section */}
           {
@@ -128,12 +119,20 @@ export class TaskNodeWidget extends React.Component {
                 alignItems: 'center',
                 width: '30%'
               }}>
-              <NodeAssigneeDialog
-                assignee={assignee}
-                changeAssignee={node.changeAssignee}
-                deltaAssignee={this.deltaAssignee}
-                node={node}
-              />
+              {
+                <div className={
+                  assignee ?
+                  'nodeAssignee-chosen' :
+                  'nodeAssigne-choose'
+                  }
+                >
+                  {
+                    assignee ?
+                    <p>{nameToInitial(assignee.name)}</p> :
+                    <p>+</p>
+                  }
+                </div>
+              }
             </div>
           }
         </div>

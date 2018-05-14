@@ -56,11 +56,31 @@
   align-items: center;
 }
 
-.nodeTitleAndDate strong {
+.nodeTitleAndDate {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 70%;
+  height: 80%;
+}
+
+.nodeTitleAndDate h5 {
   width: 70%;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  position: absolute;
+  top: 15px;
+  left: 8px;
+  margin: 0;
+}
+
+.nodeTitleAndDate p {
+  font-size: 0.65rem;
+  color: rgb(223, 223, 27);
+  position: absolute;
+  left: 10px;
+  top: 50px;
 }
 
 /* Node Edit Dialog */
@@ -80,6 +100,8 @@
 .genDialogSectionRow h1 {
   margin-right: 1rem;
 }
+
+/* Date picker / calendar */
 
 .nodeDatePicker {
   display: flex;
@@ -141,6 +163,8 @@
   border-style: dashed !important;
   margin-right: 0.5rem !important;
   border-color: lightgray !important;
+  font-size: 3rem !important;
+  font-weight: bold !important;
 }
 
 .nodeAssignee-chosen {
@@ -150,4 +174,6 @@
   align-items: center !important;
   justify-content: center !important;
   margin-right: 0.5rem !important;
+  font-size: 2rem !important;
+  font-weight: bold !important;
 }
