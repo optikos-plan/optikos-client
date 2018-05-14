@@ -11,6 +11,7 @@ import Sidebar from '../Sidebar'
 import { TaskNodeFactory } from './TaskNodeFactory'
 import { SimplePortFactory } from './SimplePortFactory'
 import { TaskPortModel } from './TaskPortModel'
+import CreateTask from './mutations/createTask'
 import axios from 'axios'
 import RaisedButton from 'material-ui/RaisedButton'
 
@@ -30,6 +31,7 @@ export default class TaskNode extends React.Component {
     this.selectedCheck = this.selectedCheck.bind(this)
     this.updateLink = this.updateLink.bind(this)
     this.switchToEdit = this.switchToEdit.bind(this)
+    this.checkprops = this.checkprops.bind(this)
 
     // TODO: These functions need to be extracted. It will be some work
     // as there seems to be some dependency based on how they're passed
@@ -162,6 +164,12 @@ export default class TaskNode extends React.Component {
     }
   }
 
+  checkprops(task) {
+    const test = new TaskNodeModel({title: task.title, id: task.id})
+   this.model.addNode(test)
+   this.forceUpdate()
+  }
+
   render() {
     const task = this.state.taskSelectedData
 
@@ -171,11 +179,9 @@ export default class TaskNode extends React.Component {
           allTasks={this.props.tasks}
           task={task}
           taskSelected={this.state.taskSelected}
-          git
         />
         <div className="diagram-container" onClick={this.selectedCheck}>
-        <RaisedButton className="task-button"  onClick={this.saveLayout}>Save</RaisedButton>
-        <RaisedButton className="task-button" onClick={()=> console.log("add new task")}>Add Task</RaisedButton>
+          <CreateTask checkprops={this.checkprops} />
           <DiagramWidget
             model={this.model}
             diagramEngine={this.engine}
