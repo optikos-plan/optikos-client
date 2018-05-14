@@ -31,19 +31,14 @@ const picker = ({ node, dueDate }) => {
       {setDate => (
         <div
           className="nodeDatePicker"
-          style={{
-            position: 'absolute',
-            top: 65,
-            left: 8,
-            height: '1rem'
-          }}>
+        >
           <MuiThemeProvider muiTheme={muiTheme}>
             <DatePicker
               id={node.task.id.toString()}
               formatDate={date => moment(date).format('MMM Do YYYY')}
               hintText={
                 dueDate ? (
-                  moment(dueDate).format('MMM Do YYYY')
+                  <span className="nodeDatePop">{moment(dueDate).format('MMM Do YYYY')}</span>
                 ) : (
                   <span className="nodeDatePop">Enter Due Date</span>
                 )
