@@ -56,6 +56,13 @@
   align-items: center;
 }
 
+.nodeTitleAndDate strong {
+  width: 70%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 .nodeDatePicker {
   display: flex;
   align-items: center;
@@ -99,13 +106,6 @@
 .nodeDatePop {
   color: rgba(10, 48, 94, 0.708) !important;
 }
-
-/* .nodeDatePop:hover {
-  font-size: 0.65rem !important;
-  color: rgb(223, 223, 37) !important;
-  transition: ease-in-out !important;
-  transition-duration: 500ms !important;
-} */
 
 .nodeAssignee-choose {
   height: 75% !important;
