@@ -3,6 +3,9 @@ import RaisedButton from 'material-ui/RaisedButton'
 import { Card, CardActions, CardHeader, CardText } from 'material-ui/Card'
 import FlatButton from 'material-ui/FlatButton'
 
+import { graphql } from 'react-apollo'
+import gql from 'graphql-tag'
+
 const style = {
   margin: 12
 }
@@ -16,23 +19,25 @@ const items = [
 ]
 
 const ProjectList = props => {
+
+  const { projects, loading, error} = props.data
+  if (loading) return <p>Loading...</p>
+  if (error) return <p>Error :(</p>
+
   return (
     <div className="card-display">
       <RaisedButton label="ADD NEW PROJECT" style={style} primary={true} />
-      {items.map(item => {
-        return (<Card key={item}>
+      {projects.map(project => {
+        return (<Card key={project.id}>
           <CardHeader
-            title={item}
-            subtitle="Owner of project"
+            title={project.title}
+            subtitle={project.owner.name}
             actAsExpander={true}
             showExpandableButton={true}
           />
           <CardText expandable={true}>
             Description:
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-            Donec mattis pretium massa. Aliquam erat volutpat. Nulla facilisi.
-            Donec vulputate interdum sollicitudin. Nunc lacinia auctor quam sed pellentesque.
-            Aliquam dui mauris, mattis quis lacus id, pellentesque lobortis odio.
+            {project.description}
           </CardText>
         </Card>)
       })}
@@ -40,4 +45,19 @@ const ProjectList = props => {
   )
 }
 
-export default ProjectList
+const queryAllProjects = gql `
+{
+  projects {
+    owner {
+      id
+      name
+    }
+    id
+    status
+    title
+    description
+  }
+}
+`
+
+export default graphql(queryAllProjects)(ProjectList)
