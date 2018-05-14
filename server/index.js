@@ -4,10 +4,6 @@ const path = require('path')
 const PORT = process.env.PORT || 8080
 const app = express()
 
-const GRAPHQL_URI = process.env.GRAPHQL_URI || 'http://localhost:3999/graphql'
-console.log('GRAPHQL_URI', GRAPHQL_URI)
-console.dir(process.env)
-
 app.use(express.static(path.join(__dirname, '..', 'public')))
 
 app.get('/*', (req, res, next) => {
