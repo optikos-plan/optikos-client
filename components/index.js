@@ -10,8 +10,7 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 
 import Main from './Main'
 
-const GRAPHQL_URI = process.env.GRAPHQL_URI || 'http://localhost:3999/graphql'
-// const GRAPHQL_URI = 'https://optikos-gql.herokuapp.com/graphql'
+const GRAPHQL_URI = GRAPHQL_URI || 'http://localhost:3999/graphql'
 
 const client = new ApolloClient({
   uri: GRAPHQL_URI
