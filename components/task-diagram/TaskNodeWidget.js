@@ -7,9 +7,13 @@ import NodeAssigneeDialog from './NodeAssigneeDialog'
 import DatePicker from './mutations/calendar'
 import UpdateTitle from './mutations/updateTitle'
 import UpdateLink from './mutations/updateLink'
+
 import Dialog from 'material-ui/Dialog'
 import FlatButton from 'material-ui/FlatButton'
+
 import NodeAssigneeList from './NodeAssigneeList'
+import GenDialog from './GeneralDialog'
+
 import nameToInitial from '../../utils/nameToInitial';
 
 export class TaskNodeWidget extends React.Component {
@@ -69,7 +73,7 @@ export class TaskNodeWidget extends React.Component {
 
   render() {
     const { size, node } = this.props
-    const { showTitle, title, dueDate, assignee } = this.state
+    const { showTitle, title, dueDate, assignee, showGenDialog } = this.state
     // TODO: move to general dialog component
     const actions = [
       <FlatButton
@@ -137,57 +141,20 @@ export class TaskNodeWidget extends React.Component {
           }
         </div>
         {/* TODO: move to general dialog component */}
-        <Dialog
-          title={`Task's Overview`}
-          titleStyle={{
-            fontSize: '2.5rem',
-            fontWeight: 'bold'
-          }}
-          actions={actions}
-          modal={true}
-          open={this.state.showGenDialog}
-          autoScrollBodyContent={true}
-        >
-          <div className="genDialogSectionRow">
-          <h1
-            style={{
-              fontSize: '2rem',
-              fontWeight: 'bold'
-            }}
-          >Task Name: </h1>
-          <UpdateTitle
-            handleChange={this.handleChange}
-            handleKeyUp={this.handleKeyUp}
-            showTitle={showTitle}
-            node={node}
-            title={title}
-            toggleTitle={this.toggleTitle}
-          />
-          </div>
+        <GenDialog
+          handleChange={this.handleChange}
+          handleKeyUp={this.handleKeyUp}
+          toggleTitle={this.toggleTitle}
+          changeAssignee={this.changeAssignee}
+          deltaAssignee={this.deltaAssignee}
+          showTitle={showTitle}
+          node={node}
+          title={title}
+          dueDate={dueDate}
+          closeDialog={this.closeDialog}
+          showGenDialog={showGenDialog}
+        />
 
-          <div className="genDialogSectionRow">
-          <h1
-            style={{
-              fontSize: '2rem',
-              fontWeight: 'bold'
-            }}
-          >
-          Due Date:
-          </h1>
-          <DatePicker
-            node={node}
-            dueDate={dueDate}
-          />
-          </div>
-
-          <div className="genDialogSectionCol">
-          <h1>Task Assignee:</h1>
-          <NodeAssigneeList
-            changeAssignee={this.changeAssignee}
-            deltaAssignee={this.deltaAssignee}
-          />
-          </div>
-        </Dialog>
         {/* Node Shape */}
         <svg
           width={size}
