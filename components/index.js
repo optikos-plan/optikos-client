@@ -11,11 +11,9 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 import Main from './Main'
 
 const client = new ApolloClient({
+  // GRAPHQL_URI is injected by webpack
   uri: GRAPHQL_URI
 })
-
-console.log('GRAPHQL_URI', GRAPHQL_URI)
-console.dir(process.env)
 
 ReactDOM.render(
   <ApolloProvider client={client}>

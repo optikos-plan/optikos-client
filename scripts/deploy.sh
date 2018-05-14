@@ -33,6 +33,10 @@ trap cleanup_at_exit EXIT
 # but it needs to match the name of the branch we specify when we push to our heroku remote.
 git checkout -b deploy
 
+# set node environment
+export NODE_ENV='production'
+echo $NODE_ENV
+
 # webpack will run in "production mode"
 webpack -p
 

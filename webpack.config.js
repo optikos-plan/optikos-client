@@ -27,7 +27,7 @@ module.exports = {
   plugins: [
     new webpack.DefinePlugin({
       GRAPHQL_URI:
-        process.env.NODE_ENV === 'producion'
+        process.env.NODE_ENV === 'production'
           ? JSON.stringify('https://optikos-gql.herokuapp.com/graphql')
           : JSON.stringify('http://localhost:3999/graphql')
     })
