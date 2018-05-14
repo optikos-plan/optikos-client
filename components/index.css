@@ -56,6 +56,8 @@
   align-items: center;
 }
 
+/* Node title and date section */
+
 .nodeTitleAndDate {
   display: flex;
   flex-direction: column;
@@ -83,76 +85,7 @@
   top: 50px;
 }
 
-/* Node Edit Dialog */
-
-.genDialogSectionRow, .genDialogSectionCol {
-  margin-top: 2rem;
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-}
-
-.genDialogSectionCol {
-  align-items: flex-start;
-  flex-direction: column;
-}
-
-.genDialogSectionRow h1 {
-  margin-right: 1rem;
-}
-
-/* Date picker / calendar */
-
-.nodeDatePicker {
-  display: flex;
-  align-items: center;
-  align-items: center;
-  width: 45%;
-}
-
-.nodeDatePicker div {
-  width: 100% !important;
-  height: 1.5rem !important;
-}
-
-
-.nodeDatePicker div div {
-  color: steelblue !important;
-  font-size: 2rem !important;
-  font-weight: bold !important;
-}
-
-/* Date picker default date */
-.nodeDatePicker div div div {
-  color: steelblue !important;
-  font-size: 2rem !important;
-  font-weight: bold !important;
-}
-
-.nodeDatePicker div div div hr {
-  border-bottom: none !important;
-}
-
-/* Date picker default when no date is selected */
-.nodeDatePicker div div input {
-  width: 100% !important;
-  margin: 0 !important;
-  color: steelblue !important;
-  font-size: 2rem !important;
-  font-weight: bold !important;
-}
-
-.nodeDate {
-  color: steelblue !important;
-  font-size: 2rem !important;
-  font-weight: bold !important;
-}
-
-.nodeDatePop {
-  color: steelblue !important;
-  font-size: 2rem !important;
-  font-weight: bold !important;
-}
+/* Node assignee section */
 
 .nodeAssignee-choose {
   height: 75% !important;
@@ -177,3 +110,89 @@
   font-size: 2rem !important;
   font-weight: bold !important;
 }
+
+/* Node Edit Dialog */
+
+.genDialogSectionRow, .genDialogSectionCol {
+  margin-top: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.genDialogSectionCol {
+  align-items: flex-start;
+  flex-direction: column;
+}
+
+.genDialogSectionRow h1 {
+  margin-right: 1rem;
+}
+
+/* Date picker / calendar */
+
+.nodeDatePicker {
+  display: flex !important;
+  align-items: center !important;
+  width: 45%;
+  height: 2rem !important;
+}
+
+.nodeDatePicker div {
+  width: 100% !important;
+  height: 2rem !important;
+  color: steelblue !important;
+  font-size: 2rem !important;
+  font-weight: bold !important;
+}
+
+
+.nodeDatePicker div div {
+  color: steelblue !important;
+  font-size: 2rem !important;
+  font-weight: bold !important;
+  height: 2rem !important;
+}
+
+/* Date picker default date */
+.nodeDatePicker div div div {
+  color: steelblue !important;
+  font-size: 2rem !important;
+  font-weight: bold !important;
+  height: 0.1rem !important;
+  position: absolute !important;
+  top: 0.25rem !important;
+}
+
+.nodeDatePicker div div div hr {
+  border-bottom: none !important;
+  color: steelblue !important;
+  font-size: 2rem !important;
+  font-weight: bold !important;
+  height: 2rem !important;
+}
+
+/* Date picker default when no date is selected */
+.nodeDatePicker div div input {
+  width: 100% !important;
+  height: 2.5rem !important;
+  margin: 0 !important;
+  color: steelblue !important;
+  font-size: 2rem !important;
+  font-weight: bold !important;
+  position: absolute !important;
+  top: -0.3rem !important;
+}
+
+.nodeDate {
+  color: steelblue !important;
+  font-size: 2rem !important;
+  font-weight: bold !important;
+}
+
+.nodeDatePop {
+  color: steelblue !important;
+  font-size: 2rem !important;
+  font-weight: bold !important;
+}
+

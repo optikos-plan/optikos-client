@@ -168,7 +168,6 @@ export class TaskNodeWidget extends React.Component {
           <div className="genDialogSectionRow">
           <h1
             style={{
-              marginTop: '1rem',
               fontSize: '2rem',
               fontWeight: 'bold'
             }}

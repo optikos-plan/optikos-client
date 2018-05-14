@@ -27,6 +27,7 @@ const muiTheme = getMuiTheme({
 
 const picker = ({ node, dueDate }) => {
   return (
+    <div className="nodeDatePicker">
     <Mutation mutation={SET_DATE}>
       {setDate => (
           <MuiThemeProvider muiTheme={muiTheme}>
@@ -53,6 +54,7 @@ const picker = ({ node, dueDate }) => {
           </MuiThemeProvider>
       )}
     </Mutation>
+    </div>
   )
 }
 
