@@ -7,7 +7,8 @@
     "start": "node server",
     "start:dev":
       "GRAPHQL_URI=http://localhost:3999/graphql webpack-dev-server --content-base public",
-    "deploy": "sh ./scripts/deploy.sh"
+    "deploy":
+      "GRAPHQL_URI=http://optikos-gql.herokuapp.com sh ./scripts/deploy.sh"
   },
   "author": "",
   "license": "ISC",
