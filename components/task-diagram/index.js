@@ -12,6 +12,7 @@ import { TaskNodeFactory } from './TaskNodeFactory'
 import { SimplePortFactory } from './SimplePortFactory'
 import { TaskPortModel } from './TaskPortModel'
 import axios from 'axios'
+import RaisedButton from 'material-ui/RaisedButton'
 
 import 'storm-react-diagrams/dist/style.min.css'
 
@@ -172,8 +173,9 @@ export default class TaskNode extends React.Component {
           taskSelected={this.state.taskSelected}
           git
         />
-        <button onClick={this.saveLayout}>SAVE</button>
-        <div className="srd-diagram" onClick={this.selectedCheck}>
+        <div className="diagram-container" onClick={this.selectedCheck}>
+        <RaisedButton className="task-button"  onClick={this.saveLayout}>Save</RaisedButton>
+        <RaisedButton className="task-button" onClick={()=> console.log("add new task")}>Add Task</RaisedButton>
           <DiagramWidget
             model={this.model}
             diagramEngine={this.engine}
