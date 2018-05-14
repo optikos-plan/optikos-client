@@ -149,13 +149,13 @@ export class TaskNodeWidget extends React.Component {
           open={this.state.showGenDialog}
           autoScrollBodyContent={true}
         >
-          <span
+          <div className="genDialogSectionRow">
+          <h1
             style={{
-              marginTop: '1rem',
               fontSize: '2rem',
               fontWeight: 'bold'
             }}
-          >Task Name: </span>
+          >Task Name: </h1>
           <UpdateTitle
             handleChange={this.handleChange}
             handleKeyUp={this.handleKeyUp}
@@ -164,14 +164,31 @@ export class TaskNodeWidget extends React.Component {
             title={title}
             toggleTitle={this.toggleTitle}
           />
+          </div>
 
-          <h1>Due Date:</h1>
-          <DatePicker node={node} dueDate={dueDate} />
+          <div className="genDialogSectionRow">
+          <h1
+            style={{
+              marginTop: '1rem',
+              fontSize: '2rem',
+              fontWeight: 'bold'
+            }}
+          >
+          Due Date:
+          </h1>
+          <DatePicker
+            node={node}
+            dueDate={dueDate}
+          />
+          </div>
+
+          <div className="genDialogSectionCol">
           <h1>Task Assignee:</h1>
           <NodeAssigneeList
             changeAssignee={this.changeAssignee}
             deltaAssignee={this.deltaAssignee}
           />
+          </div>
         </Dialog>
         {/* Node Shape */}
         <svg
