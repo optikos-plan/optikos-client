@@ -11,7 +11,8 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 import Main from './Main'
 
 const client = new ApolloClient({
-  uri: 'http://localhost:3999/graphql'
+  // uri: 'http://localhost:3999/graphql'
+  uri: 'http://optikos-gql/graphql'
 })
 
 ReactDOM.render(
