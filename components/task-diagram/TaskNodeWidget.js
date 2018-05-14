@@ -72,14 +72,8 @@ export class TaskNodeWidget extends React.Component {
     // TODO: move to general dialog component
     const actions = [
       <FlatButton
-        label='Cancel'
+        label='OK'
         primary={true}
-        onClick={this.closeDialog}
-      />,
-      <FlatButton
-        label='Submit'
-        primary={true}
-        disabled={true}
         onClick={this.closeDialog}
       />
     ]

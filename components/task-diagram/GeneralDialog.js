@@ -9,11 +9,9 @@ export default class GenDialog extends Component {
 
   render() {
     const actions = [
-      <FlatButton label="Cancel" primary={true} onClick={this.closeDialog} />,
       <FlatButton
-        label="Submit"
+        label="OK"
         primary={true}
-        disabled={true}
         onClick={this.closeDialog}
       />
     ]
