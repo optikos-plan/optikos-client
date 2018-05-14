@@ -113,7 +113,7 @@ export class TaskNodeWidget extends React.Component {
             </strong>
 
             {/* Due Date */}
-            {/* <strong
+            <strong
               style={{
                 fontSize: '0.65rem',
                 color: 'rgb(223, 223, 27)',
@@ -123,7 +123,7 @@ export class TaskNodeWidget extends React.Component {
               }}
             >
               {moment(dueDate).format('MMM Do YYYY')}
-            </strong> */}
+            </strong>
           </div>
           {/* Node Assignee Section */}
           {
