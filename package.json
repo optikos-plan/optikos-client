@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js",
+    "start": "node server",
     "start:dev":
       "GRAPHQL_URI=http://localhost:3999/graphql webpack-dev-server --content-base public",
     "deploy": "sh ./scripts/deploy.sh"
