@@ -55,6 +55,7 @@
   height: 100%;
   position: absolute;
   align-items: center;
+  outline: none
 }
 
 .nodeTitleAndDate strong {

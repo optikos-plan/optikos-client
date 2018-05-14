@@ -24,7 +24,8 @@ export default class TaskNode extends React.Component {
     super(props)
     this.state = {
       taskSelected: false,
-      taskSelectedData: {}
+      taskSelectedData: {},
+      tasks: []
     }
 
     this.registerEngine()
@@ -50,16 +51,17 @@ export default class TaskNode extends React.Component {
     )
 
     this.engine.registerNodeFactory(new TaskNodeFactory())
-    this.model = new DiagramModel()
     this.updateTasks()
-    this.engine.setDiagramModel(this.model)
   }
 
+  
+
   updateTasks() {
+    this.model = new DiagramModel()
+    
     const nodeContainer = {}
     const links = []
-
-    this.props.tasks.forEach(task => {
+    this.state.tasks.forEach(task => {
       // do not duplicate nodes
       if (!(task.id in nodeContainer)) {
         const node = new TaskNodeModel(
@@ -99,6 +101,16 @@ export default class TaskNode extends React.Component {
     })
 
     this.model.addAll(...links)
+    this.engine.setDiagramModel(this.model)
+    this.setState({ updateTasks: false})
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps !== this.props) {
+      this.setState({ tasks: nextProps.tasks,
+        updateTasks: true
+      })
+    }
   }
 
   selectedCheck() {
@@ -172,7 +184,9 @@ export default class TaskNode extends React.Component {
 
   render() {
     const task = this.state.taskSelectedData
-
+if (this.state.updateTasks) {
+  this.updateTasks()
+}
     return (
       <div className="srd-diagram">
         <Sidebar
@@ -181,7 +195,7 @@ export default class TaskNode extends React.Component {
           taskSelected={this.state.taskSelected}
         />
         <div className="diagram-container" onClick={this.selectedCheck}>
-          <CreateTask checkprops={this.checkprops} />
+          <CreateTask createTask={this.props.createTask} checkprops={this.checkprops} />
           <DiagramWidget
             model={this.model}
             diagramEngine={this.engine}

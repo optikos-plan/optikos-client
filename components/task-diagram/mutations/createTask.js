@@ -24,8 +24,7 @@ const createTask = (props) => {
           title: "Default Task"
         }
       })
-      console.log("creating new task...", data.createTask)
-     props.checkprops(data.createTask)
+      props.createTask({title: "Default Task", id: 92, children: []})
     
     }}>Add Task</RaisedButton>
     )} 

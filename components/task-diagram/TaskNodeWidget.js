@@ -60,6 +60,8 @@ export class TaskNodeWidget extends React.Component {
         }}>
         {/* Node Content */}
         <div
+        tabIndex="1"
+        onKeyDown={() => console.log("working keydown")}
           className="nodeBody"
           style={{
             position: 'absolute'
