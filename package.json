@@ -4,7 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "webpack-dev-server --content-base public",
+    "start": "node index.js",
+    "start:dev":
+      "GRAPHQL_URI=http://localhost:3999/graphql webpack-dev-server --content-base public",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
