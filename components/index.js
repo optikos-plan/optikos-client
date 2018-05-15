@@ -12,7 +12,7 @@ import Main from './Main'
 
 const client = new ApolloClient({
   // GRAPHQL_URI is injected by webpack
-  uri: GRAPHQL_URI
+  uri: 'http://localhost:3999/graphql'
 })
 
 ReactDOM.render(

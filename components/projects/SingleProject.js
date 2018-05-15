@@ -1,31 +1,23 @@
-import React, { Component } from 'react'
+import React from 'react'
 import Navbar from '../Navbar'
 import TaskNode from '../task-diagram'
 
-export default class SingleProject extends Component {
-  /* constructor() {
-   *   super()
-   *   this.state = {
-   *     taskSelected: true,
-   *     taskCompleted: false
-   *   }
-   *   this.updateTaskCompleted = this.updateTaskCompleted.bind(this)
-   * } */
+const SingleProject = props => {
+  const { projects, routeProps } = props
+  const projectId = routeProps.match.params.id
 
-  /* updateTaskCompleted() {
-   *   this.setState({
-   *     taskCompleted: !this.state.taskCompleted
-   *   })
-   * } */
+  const project = projects.filter(singProject => singProject.id === projectId)[0]
 
-  render() {
-    return (
-      <div id="singleProject">
-        <Navbar />
-        <div className="testFlex">
-          <TaskNode tasks={this.props.tasks} />
-        </div>
+  console.log('Project info: ', project.tasks)
+
+  return (
+    <div id="singleProject">
+      <Navbar />
+      <div className="testFlex">
+        <TaskNode tasks={project.tasks} />
       </div>
-    )
-  }
+    </div>
+  )
 }
+
+export default SingleProject

@@ -39,26 +39,28 @@ export default class TaskNode extends React.Component {
     this.changeAssignee = NOP
   }
 
-  componentDidUpdate(prevProps, prevState, snapshot) {
-    // serialize the scene to localstorage to persist layout
-    //
-    const projectId = this.props.tasks[0].project.id
-    const serialized = JSON.stringify(this.model.serializeDiagram())
-    localStorage.setItem(`Project:${projectId}`, serialized)
-  }
 
-  componentDidMount() {
-    // Use saved layout for current project if it exists
-    //
-    const projectId = this.props.tasks[0].project.id
-    const data = localStorage.getItem(`Project:${projectId}`)
-    if (!data) return
+  // TODO: check error when merging with all projects page
+  // componentDidUpdate(prevProps, prevState, snapshot) {
+  //   // serialize the scene to localstorage to persist layout
+  //   //
+  //   const projectId = this.props.tasks[0].project.id
+  //   const serialized = JSON.stringify(this.model.serializeDiagram())
+  //   localStorage.setItem(`Project:${projectId}`, serialized)
+  // }
 
-    const serialized = JSON.parse(data)
-    this.model = new DiagramModel()
-    this.model.deSerializeDiagram(serialized, this.engine)
-    this.engine.setDiagramModel(this.model)
-  }
+  // componentDidMount() {
+  //   // Use saved layout for current project if it exists
+  //   //
+  //   const projectId = this.props.tasks[0].project.id
+  //   const data = localStorage.getItem(`Project:${projectId}`)
+  //   if (!data) return
+
+  //   const serialized = JSON.parse(data)
+  //   this.model = new DiagramModel()
+  //   this.model.deSerializeDiagram(serialized, this.engine)
+  //   this.engine.setDiagramModel(this.model)
+  // }
 
   registerEngine() {
     this.engine = new DiagramEngine()
