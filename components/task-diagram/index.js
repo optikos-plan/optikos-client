@@ -39,6 +39,9 @@ export default class TaskNode extends React.Component {
     this.changeAssignee = NOP
   }
 
+
+  // TODO: check error when merging with all projects page
+
   componentDidUpdate(prevProps, prevState, snapshot) {
     // serialize the scene to localstorage to persist layout
     //
@@ -49,7 +52,9 @@ export default class TaskNode extends React.Component {
 
   componentDidMount() {
     // Use saved layout for current project if it exists
-    //
+
+    if (this.props.tasks.length === 0 ) return
+
     const projectId = this.props.tasks[0].project.id
     const data = localStorage.getItem(`Project:${projectId}`)
     if (!data) return

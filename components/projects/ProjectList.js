@@ -1,23 +1,27 @@
-import React, { Component } from "react";
-import RaisedButton from "material-ui/RaisedButton";
-import { Card, CardActions, CardHeader, CardText } from "material-ui/Card";
-import FlatButton from "material-ui/FlatButton";
-import Dialog from "material-ui/Dialog";
-import TextField from "material-ui/TextField";
-import SelectField from "material-ui/SelectField";
-import MenuItem from "material-ui/MenuItem";
+import React, { Component } from 'react'
+import { NavLink } from 'react-router-dom'
 
-import { graphql, Mutation } from "react-apollo";
-import gql from "graphql-tag";
+import RaisedButton from 'material-ui/RaisedButton'
+import FlatButton from 'material-ui/FlatButton'
+import { Card, CardTitle, CardText } from 'material-ui/Card'
+import Dialog from 'material-ui/Dialog'
+import TextField from 'material-ui/TextField'
+import SelectField from 'material-ui/SelectField'
+import MenuItem from 'material-ui/MenuItem'
+
+import Status from './StatusStepper'
+
+import { graphql, Mutation } from 'react-apollo'
+import gql from 'graphql-tag'
 
 const style = {
   margin: 12
-};
+}
 
 const customContentStyle = {
-  width: "60%",
-  maxWidth: "none"
-};
+  width: '60%',
+  maxWidth: 'none'
+}
 
 const mutationCreateProject = gql`
   mutation CreateProject(
@@ -37,38 +41,38 @@ const mutationCreateProject = gql`
       id
     }
   }
-`;
+`
 
 class ProjectList extends Component {
   constructor() {
-    super();
+    super()
     this.state = {
       open: false,
-      owner: "1",
-      title: "This Title",
-      description: "this is the description"
-    };
+      owner: '1',
+      title: 'This Title',
+      description: 'this is the description'
+    }
   }
 
   handleChange = (event, newValue, payload) => {
     this.setState({
       [event.target.name]: newValue
-    });
-  };
+    })
+  }
 
-  handleChangeOwner = (event, _ , payload) => {
+  handleChangeOwner = (event, _, payload) => {
     this.setState({
       owner: payload
     })
   }
 
   handleOpen = () => {
-    this.setState({ open: true });
-  };
+    this.setState({ open: true })
+  }
 
   handleClose = () => {
-    this.setState({ open: false });
-  };
+    this.setState({ open: false })
+  }
 
   handleCreateNewProject = createProject => {
     createProject({
@@ -79,11 +83,12 @@ class ProjectList extends Component {
         status: this.state.CompletionStatus,
         tasks: this.state.tasks
       }
-    });
-    this.handleClose();
-  };
+    })
+    this.handleClose()
+  }
 
   render() {
+    // buttons for the create new project dialog
     const actions = [
       <FlatButton label="Cancel" primary={true} onClick={this.handleClose} />,
       <Mutation mutation={mutationCreateProject}>
@@ -95,12 +100,12 @@ class ProjectList extends Component {
           />
         )}
       </Mutation>
-    ];
+    ]
 
-    const { projects, loading, error, users } = this.props.data;
-    console.log(this.props.data);
-    if (loading) return <p>Loading...</p>;
-    if (error) return <p>Error :(</p>;
+    const { projects, loading, error, users } = this.props.data
+
+    if (loading) return <p>Loading...</p>
+    if (error) return <p>Error :(</p>
 
     return (
       <div className="card-display">
@@ -111,6 +116,7 @@ class ProjectList extends Component {
             style={style}
             primary={true}
           />
+          {/* Create new project dialog */}
           <Dialog
             title="Create New Project Details:"
             actions={actions}
@@ -135,46 +141,68 @@ class ProjectList extends Component {
               floatingLabelText="Owner"
               name="owner"
               value={this.state.owner}
-              onChange={(event, key, payload) => this.handleChangeOwner(event, key, payload)}
+              onChange={(event, key, payload) =>
+                this.handleChangeOwner(event, key, payload)
+              }
             >
-
-                {users.map(user => (
-                  <MenuItem
-                    key={user.id}
-                    value={user.id}
-                    primaryText={user.name}
-                  />
-                ))}
-
+              {users.map(user => (
+                <MenuItem
+                  key={user.id}
+                  value={user.id}
+                  primaryText={user.name}
+                />
+              ))}
             </SelectField>
-
-            {/* <TextField hintText="Owner" onChange={(event, newValue) => this.handleChange(event, newValue)} name="owner" fullWidth={true} /> */}
           </Dialog>
         </div>
         {projects.map(project => {
+          console.log('Information of projects: ', project)
           return (
             <Card key={project.id}>
-              <CardHeader
+              <CardTitle
                 title={project.title}
                 subtitle={project.owner.name}
                 actAsExpander={true}
                 showExpandableButton={true}
               />
+
+              <NavLink to={`/projects/${project.id}`}>
+                <FlatButton label="Go to project page" />
+              </NavLink>
+
               <CardText expandable={true}>
+                {/* Stepper showing the status of the project */}
+                <Status project={project} />
                 Description:
                 {project.description}
               </CardText>
             </Card>
-          );
+          )
         })}
       </div>
-    );
+    )
   }
 }
 
 const queryAllProjects = gql`
   {
     projects {
+      tasks {
+        id
+        title
+        status
+        project {
+          id
+        }
+        children {
+          id
+          title
+          status
+          project {
+            id
+          }
+        }
+      }
       owner {
         id
         name
@@ -189,6 +217,6 @@ const queryAllProjects = gql`
       name
     }
   }
-`;
+`
 
-export default graphql(queryAllProjects)(ProjectList);
+export default graphql(queryAllProjects)(ProjectList)
