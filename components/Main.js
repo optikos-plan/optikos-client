@@ -11,14 +11,14 @@ const Main = ({ data }) => {
   if (data.loading) return <div>Loading...</div>
   if (data.error) return <div>Error...</div>
 
-  const { tasks } = data
-  console.log('Tasks', tasks)
+  const { projects } = data
+  console.log('Projects', projects)
 
   return (
     <div id="main">
       <Route
         path="/projects/:id"
-        render={() => <SingleProject tasks={tasks} />}
+        render={(routeProps) => <SingleProject routeProps={routeProps} projects={projects} />}
       />
       <Route exact path="/people" component={AllPeople} />
       <Route exact path="/projects" component={AllProjects} />
@@ -27,33 +27,45 @@ const Main = ({ data }) => {
   )
 }
 
+// TODO: details is currently not used... need further explanation before deleting
 const details = gql`
   fragment details on User {
     id
     name
   }
 `
-
+// TODO: query was changed so that all projects are retrieved from db... Basically grabs everything; is there a more efficient way?
 const query = gql`
   {
-    tasks {
-      id
-      title
-      endDate
-      user {
-        ...details
-      }
-      children {
+    projects {
+      tasks {
         id
         title
         endDate
         user {
-          ...details
+          id
+          name
+        }
+        children {
+          id
+          title
+          endDate
+          user {
+            id
+            name
+          }
         }
       }
+      owner {
+        id
+        name
+      }
+      id
+      status
+      title
+      description
     }
   }
-  ${details}
 `
 
 export default graphql(query)(Main)
