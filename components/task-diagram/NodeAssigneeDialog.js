@@ -22,6 +22,7 @@ export default class NodeAssigneeDialog extends React.Component {
   render() {
     const actions = [
       <RaisedButton
+        key={1}
         label="Cancel"
         primary={true}
         onClick={this.handleClose}
@@ -30,6 +31,7 @@ export default class NodeAssigneeDialog extends React.Component {
         }}
       />,
       <RaisedButton
+        key={2}
         label="Submit"
         primary={true}
         keyboardFocused={true}

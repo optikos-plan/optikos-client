@@ -9,22 +9,23 @@ export default class Status extends React.Component {
     }
   }
 
-  getStepContent(stepIdx) {
-    switch(stepIdx) {
-      case 0:
-        return 'Project owner has been assigned'
-      case 1:
-        return 'This project is in progress. Click on the "More Details" button for information '
-      case 2:
-        return 'This project is completed!'
-    }
-  }
+  // TODO: to use or not to use?
+
+  // getStepContent(stepIdx) {
+  //   switch(stepIdx) {
+  //     case 0:
+  //       return 'Project owner has been assigned'
+  //     case 1:
+  //       return 'This project is in progress. Click on the "More Details" button for information '
+  //     case 2:
+  //       return 'This project is completed!'
+  //   }
+  // }
 
   render() {
     const {stepIdx} = this.state
     const {project} = this.props
     const allCompleted = (arr) => {
-      // TODO: Array.proto.any()
       arr.forEach(task => {
         if (task.status !== 'COMPLETED') return false
       })
