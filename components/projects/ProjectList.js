@@ -48,9 +48,9 @@ class ProjectList extends Component {
     super()
     this.state = {
       open: false,
-      owner: '1',
-      title: 'This Title',
-      description: 'this is the description'
+      owner: '',
+      title: '',
+      description: ''
     }
   }
 
@@ -82,9 +82,11 @@ class ProjectList extends Component {
         description: this.state.description,
         status: this.state.CompletionStatus,
         tasks: this.state.tasks
-      }
+      },
+      /* refetchQueries: ['queryAllProjects'], */
     })
     this.handleClose()
+    this.props.data.refetch()
   }
 
   render() {
@@ -167,7 +169,7 @@ class ProjectList extends Component {
               />
 
               <NavLink to={`/projects/${project.id}`}>
-                <FlatButton label="Go to project page" />
+                <FlatButton label="Go to project page" primary={true} />
               </NavLink>
 
               <CardText expandable={true}>
