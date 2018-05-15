@@ -1,10 +1,20 @@
 import * as React from 'react'
 import { PortWidget } from 'storm-react-diagrams'
+import moment from 'moment'
+
 import NodeAssigneeDialog from './NodeAssigneeDialog'
 
 import DatePicker from './mutations/calendar'
 import UpdateTitle from './mutations/updateTitle'
 import UpdateLink from './mutations/updateLink'
+
+import Dialog from 'material-ui/Dialog'
+import FlatButton from 'material-ui/FlatButton'
+
+import NodeAssigneeList from './NodeAssigneeList'
+import GenDialog from './GeneralDialog'
+
+import nameToInitial from '../../utils/nameToInitial';
 
 export class TaskNodeWidget extends React.Component {
   constructor(props) {
@@ -14,13 +24,16 @@ export class TaskNodeWidget extends React.Component {
       showTitle: true,
       title: node.task.title,
       dueDate: node.task.endDate,
-      assignee: node.task.user
+      assignee: node.task.user,
+      showGenDialog: false
     }
 
     this.handleKeyUp = this.handleKeyUp.bind(this)
     this.handleChange = this.handleChange.bind(this)
     this.toggleTitle = this.toggleTitle.bind(this)
     this.deltaAssignee = this.deltaAssignee.bind(this)
+    this.openDialog = this.openDialog.bind(this)
+    this.closeDialog = this.closeDialog.bind(this)
   }
 
   handleKeyUp(evt) {
@@ -45,10 +58,30 @@ export class TaskNodeWidget extends React.Component {
     })
   }
 
+  // open dialog to edit all node information
+  openDialog() {
+    this.setState({
+      showGenDialog: true
+    })
+  }
+
+  closeDialog() {
+    this.setState({
+      showGenDialog: false
+    })
+  }
+
   render() {
     const { size, node } = this.props
-    const { showTitle, title, dueDate, assignee } = this.state
-
+    const { showTitle, title, dueDate, assignee, showGenDialog } = this.state
+    // TODO: move to general dialog component
+    const actions = [
+      <FlatButton
+        label='OK'
+        primary={true}
+        onClick={this.closeDialog}
+      />
+    ]
     return (
       // Entire node
       <div
@@ -63,20 +96,23 @@ export class TaskNodeWidget extends React.Component {
           className="nodeBody"
           style={{
             position: 'absolute'
-          }}>
+          }}
+          onDoubleClick={this.openDialog}
+        >
           {/* Title and Date Section */}
           <div className="nodeTitleAndDate">
-            <UpdateTitle
-              handleChange={this.handleChange}
-              handleKeyUp={this.handleKeyUp}
-              showTitle={showTitle}
-              node={node}
-              title={title}
-              toggleTitle={this.toggleTitle}
-            />
+            <h5>
+              {title}
+            </h5>
 
-            {/* Date Picker */}
-            <DatePicker node={node} dueDate={dueDate} />
+            {/* Due Date */}
+            <p>
+              {
+                dueDate ?
+                moment(dueDate).format('MMM Do YYYY') :
+                'Enter due Date'
+              }
+            </p>
           </div>
           {/* Node Assignee Section */}
           {
@@ -87,15 +123,38 @@ export class TaskNodeWidget extends React.Component {
                 alignItems: 'center',
                 width: '30%'
               }}>
-              <NodeAssigneeDialog
-                assignee={assignee}
-                changeAssignee={node.changeAssignee}
-                deltaAssignee={this.deltaAssignee}
-                node={node}
-              />
+              {
+                <div className={
+                  assignee ?
+                  'nodeAssignee-chosen' :
+                  'nodeAssigne-choose'
+                  }
+                >
+                  {
+                    assignee ?
+                    <p>{nameToInitial(assignee.name)}</p> :
+                    <p>+</p>
+                  }
+                </div>
+              }
             </div>
           }
         </div>
+        {/* TODO: move to general dialog component */}
+        <GenDialog
+          handleChange={this.handleChange}
+          handleKeyUp={this.handleKeyUp}
+          toggleTitle={this.toggleTitle}
+          changeAssignee={this.changeAssignee}
+          deltaAssignee={this.deltaAssignee}
+          showTitle={showTitle}
+          node={node}
+          title={title}
+          dueDate={dueDate}
+          closeDialog={this.closeDialog}
+          showGenDialog={showGenDialog}
+        />
+
         {/* Node Shape */}
         <svg
           width={size}

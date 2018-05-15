@@ -25,8 +25,12 @@ const UpdateTitle = ({
         <strong
           onDoubleClick={() => {
             toggleTitle()
+            }
+          }
+          style={{
+            fontSize: '2rem'
           }}
-          style={{ position: 'absolute', top: 15, left: 8 }}>
+        >
           {/* {node.task.title} */}
           {title}
         </strong>
@@ -42,7 +46,11 @@ const UpdateTitle = ({
             toggleTitle()
           }}
           type="text"
-          style={{ position: 'absolute', top: 5, left: 5 }}
+          style={{
+            width: '70%',
+            height: '1.5rem',
+            fontSize: '2rem'
+          }}
         />
       )
     }}
