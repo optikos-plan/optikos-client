@@ -3,7 +3,7 @@ import { NavLink } from 'react-router-dom'
 
 import FlatButton from 'material-ui/FlatButton'
 import RaisedButton from 'material-ui/RaisedButton'
-import { Card, CardTitle, CardActions,CardHeader, CardText } from 'material-ui/Card'
+import { Card, CardTitle, CardText } from 'material-ui/Card'
 import Status from './StatusStepper'
 
 import { graphql } from 'react-apollo'
@@ -24,6 +24,7 @@ const ProjectList = props => {
       <RaisedButton label="ADD NEW PROJECT" style={style} primary={true} />
       {projects.map(project => {
         return (
+          // TODO: what other information must be displayed on card?
           <Card key={project.id}>
             <CardTitle
               title={project.title}
