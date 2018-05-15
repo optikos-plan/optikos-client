@@ -13,6 +13,8 @@ const Main = ({ data }) => {
 
   const { projects } = data
 
+  // console.log('This are projects', projects)
+
   return (
     <div id="main">
       <Route
@@ -40,6 +42,7 @@ const query = gql`
         id
         title
         endDate
+        status
         project {
           id
         }
@@ -50,6 +53,7 @@ const query = gql`
           id
           title
           endDate
+          status
           project {
             id
           }

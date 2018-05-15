@@ -126,3 +126,9 @@
   justify-content: center !important;
   margin-right: 0.5rem !important;
 }
+
+.nodeStatus {
+  position: absolute !important;
+  top: -15px !important;
+  right: 50px !important;
+}

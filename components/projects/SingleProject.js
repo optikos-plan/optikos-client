@@ -8,8 +8,6 @@ const SingleProject = props => {
 
   const project = projects.filter(singProject => singProject.id === projectId)[0]
 
-  console.log('Props: ', props)
-
   return (
     <div id="singleProject">
       <Navbar />
