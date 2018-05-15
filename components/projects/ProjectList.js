@@ -1,7 +1,13 @@
 import React from 'react'
 import RaisedButton from 'material-ui/RaisedButton'
-import { Card, CardTitle, CardActions, CardHeader, CardText } from 'material-ui/Card'
-import StatusStepper from './StatusStepper'
+import {
+  Card,
+  CardTitle,
+  CardActions,
+  CardHeader,
+  CardText
+} from 'material-ui/Card'
+import Status from './StatusStepper'
 import FlatButton from 'material-ui/FlatButton'
 
 import { graphql } from 'react-apollo'
@@ -14,6 +20,7 @@ const style = {
 const ProjectList = props => {
   const { projects, loading, error } = props.data
   if (loading) return <p>Loading...</p>
+  console.log(projects)
   if (error) return <p>Error :(</p>
 
   return (
@@ -30,7 +37,7 @@ const ProjectList = props => {
             />
             <CardText expandable={true}>
               {/* Stepper showing the status of the project */}
-              <StatusStepper />
+              <Status project={project} />
               <h3>Description:</h3>
               {`${project.description}`}
             </CardText>
@@ -44,6 +51,10 @@ const ProjectList = props => {
 const queryAllProjects = gql`
   {
     projects {
+      tasks {
+        id
+        title
+      }
       owner {
         id
         name

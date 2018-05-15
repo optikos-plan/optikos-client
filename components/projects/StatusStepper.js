@@ -1,6 +1,62 @@
-import React, { Component } from 'react'
-import { Step, Stepper, StepButton } from 'material-ui/Stepper'
+import React from 'react'
+import { Step, Stepper, StepLabel } from 'material-ui/Stepper'
 
-export default class Stepper extends Component {
+export default class Status extends React.Component {
+  constructor() {
+    super()
+    this.state = {
+      stepIdx: null
+    }
+  }
 
+  getStepContent(stepIdx) {
+    switch(stepIdx) {
+      case 0:
+        return 'Project owner has been assigned'
+      case 1:
+        return 'This project is in progress. Click on the "More Details" button for information '
+      case 2:
+        return 'This project is completed!'
+    }
+  }
+
+  render() {
+    const {stepIdx} = this.state
+    const {project} = this.props
+    const allCompleted = (arr) => {
+      // TODO: Array.proto.any()
+      arr.forEach(task => {
+        if (task.status !== 'COMPLETED') return false
+      })
+      return true
+    }
+
+    return (
+      <div>
+        <Stepper
+          linear={false}
+          activeStep={stepIdx}
+        >
+          <Step
+            completed={
+              project.owner ?
+              true : false
+            }
+          >
+            <StepLabel>Assigned</StepLabel>
+          </Step>
+          <Step
+            completed={project.owner && project.tasks.length > 0}
+          >
+            <StepLabel>In Progress</StepLabel>
+          </Step>
+          <Step
+            completed={project.owner && project.tasks.length > 0 && allCompleted(project.tasks)}
+          >
+            <StepLabel>Completed</StepLabel>
+          </Step>
+        </Stepper>
+      </div>
+    )
+  }
 }
