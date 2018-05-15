@@ -25,7 +25,7 @@ export default class Status extends React.Component {
   render() {
     const {stepIdx} = this.state
     const {project} = this.props
-    const allCompleted = (arr) => arr.every(task => task.status !== 'COMPLETED')
+    const allCompleted = (arr) => arr.every(task => task.status === 'COMPLETED')
 
     return (
       <div>

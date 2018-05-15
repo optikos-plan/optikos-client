@@ -43,22 +43,19 @@ const query = gql`
         title
         endDate
         user {
-          id
-          name
+          ...details
         }
         children {
           id
           title
           endDate
           user {
-            id
-            name
+            ...details
           }
         }
       }
       owner {
-        id
-        name
+        ...details
       }
       id
       status
@@ -66,6 +63,7 @@ const query = gql`
       description
     }
   }
+  ${details}
 `
 
 export default graphql(query)(Main)
