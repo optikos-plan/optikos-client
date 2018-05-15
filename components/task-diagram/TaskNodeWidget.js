@@ -52,7 +52,7 @@ export class TaskNodeWidget extends React.Component {
     const { size, node } = this.props
     const { showTitle, title, dueDate, assignee, status } = this.state
 
-    const color = (status) => {
+    const color = status => {
       if (status === 'COMPLETED') {
         return '#76FF03'
       } else if (status === 'IN_PROGRESS') {
