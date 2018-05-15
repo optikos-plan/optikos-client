@@ -40,6 +40,9 @@ const query = gql`
         id
         title
         endDate
+        project {
+          id
+        }
         user {
           ...details
         }
@@ -47,6 +50,9 @@ const query = gql`
           id
           title
           endDate
+          project {
+            id
+          }
           user {
             ...details
           }

@@ -191,6 +191,17 @@ const queryAllProjects = gql`
         id
         title
         status
+        project {
+          id
+        }
+        children {
+          id
+          title
+          status
+          project {
+            id
+          }
+        }
       }
       owner {
         id

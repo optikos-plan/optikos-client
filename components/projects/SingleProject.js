@@ -8,7 +8,7 @@ const SingleProject = props => {
 
   const project = projects.filter(singProject => singProject.id === projectId)[0]
 
-  console.log('Project info: ', project.tasks)
+  console.log('Props: ', props)
 
   return (
     <div id="singleProject">
