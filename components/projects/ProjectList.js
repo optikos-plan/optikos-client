@@ -1,14 +1,10 @@
 import React from 'react'
-import RaisedButton from 'material-ui/RaisedButton'
-import {
-  Card,
-  CardTitle,
-  CardActions,
-  CardHeader,
-  CardText
-} from 'material-ui/Card'
-import Status from './StatusStepper'
+import { NavLink } from 'react-router-dom'
+
 import FlatButton from 'material-ui/FlatButton'
+import RaisedButton from 'material-ui/RaisedButton'
+import { Card, CardTitle, CardActions,CardHeader, CardText } from 'material-ui/Card'
+import Status from './StatusStepper'
 
 import { graphql } from 'react-apollo'
 import gql from 'graphql-tag'
@@ -35,6 +31,9 @@ const ProjectList = props => {
               actAsExpander={true}
               showExpandableButton={true}
             />
+            <NavLink to={`/projects/${project.id}`}>
+              <FlatButton label="Go to project page" />
+            </NavLink>
             <CardText expandable={true}>
               {/* Stepper showing the status of the project */}
               <Status project={project} />

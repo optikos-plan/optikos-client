@@ -36,8 +36,13 @@ export default class Navbar extends React.Component {
 
         </ToolbarGroup>
         <ToolbarGroup className="three-width">
-          <NavLink to="/projects/1">
-            <RaisedButton label="Project Plan" />
+          <NavLink to="#">
+            <RaisedButton
+              label="Project Plan"
+              style={{
+                marginRight: '1rem'
+              }}
+            />
           </NavLink>
           <NavLink to="/people">
             <RaisedButton label="People" />
