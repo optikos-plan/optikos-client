@@ -11,7 +11,9 @@ import Sidebar from '../Sidebar'
 import { TaskNodeFactory } from './TaskNodeFactory'
 import { SimplePortFactory } from './SimplePortFactory'
 import { TaskPortModel } from './TaskPortModel'
+import CreateTask from './mutations/createTask'
 import axios from 'axios'
+import RaisedButton from 'material-ui/RaisedButton'
 
 import 'storm-react-diagrams/dist/style.min.css'
 
@@ -30,6 +32,7 @@ export default class TaskNode extends React.Component {
     this.selectedCheck = this.selectedCheck.bind(this)
     this.updateLink = this.updateLink.bind(this)
     this.switchToEdit = this.switchToEdit.bind(this)
+    this.createTask = this.createTask.bind(this)
 
     // TODO: These functions need to be extracted. It will be some work
     // as there seems to be some dependency based on how they're passed
@@ -80,10 +83,12 @@ export default class TaskNode extends React.Component {
     this.engine.setDiagramModel(this.model)
   }
 
+  
+
   updateTasks() {
+    
     const nodeContainer = {}
     const links = []
-
     this.props.tasks.forEach(task => {
       // do not duplicate nodes
       if (!(task.id in nodeContainer)) {
@@ -95,6 +100,7 @@ export default class TaskNode extends React.Component {
           this.changeAssignee
         )
         nodeContainer[task.id] = node
+        console.log(node)
         this.model.addNode(node)
         // does the tasks have children
         const parentPort = node.getPort('bottom')
@@ -125,6 +131,7 @@ export default class TaskNode extends React.Component {
 
     this.model.addAll(...links)
   }
+
 
   selectedCheck() {
     const nodes = this.model.nodes
@@ -187,19 +194,33 @@ export default class TaskNode extends React.Component {
     }
   }
 
+  createTask(task) {
+
+  const node = new TaskNodeModel(
+    task,
+    this.updateLink,
+    this.switchToEdit,
+    this.nodePersistDate,
+    this.changeAssignee
+  )
+   this.model.addNode(node)
+   this.forceUpdate()
+  }
+
   render() {
     const task = this.state.taskSelectedData
-
+if (this.state.updateTasks) {
+  this.updateTasks()
+}
     return (
       <div className="srd-diagram">
         <Sidebar
           allTasks={this.props.tasks}
           task={task}
           taskSelected={this.state.taskSelected}
-          git
         />
-        <button onClick={this.saveLayout}>SAVE</button>
-        <div className="srd-diagram" onClick={this.selectedCheck}>
+        <div className="diagram-container" onClick={this.selectedCheck}>
+          <CreateTask createTask={this.createTask} />
           <DiagramWidget
             model={this.model}
             diagramEngine={this.engine}

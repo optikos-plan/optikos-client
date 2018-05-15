@@ -33,6 +33,7 @@
 .srd-diagram {
   flex-basis: 3;
   background-color: #cccc;
+  height: 100%
 }
 
 .srd-port:hover {
@@ -54,6 +55,7 @@
   height: 100%;
   position: absolute;
   align-items: center;
+  outline: none
 }
 
 .nodeTitleAndDate strong {
@@ -125,4 +127,16 @@
   align-items: center !important;
   justify-content: center !important;
   margin-right: 0.5rem !important;
+}
+
+.diagram-container {
+  width: 1000px;
+  height: 1000px;
+  flex: auto;
+  overflow: hidden;
+  background: whitesmoke
+}
+
+.task-button {
+  margin: 12px;
 }

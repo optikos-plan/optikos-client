@@ -5,6 +5,7 @@ import NodeAssigneeDialog from './NodeAssigneeDialog'
 import DatePicker from './mutations/calendar'
 import UpdateTitle from './mutations/updateTitle'
 import UpdateLink from './mutations/updateLink'
+import DeleteTask from './mutations/deleteTask'
 
 export class TaskNodeWidget extends React.Component {
   constructor(props) {
@@ -58,12 +59,14 @@ export class TaskNodeWidget extends React.Component {
           width: size,
           height: size / 3
         }}>
+             
         {/* Node Content */}
         <div
           className="nodeBody"
           style={{
             position: 'absolute'
           }}>
+         <DeleteTask id={node.task.id} />
           {/* Title and Date Section */}
           <div className="nodeTitleAndDate">
             <UpdateTitle
@@ -96,6 +99,7 @@ export class TaskNodeWidget extends React.Component {
             </div>
           }
         </div>
+        
         {/* Node Shape */}
         <svg
           width={size}
