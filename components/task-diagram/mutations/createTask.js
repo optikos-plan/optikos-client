@@ -31,7 +31,7 @@ const createTask = (props) => {
   return (
     <Mutation mutation={mutationCreateTask}>
     {setTask => (
-      <RaisedButton onClick={ async () => {
+      <RaisedButton label="ADD A TASK"  onClick={ async () => {
       let { data } = await setTask({
         variables: {
           projectId: 1,
@@ -52,9 +52,10 @@ const createTask = (props) => {
       }
 
       props.createTask(task)
-    
-    }}>Add Task</RaisedButton>
-    )} 
+
+
+    } } />
+    )}
     </Mutation>
   )
 }
