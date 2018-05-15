@@ -54,6 +54,7 @@ const queryAllProjects = gql`
       tasks {
         id
         title
+        status
       }
       owner {
         id
