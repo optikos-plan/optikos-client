@@ -4,12 +4,27 @@ import { Mutation } from 'react-apollo'
 import RaisedButton from 'material-ui/RaisedButton'
 
 const mutationCreateTask = gql`
-  mutation createTask($projectId: ID!, $userId: ID!, $title: String!) {
+  mutation createTask($projectId: ID!, $userId: ID!, $title: String! ) {
     createTask(projectId: $projectId, userId: $userId, title: $title) {
       id,
-      title
-    }
+      title,
+      status,
+      endDate,
+      children {
+        id
+      },
+      user {
+        id,
+        name
+      },
+      project {
+        id
+      }
+      parents {
+        id
+      }
   }
+}
 `
 
 const createTask = (props) => {
@@ -17,14 +32,26 @@ const createTask = (props) => {
     <Mutation mutation={mutationCreateTask}>
     {setTask => (
       <RaisedButton onClick={ async () => {
-      const { data } = await setTask({
+      let { data } = await setTask({
         variables: {
           projectId: 1,
           userId: 1,
           title: "Default Task"
         }
       })
-      props.createTask({title: "Default Task", id: 92, children: []})
+      data = data.createTask
+      const task = {
+        id: data.id,
+        title: data.title,
+        status: data.status,
+        endDate: data.endDate,
+        children: data.children,
+        project: data.project,
+        user: data.user,
+        parents: data.parents
+      }
+
+      props.createTask(task)
     
     }}>Add Task</RaisedButton>
     )} 

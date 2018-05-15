@@ -24,15 +24,14 @@ export default class TaskNode extends React.Component {
     super(props)
     this.state = {
       taskSelected: false,
-      taskSelectedData: {},
-      tasks: []
+      taskSelectedData: {}
     }
 
     this.registerEngine()
     this.selectedCheck = this.selectedCheck.bind(this)
     this.updateLink = this.updateLink.bind(this)
     this.switchToEdit = this.switchToEdit.bind(this)
-    this.checkprops = this.checkprops.bind(this)
+    this.createTask = this.createTask.bind(this)
 
     // TODO: These functions need to be extracted. It will be some work
     // as there seems to be some dependency based on how they're passed
@@ -51,17 +50,18 @@ export default class TaskNode extends React.Component {
     )
 
     this.engine.registerNodeFactory(new TaskNodeFactory())
+    this.model = new DiagramModel()
     this.updateTasks()
+    this.engine.setDiagramModel(this.model)
   }
 
   
 
   updateTasks() {
-    this.model = new DiagramModel()
     
     const nodeContainer = {}
     const links = []
-    this.state.tasks.forEach(task => {
+    this.props.tasks.forEach(task => {
       // do not duplicate nodes
       if (!(task.id in nodeContainer)) {
         const node = new TaskNodeModel(
@@ -72,6 +72,7 @@ export default class TaskNode extends React.Component {
           this.changeAssignee
         )
         nodeContainer[task.id] = node
+        console.log(node)
         this.model.addNode(node)
         // does the tasks have children
         const parentPort = node.getPort('bottom')
@@ -101,17 +102,8 @@ export default class TaskNode extends React.Component {
     })
 
     this.model.addAll(...links)
-    this.engine.setDiagramModel(this.model)
-    this.setState({ updateTasks: false})
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (nextProps !== this.props) {
-      this.setState({ tasks: nextProps.tasks,
-        updateTasks: true
-      })
-    }
-  }
 
   selectedCheck() {
     const nodes = this.model.nodes
@@ -176,9 +168,16 @@ export default class TaskNode extends React.Component {
     }
   }
 
-  checkprops(task) {
-    const test = new TaskNodeModel({title: task.title, id: task.id})
-   this.model.addNode(test)
+  createTask(task) {
+
+  const node = new TaskNodeModel(
+    task,
+    this.updateLink,
+    this.switchToEdit,
+    this.nodePersistDate,
+    this.changeAssignee
+  )
+   this.model.addNode(node)
    this.forceUpdate()
   }
 
@@ -195,7 +194,7 @@ if (this.state.updateTasks) {
           taskSelected={this.state.taskSelected}
         />
         <div className="diagram-container" onClick={this.selectedCheck}>
-          <CreateTask createTask={this.props.createTask} checkprops={this.checkprops} />
+          <CreateTask createTask={this.createTask} />
           <DiagramWidget
             model={this.model}
             diagramEngine={this.engine}
