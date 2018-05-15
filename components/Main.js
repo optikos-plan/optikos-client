@@ -40,6 +40,7 @@ const query = gql`
         id
         title
         endDate
+        status
         project {
           id
         }
@@ -50,6 +51,7 @@ const query = gql`
           id
           title
           endDate
+          status
           project {
             id
           }

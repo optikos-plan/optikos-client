@@ -7,7 +7,7 @@ const SingleProject = props => {
   const { projects, routeProps } = props
   const projectId = routeProps.match.params.id
 
-  const project = projects.filter(singProject => singProject.id === projectId)[0]
+  const project = projects.filter(singProject => singProject.id === projectId)[0] 
 
 
   console.log('Props: ', props)
@@ -16,7 +16,7 @@ const SingleProject = props => {
     <div id="singleProject">
       <Navbar />
       <div className="testFlex">
-        <TaskNode tasks={project.tasks} />
+        <TaskNode projectId={projectId} tasks={project.tasks} />
       </div>
     </div>
   )

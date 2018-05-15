@@ -212,6 +212,7 @@ export default class TaskNode extends React.Component {
 if (this.state.updateTasks) {
   this.updateTasks()
 }
+
     return (
       <div className="srd-diagram">
         <Sidebar
@@ -220,7 +221,7 @@ if (this.state.updateTasks) {
           taskSelected={this.state.taskSelected}
         />
         <div className="diagram-container" onClick={this.selectedCheck}>
-          <CreateTask createTask={this.createTask} />
+          <CreateTask projectId={this.props.projectId} createTask={this.createTask} />
           <DiagramWidget
             model={this.model}
             diagramEngine={this.engine}
