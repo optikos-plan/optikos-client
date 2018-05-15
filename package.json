@@ -4,8 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "webpack-dev-server --content-base public",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node server",
+    "start:dev": "webpack-dev-server --content-base public",
+    "deploy": "sh ./scripts/deploy.sh"
   },
   "author": "",
   "license": "ISC",

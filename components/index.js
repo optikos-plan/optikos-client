@@ -11,7 +11,8 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 import Main from './Main'
 
 const client = new ApolloClient({
-  uri: 'http://localhost:3999/graphql'
+  // GRAPHQL_URI is injected by webpack
+  uri: GRAPHQL_URI
 })
 
 ReactDOM.render(

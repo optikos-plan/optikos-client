@@ -1,3 +1,4 @@
+const webpack = require('webpack')
 const path = require('path')
 
 module.exports = {
@@ -19,11 +20,16 @@ module.exports = {
       },
       {
         test: /\.css$/,
-        use: [
-          'style-loader',
-          'css-loader'
-        ]
+        use: ['style-loader', 'css-loader']
       }
     ]
-  }
+  },
+  plugins: [
+    new webpack.DefinePlugin({
+      GRAPHQL_URI:
+        process.env.NODE_ENV === 'production'
+          ? JSON.stringify('https://optikos-gql.herokuapp.com/graphql')
+          : JSON.stringify('http://localhost:3999/graphql')
+    })
+  ]
 }

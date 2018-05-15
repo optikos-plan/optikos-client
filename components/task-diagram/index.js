@@ -24,7 +24,8 @@ export default class TaskNode extends React.Component {
     super(props)
     this.state = {
       taskSelected: false,
-      taskSelectedData: {}
+      taskSelectedData: {},
+      taskPositions: {}
     }
 
     this.registerEngine()
@@ -39,6 +40,33 @@ export default class TaskNode extends React.Component {
     //
     this.nodePersistDate = NOP
     this.changeAssignee = NOP
+  }
+
+  // TODO: check error when merging with all projects page
+
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    // serialize the scene to localstorage to persist layout
+    //
+    if (this.props.tasks.length === 0) return
+
+    const projectId = this.props.tasks[0].project.id
+    const serialized = JSON.stringify(this.model.serializeDiagram())
+    localStorage.setItem(`Project:${projectId}`, serialized)
+  }
+
+  componentDidMount() {
+    // Use saved layout for current project if it exists
+
+    if (this.props.tasks.length === 0) return
+
+    const projectId = this.props.tasks[0].project.id
+    const data = localStorage.getItem(`Project:${projectId}`)
+    if (!data) return
+
+    const serialized = JSON.parse(data)
+    this.model = new DiagramModel()
+    this.model.deSerializeDiagram(serialized, this.engine)
+    this.engine.setDiagramModel(this.model)
   }
 
   registerEngine() {
@@ -137,7 +165,7 @@ export default class TaskNode extends React.Component {
      * Use a Promise in order to await the result from the deferred/timeout
      * function.
      */
-    const prettyPlease = new Promise(resolve => {
+    return new Promise(resolve => {
       setTimeout(() => {
         let parent = {}
         let child = {}
@@ -155,8 +183,6 @@ export default class TaskNode extends React.Component {
         return resolve({ childId: child.task.id, parentId: parent.task.id })
       }, 0)
     })
-
-    return prettyPlease
   }
 
   async switchToEdit(node, titleChanged, showTitle, title) {
