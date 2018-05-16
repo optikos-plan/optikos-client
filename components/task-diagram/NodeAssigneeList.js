@@ -10,6 +10,7 @@ const NodeAssigneeList = ({ deltaAssignee, node, data, assignee }) => {
 
   const { users: team } = data
   const user = assignee
+  console.log('User: ', user)
   return (
     <MySelectField
       team={team}

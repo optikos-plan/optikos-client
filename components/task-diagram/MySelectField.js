@@ -2,7 +2,19 @@ import React, { Component } from 'react'
 import SelectField from 'material-ui/SelectField'
 import MenuItem from 'material-ui/MenuItem'
 import nameToInitial from '../../utils/nameToInitial'
+
+import gql from 'graphql-tag'
+import { Mutation } from 'react-apollo'
+
 import ListItemMutation from './mutations/listItemMutation'
+
+const mutationUpdateTaskOwner = gql`
+  mutation setOwner($id: ID!, $user: ID!) {
+    updateTaskOwner(id: $id, user: $user) {
+      id
+    }
+  }
+`
 
 export default class MySelectField extends Component {
   constructor() {
@@ -20,13 +32,20 @@ export default class MySelectField extends Component {
     // console.log(this.state)
   }
 
-  handleChange(_, __, value) {
+  handleChange(_, __, value, setOwner) {
+    const { node, deltaAssignee, team } = this.props
     this.setState({ value })
+    setOwner({ variables: { id: node.task.id, user: value } })
+    deltaAssignee(
+      team.filter(member => {
+        console.log('Comparison: ', member.id, value)
+        return +member.id === value
+      })[0]
+    )
   }
 
   render() {
-    const { deltaAssignee, node, team } = this.props
-    console.log(this.state)
+    const { team } = this.props
     const styles = {
       customWidth: {
         width: 150
@@ -55,34 +74,40 @@ export default class MySelectField extends Component {
     )
 
     return (
-      <SelectField
-        style={{
-          width: '100%',
-          display: 'flex',
-          alignItems: 'center'
-        }}
-        className="selectField"
-        value={this.state.value}
-        onChange={this.handleChange}
-      >
-        {team.map(member => (
-          <MenuItem
-            key={+member.id}
-            value={+member.id}
-            primaryText={primaryText(member)}
-          />
-        ))}
-        {/* {team.map(member => {
-          return (
-          <ListItemMutation
-            deltaAssignee={deltaAssignee}
-            member={member}
-            node={node}
-            key={member.id}
-            handleChange={this.handleChange}
-          />
-        )})} */}
-      </SelectField>
+      <Mutation mutation={mutationUpdateTaskOwner}>
+        {setOwner => (
+          <SelectField
+            style={{
+              width: '100%',
+              display: 'flex',
+              alignItems: 'center'
+            }}
+            className="selectField"
+            value={this.state.value}
+            onChange={(event, key, value) => {
+              this.handleChange(event, key, value, setOwner)
+            }}
+          >
+            {team.map(member => (
+              <MenuItem
+                key={+member.id}
+                value={+member.id}
+                primaryText={primaryText(member)}
+              />
+            ))}
+            {/* {team.map(member => {
+              return (
+              <ListItemMutation
+                deltaAssignee={deltaAssignee}
+                member={member}
+                node={node}
+                key={member.id}
+                handleChange={this.handleChange}
+              />
+            )})} */}
+          </SelectField>
+        )}
+      </Mutation>
     )
   }
 }
