@@ -83,14 +83,15 @@ export default class TaskNode extends React.Component {
     this.engine.setDiagramModel(this.model)
   }
 
-  
-
   updateTasks() {
-    
     const nodeContainer = {}
     const links = []
+
     this.props.tasks.forEach(task => {
-      // do not duplicate nodes
+      let parentPort, childPort
+
+      // Add Task if it is not already in the scene
+      //
       if (!(task.id in nodeContainer)) {
         const node = new TaskNodeModel(
           task,
@@ -100,38 +101,35 @@ export default class TaskNode extends React.Component {
           this.changeAssignee
         )
         nodeContainer[task.id] = node
-        console.log(node)
         this.model.addNode(node)
-        // does the tasks have children
-        const parentPort = node.getPort('bottom')
-
-        task.children.forEach(child => {
-          // avoid duplication of nodes
-          if (!(child.id in nodeContainer)) {
-            // preventing error on load
-            if (child) {
-              const childNode = new TaskNodeModel(
-                child,
-                this.updateLink,
-                this.switchToEdit,
-                this.nodePersistDate,
-                this.changeAssignee
-              )
-              nodeContainer[child.id] = childNode
-              this.model.addNode(childNode)
-            }
-          }
-          const childPort = nodeContainer[child.id].getPort('top')
-
-          const link = parentPort.link(childPort)
-          links.push(link)
-        })
       }
+      parentPort = nodeContainer[task.id].getPort('bottom')
+
+      // Connect parent port to each of its children port...
+      task.children.forEach(child => {
+        // Add child node to scene.
+        if (!(child.id in nodeContainer)) {
+          const childNode = new TaskNodeModel(
+            child,
+            this.updateLink,
+            this.switchToEdit,
+            this.nodePersistDate,
+            this.changeAssignee
+          )
+          nodeContainer[child.id] = childNode
+          this.model.addNode(childNode)
+        }
+
+        childPort = nodeContainer[child.id].getPort('top')
+
+        const link = parentPort.link(childPort)
+        console.log(`LINK: ${task.id} -> ${child.id}`)
+        links.push(link)
+      })
     })
 
     this.model.addAll(...links)
   }
-
 
   selectedCheck() {
     const nodes = this.model.nodes
@@ -195,23 +193,23 @@ export default class TaskNode extends React.Component {
   }
 
   createTask(task) {
-
-  const node = new TaskNodeModel(
-    task,
-    this.updateLink,
-    this.switchToEdit,
-    this.nodePersistDate,
-    this.changeAssignee
-  )
-   this.model.addNode(node)
-   this.forceUpdate()
+    const node = new TaskNodeModel(
+      task,
+      this.updateLink,
+      this.switchToEdit,
+      this.nodePersistDate,
+      this.changeAssignee
+    )
+    this.model.addNode(node)
+    this.forceUpdate()
   }
 
   render() {
     const task = this.state.taskSelectedData
-if (this.state.updateTasks) {
-  this.updateTasks()
-}
+    console.log('TASKS', this.props.tasks)
+    if (this.state.updateTasks) {
+      this.updateTasks()
+    }
 
     return (
       <div className="srd-diagram">
@@ -221,7 +219,10 @@ if (this.state.updateTasks) {
           taskSelected={this.state.taskSelected}
         />
         <div className="diagram-container" onClick={this.selectedCheck}>
-          <CreateTask projectId={this.props.projectId} createTask={this.createTask} />
+          <CreateTask
+            projectId={this.props.projectId}
+            createTask={this.createTask}
+          />
           <DiagramWidget
             model={this.model}
             diagramEngine={this.engine}
