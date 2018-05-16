@@ -34,22 +34,12 @@ const createTask = (props) => {
       <RaisedButton label="ADD A TASK"  onClick={ async () => {
       let { data } = await setTask({
         variables: {
-          projectId: 1,
+          projectId: props.projectId,
           userId: 1,
           title: "Default Task"
         }
       })
-      data = data.createTask
-      const task = {
-        id: data.id,
-        title: data.title,
-        status: data.status,
-        endDate: data.endDate,
-        children: data.children,
-        project: data.project,
-        user: data.user,
-        parents: data.parents
-      }
+      const task = data.createTask
 
       props.createTask(task)
 

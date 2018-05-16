@@ -49,7 +49,6 @@ export class TaskNodeWidget extends React.Component {
   render() {
     const { size, node } = this.props
     const { showTitle, title, dueDate, assignee } = this.state
-
     return (
       // Entire node
       <div

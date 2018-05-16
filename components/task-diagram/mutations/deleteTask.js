@@ -22,8 +22,9 @@ const deleteTask = (props) => {
               await delTask({
                 variables: {
                   id: props.id
-                }
+								}
               });
+							console.log("stuff is being deleted")
             }
 					}}
 				/>

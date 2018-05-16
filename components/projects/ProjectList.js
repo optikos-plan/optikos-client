@@ -124,8 +124,7 @@ class ProjectList extends Component {
             actions={actions}
             modal={true}
             contentStyle={customContentStyle}
-            open={this.state.open}
-          >
+            open={this.state.open}>
             <TextField
               hintText="Title"
               onChange={(event, newValue) => this.handleChange(event, newValue)}
@@ -145,8 +144,7 @@ class ProjectList extends Component {
               value={this.state.owner}
               onChange={(event, key, payload) =>
                 this.handleChangeOwner(event, key, payload)
-              }
-            >
+              }>
               {users.map(user => (
                 <MenuItem
                   key={user.id}
@@ -158,7 +156,6 @@ class ProjectList extends Component {
           </Dialog>
         </div>
         {projects.map(project => {
-          console.log('Information of projects: ', project)
           return (
             <Card key={project.id}>
               <CardTitle
