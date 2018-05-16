@@ -7,8 +7,6 @@ import gql from 'graphql-tag'
 import UpdateLink from './mutations/updateLink'
 import GenDialog from './GeneralDialog'
 
-import FlatButton from 'material-ui/FlatButton'
-
 import nameToInitial from '../../utils/nameToInitial'
 
 const taskQuery = gql`
@@ -29,13 +27,11 @@ class UnconnectedTaskNodeWidget extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      showTitle: true,
       showGenDialog: false
     }
 
     this.handleKeyUp = this.handleKeyUp.bind(this)
     this.handleChange = this.handleChange.bind(this)
-    this.toggleTitle = this.toggleTitle.bind(this)
     this.deltaAssignee = this.deltaAssignee.bind(this)
     this.openDialog = this.openDialog.bind(this)
     this.closeDialog = this.closeDialog.bind(this)
@@ -47,12 +43,6 @@ class UnconnectedTaskNodeWidget extends React.Component {
 
   handleChange() {
     this.props.data.refetch()
-  }
-
-  toggleTitle() {
-    this.setState({
-      showTitle: !this.state.showTitle
-    })
   }
 
   deltaAssignee(member) {
