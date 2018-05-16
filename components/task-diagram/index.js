@@ -84,51 +84,38 @@ export default class TaskNode extends React.Component {
   }
 
   updateTasks() {
-    const nodeContainer = {}
-    const links = []
+    const sceneNodes = new Map()
+    const sceneLinks = []
 
+    // Add task to Scene only IFF it is not there already
+    //
+    const addToScene = task => {
+      if (sceneNodes.has(task.id)) return sceneNodes.get(task.id)
+
+      const node = new TaskNodeModel(
+        task,
+        this.updateLink,
+        this.switchToEdit,
+        this.nodePersistDate,
+        this.changeAssignee
+      )
+      sceneNodes.set(task.id, node)
+      this.model.addNode(node)
+      return node
+    }
+
+    // Link each child node to its parent
     this.props.tasks.forEach(task => {
-      let parentPort, childPort
+      const parentPort = addToScene(task).getPort('bottom')
 
-      // Add Task if it is not already in the scene
-      //
-      if (!(task.id in nodeContainer)) {
-        const node = new TaskNodeModel(
-          task,
-          this.updateLink,
-          this.switchToEdit,
-          this.nodePersistDate,
-          this.changeAssignee
-        )
-        nodeContainer[task.id] = node
-        this.model.addNode(node)
-      }
-      parentPort = nodeContainer[task.id].getPort('bottom')
-
-      // Connect parent port to each of its children port...
       task.children.forEach(child => {
-        // Add child node to scene.
-        if (!(child.id in nodeContainer)) {
-          const childNode = new TaskNodeModel(
-            child,
-            this.updateLink,
-            this.switchToEdit,
-            this.nodePersistDate,
-            this.changeAssignee
-          )
-          nodeContainer[child.id] = childNode
-          this.model.addNode(childNode)
-        }
-
-        childPort = nodeContainer[child.id].getPort('top')
-
+        const childPort = addToScene(child).getPort('top')
         const link = parentPort.link(childPort)
-        console.log(`LINK: ${task.id} -> ${child.id}`)
-        links.push(link)
+        sceneLinks.push(link)
       })
     })
 
-    this.model.addAll(...links)
+    this.model.addAll(...sceneLinks)
   }
 
   selectedCheck() {
@@ -206,7 +193,6 @@ export default class TaskNode extends React.Component {
 
   render() {
     const task = this.state.taskSelectedData
-    console.log('TASKS', this.props.tasks)
     if (this.state.updateTasks) {
       this.updateTasks()
     }
