@@ -42,6 +42,9 @@ export default class Navbar extends React.Component {
           <NavLink to="/people">
             <RaisedButton label="People" />
           </NavLink>
+          <NavLink to="/dashboard">
+            <RaisedButton label="Dashboard" />
+          </NavLink>
         </ToolbarGroup>
         <ToolbarGroup className="three-width" />
       </Toolbar>

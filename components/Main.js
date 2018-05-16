@@ -3,6 +3,7 @@ import { Route } from 'react-router-dom'
 import AllProjects from './projects/AllProjects'
 import SingleProject from './projects/SingleProject'
 import AllPeople from './people/AllPeople'
+import Dashboard from './dashboard/Dashboard'
 
 import { graphql } from 'react-apollo'
 import gql from 'graphql-tag'
@@ -19,6 +20,7 @@ const Main = ({ data }) => {
         path="/projects/:id"
         render={(routeProps) => <SingleProject routeProps={routeProps} projects={projects} />}
       />
+      <Route exact path="/dashboard" component={Dashboard} />
       <Route exact path="/people" component={AllPeople} />
       <Route exact path="/projects" component={AllProjects} />
       <Route exact path="/" component={AllProjects} />
