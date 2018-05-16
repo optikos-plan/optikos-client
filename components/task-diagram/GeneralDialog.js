@@ -13,6 +13,7 @@ const GenDialog = (props) => {
     handleChange,
     handleKeyUp,
     showTitle,
+    task,
     node,
     title,
     toggleTitle,
@@ -53,7 +54,7 @@ const GenDialog = (props) => {
           handleChange={handleChange}
           handleKeyUp={handleKeyUp}
           showTitle={showTitle}
-          node={node}
+          task={task}
           title={title}
           toggleTitle={toggleTitle}
         />
@@ -68,7 +69,7 @@ const GenDialog = (props) => {
         >
           Due Date:
         </h1>
-        <DatePicker node={node} dueDate={dueDate} />
+        <DatePicker task={task} dueDate={dueDate} />
       </div>
 
       <div className="genDialogSectionCol">

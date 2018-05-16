@@ -25,14 +25,14 @@ const muiTheme = getMuiTheme({
   }
 })
 
-const picker = ({ node, dueDate }) => {
+const picker = ({ task, dueDate }) => {
   return (
     <div className="nodeDatePicker">
     <Mutation mutation={SET_DATE}>
       {setDate => (
           <MuiThemeProvider muiTheme={muiTheme}>
             <DatePicker
-              id={node.task.id.toString()}
+              id={task.id.toString()}
               formatDate={date => moment(date).format('MMM Do YYYY')}
               hintText={
                 dueDate ? (
@@ -45,7 +45,7 @@ const picker = ({ node, dueDate }) => {
               onChange={(_, date) =>
                 setDate({
                   variables: {
-                    id: node.task.id,
+                    id: task.id,
                     date: moment(date).format('YYYY-MM-DD')
                   }
                 })

@@ -14,18 +14,36 @@ import FlatButton from 'material-ui/FlatButton'
 import NodeAssigneeList from './NodeAssigneeList'
 import GenDialog from './GeneralDialog'
 
-import nameToInitial from '../../utils/nameToInitial';
+import { graphql } from 'react-apollo'
+import gql from 'graphql-tag'
 
-export class TaskNodeWidget extends React.Component {
+import nameToInitial from '../../utils/nameToInitial'
+
+const taskQuery = gql`
+  query TaskQuery($id: ID!) {
+    task(id: $id) {
+      id
+      title
+      endDate
+      user {
+        id
+        name
+      }
+    }
+  }
+`
+
+class UnconnectedTaskNodeWidget extends React.Component {
   constructor(props) {
     super(props)
     const { node } = props
     this.state = {
       showTitle: true,
-      title: node.task.title,
-      dueDate: node.task.endDate,
-      assignee: node.task.user,
       showGenDialog: false
+
+      // title: node.task.title,
+      // dueDate: node.task.endDate,
+      // assignee: node.task.user
     }
 
     this.handleKeyUp = this.handleKeyUp.bind(this)
@@ -40,10 +58,8 @@ export class TaskNodeWidget extends React.Component {
     evt.stopPropagation()
   }
 
-  handleChange(evt) {
-    this.setState({
-      title: evt.target.value
-    })
+  handleChange() {
+    this.props.data.refetch()
   }
 
   toggleTitle() {
@@ -73,14 +89,18 @@ export class TaskNodeWidget extends React.Component {
 
   render() {
     const { size, node } = this.props
-    const { showTitle, title, dueDate, assignee, showGenDialog } = this.state
+
+    if (this.props.data.loading) return <p>Loading</p>
+    if (this.props.data.error) return <p>Error...</p>
+
+    const { showTitle, showGenDialog } = this.state
+
+    const { task } = this.props.data
+    const {id: taskId, title, endDate: dueDate, user: assignee } = this.props.data.task
+
     // TODO: move to general dialog component
     const actions = [
-      <FlatButton
-        label='OK'
-        primary={true}
-        onClick={this.closeDialog}
-      />
+      <FlatButton label="OK" primary={true} onClick={this.closeDialog} />
     ]
     return (
       // Entire node
@@ -90,7 +110,8 @@ export class TaskNodeWidget extends React.Component {
           position: 'relative',
           width: size,
           height: size / 3
-        }}>
+        }}
+      >
         {/* Node Content */}
         <div
           className="nodeBody"
@@ -101,17 +122,13 @@ export class TaskNodeWidget extends React.Component {
         >
           {/* Title and Date Section */}
           <div className="nodeTitleAndDate">
-            <h5>
-              {title}
-            </h5>
+            <h5>{title}</h5>
 
             {/* Due Date */}
             <p>
-              {
-                dueDate ?
-                moment(dueDate).format('MMM Do YYYY') :
-                'Enter due Date'
-              }
+              {dueDate
+                ? moment(dueDate).format('MMM Do YYYY')
+                : 'Enter due Date'}
             </p>
           </div>
           {/* Node Assignee Section */}
@@ -122,19 +139,15 @@ export class TaskNodeWidget extends React.Component {
                 justifyContent: 'center',
                 alignItems: 'center',
                 width: '30%'
-              }}>
+              }}
+            >
               {
-                <div className={
-                  assignee ?
-                  'nodeAssignee-chosen' :
-                  'nodeAssigne-choose'
+                <div
+                  className={
+                    assignee ? 'nodeAssignee-chosen' : 'nodeAssigne-choose'
                   }
                 >
-                  {
-                    assignee ?
-                    <p>{nameToInitial(assignee.name)}</p> :
-                    <p>+</p>
-                  }
+                  {assignee ? <p>{nameToInitial(assignee.name)}</p> : <p>+</p>}
                 </div>
               }
             </div>
@@ -149,6 +162,7 @@ export class TaskNodeWidget extends React.Component {
           deltaAssignee={this.deltaAssignee}
           showTitle={showTitle}
           node={node}
+          task={task}
           title={title}
           dueDate={dueDate}
           closeDialog={this.closeDialog}
@@ -178,7 +192,8 @@ export class TaskNodeWidget extends React.Component {
             zIndex: 10,
             top: size / 6 - 8,
             left: -8
-          }}>
+          }}
+        >
           <PortWidget name="left" node={node} />
         </div>
         <UpdateLink
@@ -197,7 +212,8 @@ export class TaskNodeWidget extends React.Component {
             zIndex: 10,
             left: size - 8,
             top: size / 6 - 8
-          }}>
+          }}
+        >
           <PortWidget name="right" node={node} />
         </div>
 
@@ -215,7 +231,15 @@ export class TaskNodeWidget extends React.Component {
     )
   }
 }
-TaskNodeWidget.defaultProps = {
+UnconnectedTaskNodeWidget.defaultProps = {
   size: 225,
   node: null
 }
+
+export const TaskNodeWidget = graphql(taskQuery, {
+  options: props => ({
+    variables: {
+      id: props.node.task.id
+    }
+  })
+})(UnconnectedTaskNodeWidget)

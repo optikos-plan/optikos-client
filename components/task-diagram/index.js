@@ -51,20 +51,20 @@ export default class TaskNode extends React.Component {
     localStorage.setItem(`Project:${projectId}`, serialized)
   }
 
-  componentDidMount() {
-    // Use saved layout for current project if it exists
+  // componentDidMount() {
+  //   // Use saved layout for current project if it exists
 
-    if (this.props.tasks.length === 0) return
+  //   if (this.props.tasks.length === 0) return
 
-    const projectId = this.props.tasks[0].project.id
-    const data = localStorage.getItem(`Project:${projectId}`)
-    if (!data) return
+  //   const projectId = this.props.tasks[0].project.id
+  //   const data = localStorage.getItem(`Project:${projectId}`)
+  //   if (!data) return
 
-    const serialized = JSON.parse(data)
-    this.model = new DiagramModel()
-    this.model.deSerializeDiagram(serialized, this.engine)
-    this.engine.setDiagramModel(this.model)
-  }
+  //   const serialized = JSON.parse(data)
+  //   this.model = new DiagramModel()
+  //   this.model.deSerializeDiagram(serialized, this.engine)
+  //   this.engine.setDiagramModel(this.model)
+  // }
 
   registerEngine() {
     this.engine = new DiagramEngine()
