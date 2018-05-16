@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React from 'react'
 
 import Dialog from 'material-ui/Dialog'
 import FlatButton from 'material-ui/FlatButton'
@@ -8,7 +8,7 @@ import NodeAssigneeList from './NodeAssigneeList'
 import UpdateTitle from './mutations/updateTitle'
 import DatePicker from './mutations/calendar'
 
-const GenDialog = () => {
+const GenDialog = (props) => {
   const {
     handleChange,
     handleKeyUp,
@@ -22,7 +22,7 @@ const GenDialog = () => {
     closeDialog,
     showGenDialog,
     assignee
-  } = this.props
+  } = props
 
   const actions = [
     <FlatButton key={1} label="OK" primary={true} onClick={closeDialog} />
