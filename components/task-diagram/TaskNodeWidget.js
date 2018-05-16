@@ -1,21 +1,13 @@
 import * as React from 'react'
 import { PortWidget } from 'storm-react-diagrams'
 import moment from 'moment'
-
-import NodeAssigneeDialog from './NodeAssigneeDialog'
-
-import DatePicker from './mutations/calendar'
-import UpdateTitle from './mutations/updateTitle'
-import UpdateLink from './mutations/updateLink'
-
-import Dialog from 'material-ui/Dialog'
-import FlatButton from 'material-ui/FlatButton'
-
-import NodeAssigneeList from './NodeAssigneeList'
-import GenDialog from './GeneralDialog'
-
 import { graphql } from 'react-apollo'
 import gql from 'graphql-tag'
+
+import UpdateLink from './mutations/updateLink'
+import GenDialog from './GeneralDialog'
+
+import FlatButton from 'material-ui/FlatButton'
 
 import nameToInitial from '../../utils/nameToInitial'
 
@@ -36,14 +28,9 @@ const taskQuery = gql`
 class UnconnectedTaskNodeWidget extends React.Component {
   constructor(props) {
     super(props)
-    const { node } = props
     this.state = {
       showTitle: true,
       showGenDialog: false
-
-      // title: node.task.title,
-      // dueDate: node.task.endDate,
-      // assignee: node.task.user
     }
 
     this.handleKeyUp = this.handleKeyUp.bind(this)
@@ -98,10 +85,6 @@ class UnconnectedTaskNodeWidget extends React.Component {
     const { task } = this.props.data
     const {id: taskId, title, endDate: dueDate, user: assignee } = this.props.data.task
 
-    // TODO: move to general dialog component
-    const actions = [
-      <FlatButton label="OK" primary={true} onClick={this.closeDialog} />
-    ]
     return (
       // Entire node
       <div
