@@ -14,7 +14,7 @@ export default class GenDialog extends Component {
   }
 
   render() {
-    const { handleChange, handleKeyUp, showTitle, node, title, toggleTitle, dueDate, changeAssignee, deltaAssignee, closeDialog, showGenDialog} = this.props
+    const { handleChange, handleKeyUp, showTitle, node, title, toggleTitle, dueDate, changeAssignee, deltaAssignee, closeDialog, showGenDialog, assignee} = this.props
 
     const actions = [
       <FlatButton
@@ -73,6 +73,8 @@ export default class GenDialog extends Component {
           <NodeAssigneeList
             changeAssignee={changeAssignee}
             deltaAssignee={deltaAssignee}
+            assignee={assignee}
+            node={node}
           />
         </div>
       </Dialog>

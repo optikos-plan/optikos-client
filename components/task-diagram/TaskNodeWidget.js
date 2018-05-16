@@ -153,6 +153,7 @@ export class TaskNodeWidget extends React.Component {
           dueDate={dueDate}
           closeDialog={this.closeDialog}
           showGenDialog={showGenDialog}
+          assignee={assignee}
         />
 
         {/* Node Shape */}
