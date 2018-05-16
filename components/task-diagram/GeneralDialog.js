@@ -83,3 +83,5 @@ const GenDialog = () => {
     </Dialog>
   )
 }
+
+export default GenDialog
