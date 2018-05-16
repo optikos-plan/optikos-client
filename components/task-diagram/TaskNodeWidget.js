@@ -30,25 +30,14 @@ class UnconnectedTaskNodeWidget extends React.Component {
       showGenDialog: false
     }
 
-    this.handleKeyUp = this.handleKeyUp.bind(this)
     this.handleChange = this.handleChange.bind(this)
-    this.deltaAssignee = this.deltaAssignee.bind(this)
     this.openDialog = this.openDialog.bind(this)
     this.closeDialog = this.closeDialog.bind(this)
   }
 
-  handleKeyUp(evt) {
-    evt.stopPropagation()
-  }
-
   handleChange() {
+    console.log('refetch dispatched...')
     this.props.data.refetch()
-  }
-
-  deltaAssignee(member) {
-    this.setState({
-      assignee: member
-    })
   }
 
   // open dialog to edit all node information
@@ -66,14 +55,19 @@ class UnconnectedTaskNodeWidget extends React.Component {
 
   render() {
     const { size, node } = this.props
-
+    console.log('Data', this.props.data)
     if (this.props.data.loading) return <p>Loading</p>
     if (this.props.data.error) return <p>Error...</p>
 
-    const { showTitle, showGenDialog } = this.state
+    const { showGenDialog } = this.state
 
     const { task } = this.props.data
-    const {id: taskId, title, endDate: dueDate, user: assignee } = this.props.data.task
+    const {
+      id: taskId,
+      title,
+      endDate: dueDate,
+      user: assignee
+    } = this.props.data.task
 
     return (
       // Entire node
@@ -117,7 +111,7 @@ class UnconnectedTaskNodeWidget extends React.Component {
               {
                 <div
                   className={
-                    assignee ? 'nodeAssignee-chosen' : 'nodeAssigne-choose'
+                    assignee ? 'nodeAssignee-chosen' : 'nodeAssignee-choose'
                   }
                 >
                   {assignee ? <p>{nameToInitial(assignee.name)}</p> : <p>+</p>}
@@ -126,21 +120,17 @@ class UnconnectedTaskNodeWidget extends React.Component {
             </div>
           }
         </div>
-        {/* TODO: move to general dialog component */}
+        {/* Edit Dialog to Change Info on Nodes */}
         <GenDialog
           handleChange={this.handleChange}
           handleKeyUp={this.handleKeyUp}
-          toggleTitle={this.toggleTitle}
-          changeAssignee={this.changeAssignee}
-          deltaAssignee={this.deltaAssignee}
-          showTitle={showTitle}
           node={node}
           task={task}
           title={title}
           dueDate={dueDate}
+          assignee={assignee}
           closeDialog={this.closeDialog}
           showGenDialog={showGenDialog}
-          assignee={assignee}
         />
 
         {/* Node Shape */}

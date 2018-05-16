@@ -4,7 +4,7 @@ import MySelectField from './MySelectField'
 import { graphql } from 'react-apollo'
 import gql from 'graphql-tag'
 
-const NodeAssigneeList = ({ deltaAssignee, node, data, assignee }) => {
+const NodeAssigneeList = ({ handleChange, task, data, assignee }) => {
   if (data.loading) return <p>Loading...</p>
   if (data.error) return <p>Error :(</p>
 
@@ -14,8 +14,8 @@ const NodeAssigneeList = ({ deltaAssignee, node, data, assignee }) => {
   return (
     <MySelectField
       team={team}
-      deltaAssignee={deltaAssignee}
-      node={node}
+      handleChange={handleChange}
+      task={task}
       user={user} />
   )
 }

@@ -11,15 +11,9 @@ import DatePicker from './mutations/calendar'
 const GenDialog = (props) => {
   const {
     handleChange,
-    handleKeyUp,
-    showTitle,
     task,
-    node,
     title,
-    toggleTitle,
     dueDate,
-    changeAssignee,
-    deltaAssignee,
     closeDialog,
     showGenDialog,
     assignee
@@ -52,11 +46,8 @@ const GenDialog = (props) => {
         </h1>
         <UpdateTitle
           handleChange={handleChange}
-          handleKeyUp={handleKeyUp}
-          showTitle={showTitle}
           task={task}
           title={title}
-          toggleTitle={toggleTitle}
         />
       </div>
 
@@ -69,16 +60,15 @@ const GenDialog = (props) => {
         >
           Due Date:
         </h1>
-        <DatePicker task={task} dueDate={dueDate} />
+        <DatePicker task={task} dueDate={dueDate} handleChange={handleChange} />
       </div>
 
       <div className="genDialogSectionCol">
         <h1>Task Assignee:</h1>
         <NodeAssigneeList
-          changeAssignee={changeAssignee}
-          deltaAssignee={deltaAssignee}
+          handleChange={handleChange}
           assignee={assignee}
-          node={node}
+          task={task}
         />
       </div>
     </Dialog>

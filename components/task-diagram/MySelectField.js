@@ -6,8 +6,6 @@ import nameToInitial from '../../utils/nameToInitial'
 import gql from 'graphql-tag'
 import { Mutation } from 'react-apollo'
 
-import ListItemMutation from './mutations/listItemMutation'
-
 const mutationUpdateTaskOwner = gql`
   mutation setOwner($id: ID!, $user: ID!) {
     updateTaskOwner(id: $id, user: $user) {
@@ -29,19 +27,13 @@ export default class MySelectField extends Component {
     this.setState({
       value: +this.props.user.id
     })
-    // console.log(this.state)
   }
 
   handleChange(_, __, value, setOwner) {
-    const { node, deltaAssignee, team } = this.props
+    const { handleChange, team, task } = this.props
     this.setState({ value })
-    setOwner({ variables: { id: node.task.id, user: value } })
-    deltaAssignee(
-      team.filter(member => {
-        console.log('Comparison: ', member.id, value)
-        return +member.id === value
-      })[0]
-    )
+    setOwner({ variables: { id: task.id, user: value } })
+    handleChange()
   }
 
   render() {
@@ -95,16 +87,6 @@ export default class MySelectField extends Component {
                 primaryText={primaryText(member)}
               />
             ))}
-            {/* {team.map(member => {
-              return (
-              <ListItemMutation
-                deltaAssignee={deltaAssignee}
-                member={member}
-                node={node}
-                key={member.id}
-                handleChange={this.handleChange}
-              />
-            )})} */}
           </SelectField>
         )}
       </Mutation>

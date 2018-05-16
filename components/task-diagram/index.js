@@ -41,15 +41,15 @@ export default class TaskNode extends React.Component {
 
   // TODO: check error when merging with all projects page
 
-  componentDidUpdate(prevProps, prevState, snapshot) {
-    // serialize the scene to localstorage to persist layout
-    //
-    if (this.props.tasks.length === 0) return
+  // componentDidUpdate(prevProps, prevState, snapshot) {
+  //   // serialize the scene to localstorage to persist layout
+  //   //
+  //   if (this.props.tasks.length === 0) return
 
-    const projectId = this.props.tasks[0].project.id
-    const serialized = JSON.stringify(this.model.serializeDiagram())
-    localStorage.setItem(`Project:${projectId}`, serialized)
-  }
+  //   const projectId = this.props.tasks[0].project.id
+  //   const serialized = JSON.stringify(this.model.serializeDiagram())
+  //   localStorage.setItem(`Project:${projectId}`, serialized)
+  // }
 
   // componentDidMount() {
   //   // Use saved layout for current project if it exists
