@@ -1,84 +1,124 @@
 import * as React from 'react'
 import { PortWidget } from 'storm-react-diagrams'
-import NodeAssigneeDialog from './NodeAssigneeDialog'
+import moment from 'moment'
+import { graphql } from 'react-apollo'
+import gql from 'graphql-tag'
 
-import DatePicker from './mutations/calendar'
-import UpdateTitle from './mutations/updateTitle'
 import UpdateLink from './mutations/updateLink'
+import GenDialog from './GeneralDialog'
 import DeleteTask from './mutations/deleteTask'
 
-export class TaskNodeWidget extends React.Component {
+import nameToInitial from '../../utils/nameToInitial'
+import Badge from 'material-ui/Badge'
+
+const taskQuery = gql`
+  query TaskQuery($id: ID!) {
+    task(id: $id) {
+      id
+      title
+      endDate
+      user {
+        id
+        name
+      }
+    }
+  }
+`
+
+class UnconnectedTaskNodeWidget extends React.Component {
   constructor(props) {
     super(props)
-    const { node } = props
     this.state = {
-      showTitle: true,
-      title: node.task.title,
-      dueDate: node.task.endDate,
-      assignee: node.task.user
+      showGenDialog: false
     }
 
-    this.handleKeyUp = this.handleKeyUp.bind(this)
     this.handleChange = this.handleChange.bind(this)
-    this.toggleTitle = this.toggleTitle.bind(this)
-    this.deltaAssignee = this.deltaAssignee.bind(this)
+    this.openDialog = this.openDialog.bind(this)
+    this.closeDialog = this.closeDialog.bind(this)
   }
 
-  handleKeyUp(evt) {
-    evt.stopPropagation()
+  handleChange() {
+    console.log('refetch dispatched...')
+    this.props.data.refetch()
   }
 
-  handleChange(evt) {
+  // open dialog to edit all node information
+  openDialog() {
     this.setState({
-      title: evt.target.value
+      showGenDialog: true
     })
   }
 
-  toggleTitle() {
+  closeDialog() {
     this.setState({
-      showTitle: !this.state.showTitle
-    })
-  }
-
-  deltaAssignee(member) {
-    this.setState({
-      assignee: member
+      showGenDialog: false
     })
   }
 
   render() {
     const { size, node } = this.props
-    const { showTitle, title, dueDate, assignee } = this.state
+    console.log('Data', this.props.data)
+    if (this.props.data.loading) return <p>Loading</p>
+    if (this.props.data.error) return <p>Error...</p>
+
+    const { showGenDialog } = this.state
+
+    const { task } = this.props.data
+    const {
+      id: taskId,
+      title,
+      endDate: dueDate,
+      user: assignee
+    } = this.props.data.task
+
+    const color = status => {
+      // temp
+      status = 'IN_PROGRESS'
+
+      if (status === 'COMPLETED') {
+        return '#76FF03'
+      } else if (status === 'IN_PROGRESS') {
+        return 'yellow'
+      } else {
+        return 'steelblue'
+      }
+    }
+
     return (
-      // Entire node
-      <div
-        className={'task-node'}
-        style={{
-          position: 'relative',
-          width: size,
-          height: size / 3
+      <Badge
+        style={{ padding: '0px' }}
+        badgeContent={''}
+        badgeStyle={{
+          top: '58px',
+          right: '95px',
+          width: '12px',
+          height: '12px',
+          backgroundColor: color(status)
         }}>
-             
-        {/* Node Content */}
+        {/* // Entire node */}
         <div
-          className="nodeBody"
+          className={'task-node'}
           style={{
-            position: 'absolute'
+            display: 'flex',
+            position: 'absolute',
+            width: size,
+            height: size / 3
+          }}
+          onDoubleClick={this.openDialog}>
+          {/* Node Content */}
+
           }}>
          <DeleteTask id={node.task.id} />
           {/* Title and Date Section */}
           <div className="nodeTitleAndDate">
-            <UpdateTitle
-              handleChange={this.handleChange}
-              handleKeyUp={this.handleKeyUp}
-              showTitle={showTitle}
-              node={node}
-              title={title}
-              toggleTitle={this.toggleTitle}
-            />
+            <h5>{title}</h5>
 
-            {/* Date Picker */}
-            <DatePicker node={node} dueDate={dueDate} />
+            {/* Due Date */}
+            <p>
+              {dueDate
+                ? moment(dueDate).format('MMM Do YYYY')
+                : 'Enter due Date'}
+            </p>
           </div>
           {/* Node Assignee Section */}
           {
@@ -89,29 +129,43 @@ export class TaskNodeWidget extends React.Component {
                 alignItems: 'center',
                 width: '30%'
               }}>
-              <NodeAssigneeDialog
-                assignee={assignee}
-                changeAssignee={node.changeAssignee}
-                deltaAssignee={this.deltaAssignee}
-                node={node}
-              />
+              {
+                <div
+                  className={
+                    assignee ? 'nodeAssignee-chosen' : 'nodeAssignee-choose'
+                  }>
+                  {assignee ? <p>{nameToInitial(assignee.name)}</p> : <p>+</p>}
+                </div>
+              }
             </div>
           }
         </div>
-        
+        {/* Edit Dialog to Change Info on Nodes */}
+        <GenDialog
+          handleChange={this.handleChange}
+          handleKeyUp={this.handleKeyUp}
+          node={node}
+          task={task}
+          title={title}
+          dueDate={dueDate}
+          assignee={assignee}
+          closeDialog={this.closeDialog}
+          showGenDialog={showGenDialog}
+        />
+
         {/* Node Shape */}
         <svg
           width={size}
           height={size / 3}
           dangerouslySetInnerHTML={{
             __html: `
-          <g id="Layer_1">
-          </g>
-          <g id="Layer_2">
-          <rect fill="steelblue" x="0" y="0" rx="10" ry="10" width="${size}" height="${size /
+            <g id="Layer_1">
+            </g>
+            <g id="Layer_2">
+            <rect fill="steelblue" x="0" y="0" rx="10" ry="10" width="${size}" height="${size /
               3}"/>
-          </g>
-        `
+            </g>
+          `
           }}
         />
         {/* Port Widget Declaration */}
@@ -154,11 +208,20 @@ export class TaskNodeWidget extends React.Component {
             top: size / 3 - 8
           }}
         />
-      </div>
+      </Badge>
     )
   }
 }
-TaskNodeWidget.defaultProps = {
+
+UnconnectedTaskNodeWidget.defaultProps = {
   size: 225,
   node: null
 }
+
+export const TaskNodeWidget = graphql(taskQuery, {
+  options: props => ({
+    variables: {
+      id: props.node.task.id
+    }
+  })
+})(UnconnectedTaskNodeWidget)

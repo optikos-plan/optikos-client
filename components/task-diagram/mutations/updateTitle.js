@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { Component } from 'react'
 import gql from 'graphql-tag'
 import { Mutation } from 'react-apollo'
 
@@ -11,42 +11,83 @@ const mutationChangeTitle = gql`
   }
 `
 
-const UpdateTitle = ({
-  handleChange,
-  handleKeyUp,
-  showTitle,
-  node,
-  title,
-  toggleTitle
-}) => (
-  <Mutation mutation={mutationChangeTitle}>
-    {updateTitle => {
-      return showTitle ? (
-        <strong
-          onDoubleClick={() => {
-            toggleTitle()
-          }}
-          style={{ position: 'absolute', top: 15, left: 8 }}>
-          {/* {node.task.title} */}
-          {title}
-        </strong>
-      ) : (
-        // Input field to change title
-        <input
-          onKeyUp={handleKeyUp}
-          autoFocus={true}
-          defaultValue={title}
-          onChange={handleChange}
-          onBlur={() => {
-            updateTitle({ variables: { id: node.task.id, title: title } })
-            toggleTitle()
-          }}
-          type="text"
-          style={{ position: 'absolute', top: 5, left: 5 }}
-        />
-      )
-    }}
-  </Mutation>
-)
+export default class UpdateTitle extends Component {
+  constructor() {
+    super()
+    this.state = {
+      value: '',
+      showTitle: true
+    }
+    this.editTitle = this.editTitle.bind(this)
+    this.toggleTitle = this.toggleTitle.bind(this)
+    this.handleKeyUp = this.handleKeyUp.bind(this)
+  }
 
-export default UpdateTitle
+  editTitle(evt) {
+    console.log('editing title...', evt.target.value)
+    this.setState({
+      value: evt.target.value
+    })
+  }
+
+  toggleTitle() {
+    this.setState({
+      showTitle: !this.state.showTitle
+    })
+  }
+
+  handleKeyUp(evt) {
+    evt.stopPropagation()
+  }
+
+  render() {
+    const {
+      handleChange,
+      task,
+      title
+    } = this.props
+
+    const { showTitle } = this.state
+
+    return (
+      <Mutation mutation={mutationChangeTitle}>
+        {updateTitle => {
+          return showTitle && title ? (
+            <strong
+              onDoubleClick={() => {
+                this.toggleTitle()
+              }}
+              style={{
+                fontSize: '2rem'
+              }}
+            >
+              {/* {node.task.title} */}
+              {title}
+            </strong>
+          ) : (
+            // Input field to change title
+            <input
+              onKeyUp={this.handleKeyUp}
+              autoFocus={true}
+              placeholder={title}
+              onChange={this.editTitle}
+              onBlur={evt => {
+                const newTitle = evt.target.value
+                updateTitle({ variables: { id: task.id, title: newTitle } })
+                this.toggleTitle()
+                handleChange()
+              }}
+              type="text"
+              style={{
+                width: '70%',
+                height: '1.5rem',
+                fontSize: '2rem'
+              }}
+              value={this.state.value}
+            />
+          )
+        }}
+      </Mutation>
+    )
+  }
+}

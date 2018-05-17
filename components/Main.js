@@ -17,7 +17,9 @@ const Main = ({ data }) => {
     <div id="main">
       <Route
         path="/projects/:id"
-        render={(routeProps) => <SingleProject routeProps={routeProps} projects={projects} />}
+        render={routeProps => (
+          <SingleProject routeProps={routeProps} projects={projects} />
+        )}
       />
       <Route exact path="/people" component={AllPeople} />
       <Route exact path="/projects" component={AllProjects} />
