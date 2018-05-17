@@ -4,6 +4,35 @@
   margin: 0;
 }
 
+.wrapper {
+  display: grid;
+  grid-gap: 10px;
+  grid-template-columns: repeat(auto-fill, 100px);
+  background-color: #fff;
+  color: #444;
+}
+
+.box {
+  background-color: #444;
+  color: #fff;
+  border-radius: 5px;
+  padding: 20px;
+  font-size: 150%;
+}
+
+.center {
+  margin-left: 30px;
+}
+
+.item1 {
+  width: 30%;
+  margin-left: 10px;
+}
+.item2 {
+  width: 30%;
+  margin-right: 610px;
+}
+
 /* demo styles */
 #demo div {
   font-size: 50px;
@@ -19,12 +48,32 @@
 }
 
 .sidenav {
+
   background-color: white;
+
   padding-top: 20px;
   color: #424242;
   flex-basis: 2;
   height: 100vh;
   width: 15%
+}
+
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.pmworkload {
+  align-self: center;
+}
+
+.item1 {
+  float: left;
+}
+
+.item2 {
+  float: right;
 }
 
 .navbar {
@@ -34,7 +83,7 @@
 .srd-diagram {
   flex-basis: 3;
   background-color: #cccc;
-  height: 100%
+  height: 100%;
 }
 
 .srd-port:hover {
@@ -56,7 +105,7 @@
   height: 100%;
   position: absolute;
   align-items: center;
-  outline: none
+  outline: none;
 }
 
 /* Node title and date section */
@@ -151,20 +200,24 @@
 }
 
 .nodeDatePicker div div {
+
   color: steelblue !important;
   font-size: 2rem !important;
   font-weight: bold !important;
   height: 2rem !important;
+
 }
 
 /* Date picker default date */
 .nodeDatePicker div div div {
+
   color: steelblue !important;
   font-size: 2rem !important;
   font-weight: bold !important;
   height: 0.1rem !important;
   position: absolute !important;
   top: 0.25rem !important;
+
 }
 
 .nodeDatePicker div div div hr {
@@ -180,6 +233,7 @@
   width: 100% !important;
   height: 2.5rem !important;
   margin: 0 !important;
+
   color: steelblue !important;
   font-size: 2rem !important;
   font-weight: bold !important;
@@ -191,6 +245,7 @@
   color: steelblue !important;
   font-size: 2rem !important;
   font-weight: bold !important;
+
 }
 
 .nodeDatePop {
@@ -229,7 +284,7 @@
   height: 1000px;
   flex: auto;
   overflow: hidden;
-  background: whitesmoke
+  background: whitesmoke;
 }
 
 .task-button {
@@ -239,3 +294,4 @@
 .button-nav {
   background-color: white
 }
+

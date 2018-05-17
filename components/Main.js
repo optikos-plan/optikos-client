@@ -3,7 +3,10 @@ import { Route } from 'react-router-dom'
 import AllProjects from './projects/AllProjects'
 import SingleProject from './projects/SingleProject'
 import AllPeople from './people/AllPeople'
+
+import Dashboard from './dashboard/Dashboard'
 import RefreshIndicator from 'material-ui/RefreshIndicator';
+
 
 import { graphql } from 'react-apollo'
 import gql from 'graphql-tag'
@@ -13,7 +16,6 @@ const Main = ({ data }) => {
   if (data.error) return <div>Error...</div>
 
   const { projects } = data
-
   return (
     <div id="main">
       <Route
@@ -21,6 +23,10 @@ const Main = ({ data }) => {
         render={routeProps => (
           <SingleProject routeProps={routeProps} projects={projects} />
         )}
+      />
+      <Route
+        exact path="/dashboard"
+        render={(routeProps) => <Dashboard routeProps={routeProps} projects={projects} />}
       />
       <Route exact path="/people" component={AllPeople} />
       <Route exact path="/projects" component={AllProjects} />
