@@ -14,7 +14,7 @@ const SingleProject = props => {
     <div id="singleProject">
       <Navbar />
       <div className="testFlex">
-        <TaskNode tasks={project.tasks} />
+        <TaskNode projectId={projectId} tasks={project.tasks} />
       </div>
     </div>
   )

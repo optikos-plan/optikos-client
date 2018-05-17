@@ -24,6 +24,7 @@
   color: #424242;
   flex-basis: 2;
   height: 100vh;
+  width: 15%
 }
 
 .navbar {
@@ -33,6 +34,7 @@
 .srd-diagram {
   flex-basis: 3;
   background-color: #cccc;
+  height: 100%
 }
 
 .srd-port:hover {
@@ -54,6 +56,7 @@
   height: 100%;
   position: absolute;
   align-items: center;
+  outline: none
 }
 
 /* Node title and date section */
@@ -220,4 +223,15 @@
   position: absolute !important;
   top: -15px !important;
   right: 50px !important;
+}
+.diagram-container {
+  width: 1000px;
+  height: 1000px;
+  flex: auto;
+  overflow: hidden;
+  background: whitesmoke
+}
+
+.task-button {
+  margin: 12px;
 }

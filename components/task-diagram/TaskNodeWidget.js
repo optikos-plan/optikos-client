@@ -6,6 +6,7 @@ import gql from 'graphql-tag'
 
 import UpdateLink from './mutations/updateLink'
 import GenDialog from './GeneralDialog'
+import DeleteTask from './mutations/deleteTask'
 
 import nameToInitial from '../../utils/nameToInitial'
 import Badge from 'material-ui/Badge'
@@ -106,6 +107,8 @@ class UnconnectedTaskNodeWidget extends React.Component {
           onDoubleClick={this.openDialog}>
           {/* Node Content */}
 
+          }}>
+         <DeleteTask id={node.task.id} />
           {/* Title and Date Section */}
           <div className="nodeTitleAndDate">
             <h5>{title}</h5>
