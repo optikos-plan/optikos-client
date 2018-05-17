@@ -3,6 +3,7 @@ import { Route } from 'react-router-dom'
 import AllProjects from './projects/AllProjects'
 import SingleProject from './projects/SingleProject'
 import AllPeople from './people/AllPeople'
+import RefreshIndicator from 'material-ui/RefreshIndicator';
 
 import { graphql } from 'react-apollo'
 import gql from 'graphql-tag'

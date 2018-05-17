@@ -19,7 +19,7 @@
 }
 
 .sidenav {
-  background-color: #e0e0e0;
+  background-color: white;
   padding-top: 20px;
   color: #424242;
   flex-basis: 2;
@@ -234,4 +234,8 @@
 
 .task-button {
   margin: 12px;
+}
+
+.button-nav {
+  background-color: white
 }
