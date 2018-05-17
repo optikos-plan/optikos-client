@@ -12,6 +12,12 @@ const style = {
 	margin: 12
 };
 
+const mutationDeleteUser = gql`
+	mutation DeleteUser($id: ID!) {
+		deleteUser(id: $id)
+	}
+`;
+
 const mutationCreateUser = gql`
 	mutation CreateUser($name: String!, $email: String!) {
 		createUser(name: $name, email: $email) {
@@ -35,8 +41,8 @@ class PeopleList extends Component {
 			open: false,
 			openEdit: false,
 			name: '',
-      email: '',
-      userSelected: ''
+			email: '',
+			userSelected: ''
 		};
 	}
 
@@ -44,7 +50,17 @@ class PeopleList extends Component {
 		this.setState({ open: true });
 	};
 	handleOpenEdit = (event) => {
-		this.setState({ openEdit: true, userSelected: event.target.name });
+		this.setState({ openEdit: true, userSelected: event.currentTarget.id });
+	};
+
+handleDeleteUser = async (event, deleteUser) => {
+		await this.setState({ userSelected: event.currentTarget.id });
+		deleteUser({
+			variables: {
+				id: this.state.userSelected
+			}
+		})
+		this.props.data.refetch();
 	};
 
 	handleClose = () => {
@@ -71,7 +87,21 @@ class PeopleList extends Component {
 		this.props.data.refetch();
 	};
 
-	handleUpdateNewUser = (updateUser) => {};
+	handleUpdateNewUser = (updateUser) => {
+		updateUser({
+			variables: {
+				name: this.state.name,
+				email: this.state.email,
+				id: this.state.userSelected
+			}
+		});
+		this.setState({
+			name: '',
+			email: ''
+		});
+		this.handleCloseEdit();
+		this.props.data.refetch();
+	};
 
 	render() {
 		const users = this.props.data.users || [];
@@ -86,9 +116,9 @@ class PeopleList extends Component {
 
 		const actionsEdit = [
 			<FlatButton label="Cancel" primary={true} onClick={this.handleCloseEdit} />,
-			<Mutation mutation={mutationCreateUser}>
-				{(createUser) => (
-					<FlatButton label="Submit" primary={true} onClick={() => this.handleCreateNewUser(createUser)} />
+			<Mutation mutation={mutationUpdateUser}>
+				{(updateUser) => (
+					<FlatButton label="Submit" primary={true} onClick={() => this.handleUpdateNewUser(updateUser)} />
 				)}
 			</Mutation>
 		];
@@ -97,6 +127,22 @@ class PeopleList extends Component {
 				<RaisedButton label="ADD NEW USER" style={style} primary={true} onClick={this.handleOpen} />
 
 				<Dialog title="New User" actions={actions} modal={true} open={this.state.open}>
+					<div>
+						<TextField
+							onChange={(event, newValue) => this.handleChange(event, newValue)}
+							name="name"
+							hintText="Name"
+						/>
+					</div>
+					<div>
+						<TextField
+							onChange={(event, newValue) => this.handleChange(event, newValue)}
+							name="email"
+							hintText="Email"
+						/>
+					</div>
+				</Dialog>
+				<Dialog title="Edit User" actions={actionsEdit} modal={true} open={this.state.openEdit}>
 					<div>
 						<TextField
 							onChange={(event, newValue) => this.handleChange(event, newValue)}
@@ -122,23 +168,11 @@ class PeopleList extends Component {
 								showExpandableButton={true}
 							/>
 							<CardActions>
-								<FlatButton label="EDIT" name={user.id} onClick={this.handleOpenEdit} />
-								<Dialog title="Edit User" actions={actionsEdit} modal={true} open={this.state.openEdit}>
-									<div>
-										<TextField
-											onChange={(event, newValue) => this.handleChange(event, newValue)}
-											name="name"
-											hintText={user.name}
-										/>
-									</div>
-									<div>
-										<TextField
-											onChange={(event, newValue) => this.handleChange(event, newValue)}
-											name="email"
-											hintText={user.email}
-										/>
-									</div>
-								</Dialog>
+								<FlatButton id={user.id} label="EDIT" primary={true} onClick={this.handleOpenEdit} />
+								<Mutation mutation={mutationDeleteUser}>
+									{(deleteUser) => <FlatButton id={user.id} label="DELETE" secondary={true} onClick={(event) => this.handleDeleteUser(event, deleteUser)} />}
+								</Mutation>
+
 							</CardActions>
 							<CardText expandable={true}>
 								<p>Email: {user.email}</p>
