@@ -20,7 +20,7 @@ const Main = ({ data }) => {
         path="/projects/:id"
         render={(routeProps) => <SingleProject routeProps={routeProps} projects={projects} />}
       />
-      <Route exact path="/dashboard" component={Dashboard} />
+      <Route exact path="/dashboard" component={Dashboard} projects={projects} />
       <Route exact path="/people" component={AllPeople} />
       <Route exact path="/projects" component={AllProjects} />
       <Route exact path="/" component={AllProjects} />
