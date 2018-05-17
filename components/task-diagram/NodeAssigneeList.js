@@ -1,31 +1,22 @@
 import React from 'react'
-import { List } from 'material-ui/List'
-
-import ListItemMutation from './mutations/listItemMutation'
+import MySelectField from './MySelectField'
 
 import { graphql } from 'react-apollo'
 import gql from 'graphql-tag'
 
-const NodeAssigneeList = ({ deltaAssignee, node, data }) => {
+const NodeAssigneeList = ({ handleChange, task, data, assignee }) => {
   if (data.loading) return <p>Loading...</p>
   if (data.error) return <p>Error :(</p>
 
   const { users: team } = data
-
+  const user = assignee
+  console.log('User: ', user)
   return (
-    <List
-      style={{
-        width: '100%'
-      }}>
-      {team.map(member => (
-        <ListItemMutation
-          deltaAssignee={deltaAssignee}
-          member={member}
-          node={node}
-          key={member.id}
-        />
-      ))}
-    </List>
+    <MySelectField
+      team={team}
+      handleChange={handleChange}
+      task={task}
+      user={user} />
   )
 }
 

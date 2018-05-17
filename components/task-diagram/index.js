@@ -44,30 +44,30 @@ export default class TaskNode extends React.Component {
 
   // TODO: check error when merging with all projects page
 
-  componentDidUpdate(prevProps, prevState, snapshot) {
-    // serialize the scene to localstorage to persist layout
-    //
-    if (this.props.tasks.length === 0) return
+  // componentDidUpdate(prevProps, prevState, snapshot) {
+  //   // serialize the scene to localstorage to persist layout
+  //   //
+  //   if (this.props.tasks.length === 0) return
 
-    const projectId = this.props.tasks[0].project.id
-    const serialized = JSON.stringify(this.model.serializeDiagram())
-    localStorage.setItem(`Project:${projectId}`, serialized)
-  }
+  //   const projectId = this.props.tasks[0].project.id
+  //   const serialized = JSON.stringify(this.model.serializeDiagram())
+  //   localStorage.setItem(`Project:${projectId}`, serialized)
+  // }
 
-  componentDidMount() {
-    // Use saved layout for current project if it exists
+  // componentDidMount() {
+  //   // Use saved layout for current project if it exists
 
-    if (this.props.tasks.length === 0) return
+  //   if (this.props.tasks.length === 0) return
 
-    const projectId = this.props.tasks[0].project.id
-    const data = localStorage.getItem(`Project:${projectId}`)
-    if (!data) return
+  //   const projectId = this.props.tasks[0].project.id
+  //   const data = localStorage.getItem(`Project:${projectId}`)
+  //   if (!data) return
 
-    const serialized = JSON.parse(data)
-    this.model = new DiagramModel()
-    this.model.deSerializeDiagram(serialized, this.engine)
-    this.engine.setDiagramModel(this.model)
-  }
+  //   const serialized = JSON.parse(data)
+  //   this.model = new DiagramModel()
+  //   this.model.deSerializeDiagram(serialized, this.engine)
+  //   this.engine.setDiagramModel(this.model)
+  // }
 
   registerEngine() {
     this.engine = new DiagramEngine()
@@ -83,55 +83,40 @@ export default class TaskNode extends React.Component {
     this.engine.setDiagramModel(this.model)
   }
 
-  
-
   updateTasks() {
-    
-    const nodeContainer = {}
-    const links = []
+    const sceneNodes = new Map()
+    const sceneLinks = []
+
+    // Add task to Scene only IFF it is not there already
+    //
+    const addToScene = task => {
+      if (sceneNodes.has(task.id)) return sceneNodes.get(task.id)
+
+      const node = new TaskNodeModel(
+        task,
+        this.updateLink,
+        this.switchToEdit,
+        this.nodePersistDate,
+        this.changeAssignee
+      )
+      sceneNodes.set(task.id, node)
+      this.model.addNode(node)
+      return node
+    }
+
+    // Link each child node to its parent
     this.props.tasks.forEach(task => {
-      // do not duplicate nodes
-      if (!(task.id in nodeContainer)) {
-        const node = new TaskNodeModel(
-          task,
-          this.updateLink,
-          this.switchToEdit,
-          this.nodePersistDate,
-          this.changeAssignee
-        )
-        nodeContainer[task.id] = node
-        console.log(node)
-        this.model.addNode(node)
-        // does the tasks have children
-        const parentPort = node.getPort('bottom')
+      const parentPort = addToScene(task).getPort('bottom')
 
-        task.children.forEach(child => {
-          // avoid duplication of nodes
-          if (!(child.id in nodeContainer)) {
-            // preventing error on load
-            if (child) {
-              const childNode = new TaskNodeModel(
-                child,
-                this.updateLink,
-                this.switchToEdit,
-                this.nodePersistDate,
-                this.changeAssignee
-              )
-              nodeContainer[child.id] = childNode
-              this.model.addNode(childNode)
-            }
-          }
-          const childPort = nodeContainer[child.id].getPort('top')
-
-          const link = parentPort.link(childPort)
-          links.push(link)
-        })
-      }
+      task.children.forEach(child => {
+        const childPort = addToScene(child).getPort('top')
+        const link = parentPort.link(childPort)
+        sceneLinks.push(link)
+      })
     })
 
-    this.model.addAll(...links)
+    this.model.addAll(...sceneLinks)
   }
-
 
   selectedCheck() {
     const nodes = this.model.nodes
@@ -195,32 +180,38 @@ export default class TaskNode extends React.Component {
   }
 
   createTask(task) {
-
-  const node = new TaskNodeModel(
-    task,
-    this.updateLink,
-    this.switchToEdit,
-    this.nodePersistDate,
-    this.changeAssignee
-  )
-   this.model.addNode(node)
-   this.forceUpdate()
+    const node = new TaskNodeModel(
+      task,
+      this.updateLink,
+      this.switchToEdit,
+      this.nodePersistDate,
+      this.changeAssignee
+    )
+    this.model.addNode(node)
+    this.forceUpdate()
   }
 
   render() {
     const task = this.state.taskSelectedData
-if (this.state.updateTasks) {
-  this.updateTasks()
-}
+    if (this.state.updateTasks) {
+      this.updateTasks()
+    }
+
     return (
       <div className="srd-diagram">
         <Sidebar
           allTasks={this.props.tasks}
+          projectTitle={this.props.projectTitle}
           task={task}
           taskSelected={this.state.taskSelected}
         />
         <div className="diagram-container" onClick={this.selectedCheck}>
-          <CreateTask createTask={this.createTask} />
+        <div className="button-nav">
+          <CreateTask
+            projectId={this.props.projectId}
+            createTask={this.createTask}
+          />
+          </div >
           <DiagramWidget
             model={this.model}
             diagramEngine={this.engine}

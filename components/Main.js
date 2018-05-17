@@ -3,7 +3,10 @@ import { Route } from 'react-router-dom'
 import AllProjects from './projects/AllProjects'
 import SingleProject from './projects/SingleProject'
 import AllPeople from './people/AllPeople'
+
 import Dashboard from './dashboard/Dashboard'
+import RefreshIndicator from 'material-ui/RefreshIndicator';
+
 
 import { graphql } from 'react-apollo'
 import gql from 'graphql-tag'
@@ -17,7 +20,9 @@ const Main = ({ data }) => {
     <div id="main">
       <Route
         path="/projects/:id"
-        render={(routeProps) => <SingleProject routeProps={routeProps} projects={projects} />}
+        render={routeProps => (
+          <SingleProject routeProps={routeProps} projects={projects} />
+        )}
       />
       <Route
         exact path="/dashboard"
@@ -44,6 +49,7 @@ const query = gql`
         id
         title
         endDate
+        status
         project {
           id
         }
@@ -54,6 +60,7 @@ const query = gql`
           id
           title
           endDate
+          status
           project {
             id
           }
