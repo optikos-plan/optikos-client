@@ -6,6 +6,7 @@ import FlatButton from 'material-ui/FlatButton'
 import NodeAssigneeList from './NodeAssigneeList'
 
 import UpdateTitle from './mutations/updateTitle'
+import UpdateStatus from './mutations/updateStatus'
 import DatePicker from './mutations/calendar'
 
 const GenDialog = (props) => {
@@ -16,7 +17,8 @@ const GenDialog = (props) => {
     dueDate,
     closeDialog,
     showGenDialog,
-    assignee
+    assignee,
+    status
   } = props
 
   const actions = [
@@ -58,12 +60,28 @@ const GenDialog = (props) => {
             fontWeight: 'bold'
           }}
         >
+          Status:{' '}
+        </h1>
+        <UpdateStatus
+          handleChange={handleChange}
+          task={task}
+          status={status}
+        />
+      </div>
+
+      <div className="genDialogSectionRow">
+        <h1
+          style={{
+            fontSize: '2rem',
+            fontWeight: 'bold'
+          }}
+        >
           Due Date:
         </h1>
         <DatePicker task={task} dueDate={dueDate} handleChange={handleChange} />
       </div>
 
-      <div className="genDialogSectionCol">
+      <div className="genDialogSectionRow">
         <h1>Task Assignee:</h1>
         <NodeAssigneeList
           handleChange={handleChange}

@@ -38,11 +38,6 @@ export default class MySelectField extends Component {
 
   render() {
     const { team } = this.props
-    const styles = {
-      customWidth: {
-        width: 150
-      }
-    }
 
     const primaryText = ({ name }) => (
       <div
@@ -74,7 +69,6 @@ export default class MySelectField extends Component {
               display: 'flex',
               alignItems: 'center'
             }}
-            className="selectField"
             value={this.state.value}
             onChange={(event, key, value) => {
               this.handleChange(event, key, value, setOwner)

@@ -17,6 +17,7 @@ const taskQuery = gql`
       id
       title
       endDate
+      status
       user {
         id
         name
@@ -38,7 +39,6 @@ class UnconnectedTaskNodeWidget extends React.Component {
   }
 
   handleChange() {
-    console.log('refetch dispatched...')
     this.props.data.refetch()
   }
 
@@ -57,7 +57,7 @@ class UnconnectedTaskNodeWidget extends React.Component {
 
   render() {
     const { size, node } = this.props
-    console.log('Data', this.props.data)
+
     if (this.props.data.loading) return <p>Loading</p>
     if (this.props.data.error) return <p>Error...</p>
 
@@ -68,16 +68,17 @@ class UnconnectedTaskNodeWidget extends React.Component {
       id: taskId,
       title,
       endDate: dueDate,
-      user: assignee
+      user: assignee,
+      status
     } = this.props.data.task
 
-    const color = status => {
+    const color = stat => {
       // temp
-      status = 'IN_PROGRESS'
+      stat = 'IN_PROGRESS'
 
-      if (status === 'COMPLETED') {
+      if (stat === 'COMPLETED') {
         return '#76FF03'
-      } else if (status === 'IN_PROGRESS') {
+      } else if (stat === 'IN_PROGRESS') {
         return 'yellow'
       } else {
         return 'steelblue'
@@ -107,7 +108,6 @@ class UnconnectedTaskNodeWidget extends React.Component {
           onDoubleClick={this.openDialog}>
           {/* Node Content */}
 
-          }}>
          <DeleteTask id={node.task.id} />
           {/* Title and Date Section */}
           <div className="nodeTitleAndDate">
@@ -151,6 +151,7 @@ class UnconnectedTaskNodeWidget extends React.Component {
           assignee={assignee}
           closeDialog={this.closeDialog}
           showGenDialog={showGenDialog}
+          status={status}
         />
 
         {/* Node Shape */}
