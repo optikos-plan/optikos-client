@@ -8,6 +8,7 @@ import UpdateLink from './mutations/updateLink'
 import GenDialog from './GeneralDialog'
 
 import nameToInitial from '../../utils/nameToInitial'
+import Badge from 'material-ui/Badge'
 
 const taskQuery = gql`
   query TaskQuery($id: ID!) {
@@ -69,24 +70,42 @@ class UnconnectedTaskNodeWidget extends React.Component {
       user: assignee
     } = this.props.data.task
 
+    const color = status => {
+      // temp
+      status = 'IN_PROGRESS'
+
+      if (status === 'COMPLETED') {
+        return '#76FF03'
+      } else if (status === 'IN_PROGRESS') {
+        return 'yellow'
+      } else {
+        return 'steelblue'
+      }
+    }
+
     return (
-      // Entire node
-      <div
-        className={'task-node'}
-        style={{
-          position: 'relative',
-          width: size,
-          height: size / 3
-        }}
-      >
-        {/* Node Content */}
+      <Badge
+        style={{ padding: '0px' }}
+        badgeContent={''}
+        badgeStyle={{
+          top: '58px',
+          right: '95px',
+          width: '12px',
+          height: '12px',
+          backgroundColor: color(status)
+        }}>
+        {/* // Entire node */}
         <div
-          className="nodeBody"
+          className={'task-node'}
           style={{
-            position: 'absolute'
+            display: 'flex',
+            position: 'absolute',
+            width: size,
+            height: size / 3
           }}
-          onDoubleClick={this.openDialog}
-        >
+          onDoubleClick={this.openDialog}>
+          {/* Node Content */}
+
           {/* Title and Date Section */}
           <div className="nodeTitleAndDate">
             <h5>{title}</h5>
@@ -106,14 +125,12 @@ class UnconnectedTaskNodeWidget extends React.Component {
                 justifyContent: 'center',
                 alignItems: 'center',
                 width: '30%'
-              }}
-            >
+              }}>
               {
                 <div
                   className={
                     assignee ? 'nodeAssignee-chosen' : 'nodeAssignee-choose'
-                  }
-                >
+                  }>
                   {assignee ? <p>{nameToInitial(assignee.name)}</p> : <p>+</p>}
                 </div>
               }
@@ -139,13 +156,13 @@ class UnconnectedTaskNodeWidget extends React.Component {
           height={size / 3}
           dangerouslySetInnerHTML={{
             __html: `
-          <g id="Layer_1">
-          </g>
-          <g id="Layer_2">
-          <rect fill="steelblue" x="0" y="0" rx="10" ry="10" width="${size}" height="${size /
+            <g id="Layer_1">
+            </g>
+            <g id="Layer_2">
+            <rect fill="steelblue" x="0" y="0" rx="10" ry="10" width="${size}" height="${size /
               3}"/>
-          </g>
-        `
+            </g>
+          `
           }}
         />
         {/* Port Widget Declaration */}
@@ -155,8 +172,7 @@ class UnconnectedTaskNodeWidget extends React.Component {
             zIndex: 10,
             top: size / 6 - 8,
             left: -8
-          }}
-        >
+          }}>
           <PortWidget name="left" node={node} />
         </div>
         <UpdateLink
@@ -175,8 +191,7 @@ class UnconnectedTaskNodeWidget extends React.Component {
             zIndex: 10,
             left: size - 8,
             top: size / 6 - 8
-          }}
-        >
+          }}>
           <PortWidget name="right" node={node} />
         </div>
 
@@ -190,10 +205,11 @@ class UnconnectedTaskNodeWidget extends React.Component {
             top: size / 3 - 8
           }}
         />
-      </div>
+      </Badge>
     )
   }
 }
+
 UnconnectedTaskNodeWidget.defaultProps = {
   size: 225,
   node: null

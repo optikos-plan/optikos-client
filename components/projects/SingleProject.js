@@ -6,7 +6,9 @@ const SingleProject = props => {
   const { projects, routeProps } = props
   const projectId = routeProps.match.params.id
 
-  const project = projects.filter(singProject => singProject.id === projectId)[0]
+  const project = projects.filter(
+    singProject => singProject.id === projectId
+  )[0]
 
   return (
     <div id="singleProject">

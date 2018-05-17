@@ -19,7 +19,7 @@
 }
 
 .sidenav {
-  background-color: #E0E0E0;
+  background-color: #e0e0e0;
   padding-top: 20px;
   color: #424242;
   flex-basis: 2;
@@ -42,7 +42,7 @@
 }
 
 .srd-port {
-  background: rgba(255,255,255,0) !important;
+  background: rgba(255, 255, 255, 0) !important;
 }
 
 /* Node Styling */
@@ -113,7 +113,8 @@
 
 /* Node Edit Dialog */
 
-.genDialogSectionRow, .genDialogSectionCol {
+.genDialogSectionRow,
+.genDialogSectionCol {
   margin-top: 2rem;
   display: flex;
   align-items: center;
@@ -145,7 +146,6 @@
   font-size: 2rem !important;
   font-weight: bold !important;
 }
-
 
 .nodeDatePicker div div {
   color: steelblue !important;
@@ -196,3 +196,28 @@
   font-weight: bold !important;
 }
 
+.nodeAssignee-choose {
+  height: 75% !important;
+  width: 100% !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  border-style: dashed !important;
+  margin-right: 0.5rem !important;
+  border-color: lightgray !important;
+}
+
+.nodeAssignee-chosen {
+  height: 75% !important;
+  width: 25% !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  margin-right: 0.5rem !important;
+}
+
+.nodeStatus {
+  position: absolute !important;
+  top: -15px !important;
+  right: 50px !important;
+}
