@@ -63,12 +63,12 @@ const PMWorkload = props => {
     { x: 9, y: 12 }
   ];
 
-  const ITEMS = ["PM1", "PM2", "PM3", "PM4"];
+  const ITEMS = ["Amal", "Jason", "Benito", "Horacio"];
 
   return (
     <div id="pmworkload">
       <h3> Project Manager Workload</h3>
-      <XYPlot height={300} width={300}>
+      <XYPlot height={300} width={900}>
         <VerticalGridLines />
         <HorizontalGridLines />
         <XAxis title="Time (days)" postition="start" />

@@ -66,7 +66,7 @@ const TasksPerProject = props => {
   const ITEMS = ["Assigned", "In Progress", "Completed"];
 
   return (
-    <div id="pmworkload">
+    <div>
       <h3> Tasks per Project</h3>
       <XYPlot width={300} height={300} stackBy="y">
         <VerticalGridLines />
