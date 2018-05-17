@@ -22,6 +22,11 @@ const taskQuery = gql`
         id
         name
       }
+      parents {
+        id
+        title
+        status
+      }
     }
   }
 `
@@ -73,8 +78,6 @@ class UnconnectedTaskNodeWidget extends React.Component {
     } = this.props.data.task
 
     const color = stat => {
-      // temp
-      stat = 'IN_PROGRESS'
 
       if (stat === 'COMPLETED') {
         return '#76FF03'
@@ -84,6 +87,8 @@ class UnconnectedTaskNodeWidget extends React.Component {
         return 'steelblue'
       }
     }
+
+    console.log(task)
 
     return (
       <Badge
