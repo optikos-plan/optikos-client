@@ -23,6 +23,12 @@ const customContentStyle = {
   maxWidth: 'none'
 }
 
+const mutationDeleteProject = gql`
+  mutation DeleteProject($id: ID!) {
+    deleteProject(id: $id)
+  }`
+
+
 const mutationCreateProject = gql`
   mutation CreateProject(
     $owner: ID!
@@ -50,7 +56,8 @@ class ProjectList extends Component {
       open: false,
       owner: '',
       title: '',
-      description: ''
+      description: '',
+      projectSelected: ''
     }
   }
 
@@ -88,6 +95,16 @@ class ProjectList extends Component {
     this.handleClose()
     this.props.data.refetch()
   }
+
+  handleDeleteProject = async (event, deleteProject) => {
+		await this.setState({ projectSelected: event.currentTarget.id });
+		deleteProject({
+			variables: {
+				id: this.state.projectSelected
+			}
+		})
+		this.props.data.refetch();
+	};
 
   render() {
     // buttons for the create new project dialog
@@ -168,6 +185,9 @@ class ProjectList extends Component {
               <NavLink to={`/projects/${project.id}`}>
                 <FlatButton label="Go to project page" primary={true} />
               </NavLink>
+              <Mutation mutation={mutationDeleteProject}>
+									{(deleteProject) => <FlatButton id={project.id} label="DELETE" secondary={true} onClick={(event) => this.handleDeleteProject(event, deleteProject)} />}
+								</Mutation>
 
               <CardText expandable={true}>
                 {/* Stepper showing the status of the project */}
