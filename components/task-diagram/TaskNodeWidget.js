@@ -106,9 +106,8 @@ class UnconnectedTaskNodeWidget extends React.Component {
           }}
           onDoubleClick={this.openDialog}>
           {/* Node Content */}
-
           }}>
-         <DeleteTask id={node.task.id} />
+          <DeleteTask id={node.task.id} />
           {/* Title and Date Section */}
           <div className="nodeTitleAndDate">
             <h5>{title}</h5>

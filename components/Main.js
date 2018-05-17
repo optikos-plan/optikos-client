@@ -36,7 +36,7 @@ const details = gql`
 `
 
 const query = gql`
-  {
+  query MainQuery {
     projects {
       tasks {
         id

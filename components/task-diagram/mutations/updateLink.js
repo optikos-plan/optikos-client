@@ -17,7 +17,12 @@ const UpdateLink = ({ node, portName, style }) => (
       <div
         onMouseUp={async event => {
           const { childId, parentId } = await node.updateLink(event, node)
-          addDependency({ variables: { childId, parentId } })
+          addDependency({
+            variables: { childId, parentId }
+            // options: {
+            // updateQueries: ['MainQuery']
+            // }
+          }) //.then(() => node.serialize())
         }}
         style={style}>
         <PortWidget name={portName} node={node} />

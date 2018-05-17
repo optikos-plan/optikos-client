@@ -12,8 +12,6 @@ import { TaskNodeFactory } from './TaskNodeFactory'
 import { SimplePortFactory } from './SimplePortFactory'
 import { TaskPortModel } from './TaskPortModel'
 import CreateTask from './mutations/createTask'
-import axios from 'axios'
-import RaisedButton from 'material-ui/RaisedButton'
 
 import 'storm-react-diagrams/dist/style.min.css'
 
@@ -31,8 +29,10 @@ export default class TaskNode extends React.Component {
     this.registerEngine()
     this.selectedCheck = this.selectedCheck.bind(this)
     this.updateLink = this.updateLink.bind(this)
-    this.switchToEdit = this.switchToEdit.bind(this)
+    this.switchToEdit = NOP
+    // this.switchToEdit = this.switchToEdit.bind(this)
     this.createTask = this.createTask.bind(this)
+    this.serialize = this.writeToStorage.bind(this)
 
     // TODO: These functions need to be extracted. It will be some work
     // as there seems to be some dependency based on how they're passed
@@ -44,30 +44,41 @@ export default class TaskNode extends React.Component {
 
   // TODO: check error when merging with all projects page
 
-  // componentDidUpdate(prevProps, prevState, snapshot) {
-  //   // serialize the scene to localstorage to persist layout
-  //   //
-  //   if (this.props.tasks.length === 0) return
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    this.writeToStorage()
+  }
 
-  //   const projectId = this.props.tasks[0].project.id
-  //   const serialized = JSON.stringify(this.model.serializeDiagram())
-  //   localStorage.setItem(`Project:${projectId}`, serialized)
-  // }
+  readFromStorage() {
+    const { projectId } = this.props
+    const data = localStorage.getItem(`Project:${projectId}`)
+    if (!data) return
 
-  // componentDidMount() {
-  //   // Use saved layout for current project if it exists
+    const serialized = JSON.parse(data)
+    this.model = new DiagramModel()
+    this.model.deSerializeDiagram(serialized, this.engine)
+    this.engine.setDiagramModel(this.model)
+  }
 
-  //   if (this.props.tasks.length === 0) return
+  writeToStorage() {
+    // TODO: Cannot be called from the join link function because
+    // `this` does not have access to tasks.
+    //
+    // Suggestion: This component itself should be an apollo connected client
+    // and add-links should force a refetch of data that should satisfy the
+    // conditions
+    //
+    //
+    console.log('writing to localStorage')
+    console.trace('what is happening')
+    const { projectId } = this.props
 
-  //   const projectId = this.props.tasks[0].project.id
-  //   const data = localStorage.getItem(`Project:${projectId}`)
-  //   if (!data) return
+    const serialized = JSON.stringify(this.model.serializeDiagram())
+    localStorage.setItem(`Project:${projectId}`, serialized)
+  }
 
-  //   const serialized = JSON.parse(data)
-  //   this.model = new DiagramModel()
-  //   this.model.deSerializeDiagram(serialized, this.engine)
-  //   this.engine.setDiagramModel(this.model)
-  // }
+  componentDidMount() {
+    this.readFromStorage()
+  }
 
   registerEngine() {
     this.engine = new DiagramEngine()
@@ -170,22 +181,14 @@ export default class TaskNode extends React.Component {
     })
   }
 
-  async switchToEdit(node, titleChanged, showTitle, title) {
-    if (titleChanged) {
-      // TODO: move request to whatever remote server we're going to use
-      await axios.put(`http://localhost:3000/api/tasks/${node.task.id}`, {
-        title: title
-      })
-    }
-  }
-
   createTask(task) {
     const node = new TaskNodeModel(
       task,
       this.updateLink,
       this.switchToEdit,
       this.nodePersistDate,
-      this.changeAssignee
+      this.changeAssignee,
+      this.serialize
     )
     this.model.addNode(node)
     this.forceUpdate()

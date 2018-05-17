@@ -2,7 +2,14 @@ import { NodeModel } from 'storm-react-diagrams'
 import { TaskPortModel } from './TaskPortModel'
 
 export class TaskNodeModel extends NodeModel {
-  constructor(task, updateLink, switchToEdit, nodePersistDate, changeAssignee) {
+  constructor(
+    task,
+    updateLink,
+    switchToEdit,
+    nodePersistDate,
+    changeAssignee,
+    serialize
+  ) {
     super('task')
     this.addPort(new TaskPortModel('top'))
     this.addPort(new TaskPortModel('left'))
@@ -13,6 +20,7 @@ export class TaskNodeModel extends NodeModel {
     this.switchToEdit = switchToEdit
     this.nodePersistDate = nodePersistDate
     this.changeAssignee = changeAssignee
+    this.serialize = serialize
   }
 
   serialize() {
