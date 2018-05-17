@@ -13,14 +13,16 @@ const Main = ({ data }) => {
   if (data.error) return <div>Error...</div>
 
   const { projects } = data
-
   return (
     <div id="main">
       <Route
         path="/projects/:id"
         render={(routeProps) => <SingleProject routeProps={routeProps} projects={projects} />}
       />
-      <Route exact path="/dashboard" component={Dashboard} projects={projects} />
+      <Route
+        exact path="/dashboard"
+        render={(routeProps) => <Dashboard routeProps={routeProps} projects={projects} />}
+      />
       <Route exact path="/people" component={AllPeople} />
       <Route exact path="/projects" component={AllProjects} />
       <Route exact path="/" component={AllProjects} />

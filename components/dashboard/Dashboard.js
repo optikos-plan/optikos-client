@@ -10,17 +10,17 @@ export default class Dashboard extends Component {
   }
 
   render() {
-    console.log("projects", this.props.projects)
+    const { projects } = this.props
     return (
       <div>
         <Navbar />
         <div className="center">
-          <PMWorkload />
+          <PMWorkload projects={projects} />
           <div className="item1">
-            <TasksPerProject />
+            <TasksPerProject projects={projects} />
           </div>
           <div className="item2">
-            <ProjectsByStatus />
+            <ProjectsByStatus projects={projects} />
           </div>
         </div>
       </div>

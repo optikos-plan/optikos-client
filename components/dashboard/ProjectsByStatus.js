@@ -13,6 +13,12 @@ import "../../node_modules/react-vis/dist/style.css";
 
 const ProjectsByStatus = props => {
   const ITEMS = ["PM1", "PM2", "PM3", "PM4"];
+  const { projects } = props
+  console.log("BY STATUS", projects)
+
+  const completedCount = (projects.filter(project => project.status === "COMPLETED")).length
+  const inProgressCount = (projects.filter(project => project.status === "IN_PROGRESS")).length
+  const assignedCount = (projects.filter(project => project.status === "ASSIGNED")).length
 
   return (
     <div>
@@ -24,9 +30,9 @@ const ProjectsByStatus = props => {
         margin={{ top: 100 }}
         getLabel={d => d.name}
         data={[
-          { angle: 1, color: "#4CAF50", name: "Completed" },
-          { angle: 2, color: "#03A9F4", name: "In Progress" },
-          { angle: 3, color: "#F57C00", name: "Assigned" }
+          { angle: completedCount, color: "#4CAF50", name: "Completed" },
+          { angle: inProgressCount, color: "#03A9F4", name: "In Progress" },
+          { angle: assignedCount, color: "#F57C00", name: "Assigned" }
         ]}
         labelsRadiusMultiplier={1.1}
         labelsStyle={{ fontSize: 16, fill: "#222" }}
