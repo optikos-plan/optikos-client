@@ -201,14 +201,17 @@ export default class TaskNode extends React.Component {
       <div className="srd-diagram">
         <Sidebar
           allTasks={this.props.tasks}
+          projectTitle={this.props.projectTitle}
           task={task}
           taskSelected={this.state.taskSelected}
         />
         <div className="diagram-container" onClick={this.selectedCheck}>
+        <div className="button-nav">
           <CreateTask
             projectId={this.props.projectId}
             createTask={this.createTask}
           />
+          </div >
           <DiagramWidget
             model={this.model}
             diagramEngine={this.engine}

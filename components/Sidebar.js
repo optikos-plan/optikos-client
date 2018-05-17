@@ -5,6 +5,7 @@ import Checkbox from 'material-ui/Checkbox'
 import DatePicker from 'material-ui/DatePicker'
 import TextField from 'material-ui/TextField'
 import RaisedButton from 'material-ui/RaisedButton'
+import Subheader from 'material-ui/Subheader';
 import moment from 'moment'
 
 class Sidebar extends Component {
@@ -26,12 +27,14 @@ class Sidebar extends Component {
       .sort((a, b) => new Date(a.endDate) - new Date(b.endDate))
 
     return (
-      <div className="sidenav">
-        <List>
-          <ListItem
+      <div className="sidenav" >
+        <List >
+								<ListItem
             style={{ color: '#424242' }}
-            primaryText="Completed Tasks"
+            primaryText={this.props.projectTitle}
           />
+										<Divider />
+									<Subheader>Completed Tasks</Subheader>
           {sortedTasks.map(task => {
             if (task.status === 'COMPLETED')
               return (
@@ -46,7 +49,7 @@ class Sidebar extends Component {
         </List>
         <Divider />
         <List>
-          <ListItem style={{ color: '#424242' }} primaryText="Current Tasks" />
+								<Subheader>Current Tasks</Subheader>
           {sortedTasks.map(task => {
             if (task.status === 'IN_PROGRESS')
               return (
@@ -58,12 +61,13 @@ class Sidebar extends Component {
                     'Due: ' + moment(task.endDate).format('MMM Do YYYY')
                   }
                 />
+																
               )
           })}
         </List>
         <Divider />
         <List>
-          <ListItem style={{ color: '#424242' }} primaryText="Future Tasks" />
+								<Subheader>Future Tasks</Subheader>
           {sortedTasks.map(task => {
             if (task.status === 'ASSIGNED')
               return (
