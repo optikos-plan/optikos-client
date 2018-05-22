@@ -4,7 +4,8 @@ A simple project management tool that allows users to visually organize tasks by
 
 * [Presentation]() - Team presentation
 * [Demo](https://optikos-demo.herokuapp.com) - Example demo
-  * Serialize/deserialized feature turned off due to edge case issues, users will need to refresh page in order for changes in the canvas to be reflected on sidebar
+  * Serialize/deserialized feature turned off due to edge case issues, position of diagrams will be reset
+  * Users need to refresh in order for sidebar to show new tasks that have been added
 
 ## Getting Started
 
