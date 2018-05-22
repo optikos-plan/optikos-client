@@ -143,12 +143,14 @@ class ProjectList extends Component {
             contentStyle={customContentStyle}
             open={this.state.open}>
             <TextField
+              defaultValue="Default Title"
               hintText="Title"
               onChange={(event, newValue) => this.handleChange(event, newValue)}
               name="title"
               fullWidth={true}
             />
             <TextField
+            defaultValue="Default Description"
               hintText="Description"
               onChange={(event, newValue) => this.handleChange(event, newValue)}
               name="description"

@@ -28,10 +28,10 @@ const GenDialog = (props) => {
   return (
     <Dialog
       title={`Task's Overview`}
-      titleStyle={{
-        fontSize: '2.5rem',
-        fontWeight: 'bold'
-      }}
+      // titleStyle={{
+      //   fontSize: '2.5rem',
+      //   fontWeight: 'bold'
+      // }}
       actions={actions}
       modal={true}
       open={showGenDialog}
