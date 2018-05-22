@@ -1,87 +1,68 @@
-# Project Title
+# Optikos
 
-One Paragraph of project description goes here
+A simple project management tool that allows users to visually organize tasks by creating mind maps.
+
+* [Presentation]() - Team presentation
+* [Demo](https://optikos-demo.herokuapp.com) - Example demo
 
 ## Getting Started
 
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
 
-### Prerequisites
-
-What things you need to install the software and how to install them
-
-```
-Give examples
-```
-
 ### Installing
 
-A step by step series of examples that tell you have to get a development env running
+You will need to fork/clone the following repos:
 
-Say what the step will be
+* [Optikos-client](https://github.com/optikos-plan/optikos-client) - Front-end client
+* [Data-json](https://github.com/optikos-plan/data-json) - Demo data-store
+* [Data-apollo](https://github.com/optikos-plan/data-apollo) - Graph QL server
 
-```
-Give the example
-```
-
-And repeat
+Once you have the repositories locally, run the following commands:
 
 ```
-until finished
+npm install
+npm start
 ```
 
-End with an example of getting some data out of the system or using it for a little demo
+You should now be able to view:
 
-## Running the tests
-
-Explain how to run the automated tests for this system
-
-### Break down into end to end tests
-
-Explain what these tests test and why
-
-```
-Give an example
-```
-
-### And coding style tests
-
-Explain what these tests test and why
-
-```
-Give an example
-```
+DEMO: localhost:8080
+DB: localhost:3000
+GraphQL: localhost:3999/graphiql
 
 ## Deployment
 
-Add additional notes about how to deploy this on a live system
+This project can be set up live using heroku with the following scripts:
+
+```
+create heroku
+npm run deploy
+```
+For optikos-client:
+Go into your webpack config and change the URL in the plugin section to point towards your new GraphQL server.
+
+For data-apollo:
+Go into your Heroku dashboard and create a config VAR called 'DATASTORE' with a value that equals the URL for your DB server.
 
 ## Built With
 
-* [Dropwizard](http://www.dropwizard.io/1.0.2/docs/) - The web framework used
-* [Maven](https://maven.apache.org/) - Dependency Management
-* [ROME](https://rometools.github.io/rome/) - Used to generate RSS Feeds
+* [React](https://reactjs.org/) - Front-end framework
+* [React-diagrams](https://projectstorm.gitbooks.io/react-diagrams/) - Canvas library
+* [Material UI](https://material-ui.com/) - React component library
+* [Nodejs](https://nodejs.org/en/) - Back-end
+* [GraphQL](https://graphql.org/learn/) - Data query language
+* [Apollo](https://www.apollographql.com/) - GraphQL client
 
-## Contributing
-
-Please read [CONTRIBUTING.md](https://gist.github.com/PurpleBooth/b24679402957c63ec426) for details on our code of conduct, and the process for submitting pull requests to us.
-
-## Versioning
-
-We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/your/project/tags). 
 
 ## Authors
 
-* **Billie Thompson** - *Initial work* - [PurpleBooth](https://github.com/PurpleBooth)
-
-See also the list of [contributors](https://github.com/your/project/contributors) who participated in this project.
+* **Amal Sudama** - https://github.com/cds-amal
+* **Jason Yang** - https://github.com/projectyang
+* **Benito Suriano** - https://github.com/benoss90
+* **Horacio Gutierrez** - https://github.com/hogutier
 
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
 
-## Acknowledgments
 
-* Hat tip to anyone who's code was used
-* Inspiration
-* etc
