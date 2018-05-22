@@ -54,7 +54,7 @@ class ProjectList extends Component {
     super()
     this.state = {
       open: false,
-      owner: '',
+      owner: 'Jason Yang',
       title: '',
       description: '',
       projectSelected: ''

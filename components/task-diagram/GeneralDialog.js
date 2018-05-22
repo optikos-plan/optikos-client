@@ -39,10 +39,10 @@ const GenDialog = (props) => {
     >
       <div className="genDialogSectionRow">
         <h1
-          style={{
-            fontSize: '2rem',
-            fontWeight: 'bold'
-          }}
+          // style={{
+          //   fontSize: '2rem',
+          //   fontWeight: 'bold'
+          // }}
         >
           Task Name:{' '}
         </h1>
@@ -55,10 +55,10 @@ const GenDialog = (props) => {
 
       <div className="genDialogSectionRow">
         <h1
-          style={{
-            fontSize: '2rem',
-            fontWeight: 'bold'
-          }}
+          // style={{
+          //   fontSize: '2rem',
+          //   fontWeight: 'bold'
+          // }}
         >
           Status:{' '}
         </h1>
@@ -71,10 +71,10 @@ const GenDialog = (props) => {
 
       <div className="genDialogSectionRow">
         <h1
-          style={{
-            fontSize: '2rem',
-            fontWeight: 'bold'
-          }}
+          // style={{
+          //   fontSize: '2rem',
+          //   fontWeight: 'bold'
+          // }}
         >
           Due Date:
         </h1>
