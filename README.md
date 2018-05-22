@@ -17,7 +17,7 @@ You will need to fork/clone the following repos:
 
 * [Optikos-client](https://github.com/optikos-plan/optikos-client) - Front-end client
 * [Data-json](https://github.com/optikos-plan/data-json) - Demo data-store
-* [Data-apollo](https://github.com/optikos-plan/data-apollo) - Graph QL server
+* [Data-apollo](https://github.com/optikos-plan/data-apollo) - GraphQL server
 
 Once you have the repositories locally, run the following commands:
 
