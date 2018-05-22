@@ -26,9 +26,9 @@ npm start
 
 You should now be able to view:
 
-DEMO: localhost:8080
-DB: localhost:3000
-GraphQL: localhost:3999/graphiql
+* DEMO: localhost:8080
+* DB: localhost:3000
+* GraphQL: localhost:3999/graphiql
 
 ## Deployment
 
