@@ -1,6 +1,6 @@
 # Optikos
 
-A simple project management tool that allows users to visually organize tasks by creating mind maps.
+A simple project management tool that allows users to visually organize tasks by creating work flows.
 
 * [Presentation]() - Team presentation
 * [Demo](https://optikos-demo.herokuapp.com) - Example demo
