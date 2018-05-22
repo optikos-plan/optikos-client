@@ -53,7 +53,7 @@ Go into your Heroku dashboard and create a config VAR called 'DATASTORE' with a 
 * [Material UI](https://material-ui.com/) - React component library
 * [Nodejs](https://nodejs.org/en/) - Back-end
 * [GraphQL](https://graphql.org/learn/) - Data query language
-* [Apollo](https://www.apollographql.com/) - GraphQL client
+* [Apollo](https://www.apollographql.com/) - The community implementation of the GraphQL standard
 
 
 ## Authors
