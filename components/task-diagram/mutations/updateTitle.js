@@ -57,9 +57,6 @@ export default class UpdateTitle extends Component {
               onDoubleClick={() => {
                 this.toggleTitle()
               }}
-              style={{
-                fontSize: '2rem'
-              }}
             >
               {/* {node.task.title} */}
               {title}
@@ -79,9 +76,7 @@ export default class UpdateTitle extends Component {
               }}
               type="text"
               style={{
-                width: '70%',
-                height: '1.5rem',
-                fontSize: '2rem'
+                width: '70%'
               }}
               value={this.state.value}
             />

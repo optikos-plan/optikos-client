@@ -54,7 +54,7 @@ class ProjectList extends Component {
     super()
     this.state = {
       open: false,
-      owner: 'Jason Yang',
+      owner: '1',
       title: '',
       description: '',
       projectSelected: ''
@@ -125,7 +125,6 @@ class ProjectList extends Component {
 
     if (loading) return <p>Loading...</p>
     if (error) return <p>Error :(</p>
-
     return (
       <div className="card-display">
         <div>
@@ -158,6 +157,7 @@ class ProjectList extends Component {
             />
 
             <SelectField
+            defaultValue={1}
               floatingLabelText="Owner"
               name="owner"
               value={this.state.owner}

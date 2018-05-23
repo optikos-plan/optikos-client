@@ -60,11 +60,8 @@ export default class UpdateStatus extends Component {
         {updateTaskStatus => (
           <SelectField
             style={{
-              width: '100%',
               display: 'flex',
-              alignItems: 'center',
-              fontSize: '2rem',
-              fontWeight: 'bold'
+              alignItems: 'center'
             }}
             value={this.state.value}
             onChange={(event, key, value) =>
@@ -75,21 +72,18 @@ export default class UpdateStatus extends Component {
               value={1}
               primaryText="COMPLETED"
               style={{
-                fontSize: '1.5rem'
               }}
             />
             <MenuItem
               value={2}
               primaryText="IN PROGRESS"
               style={{
-                fontSize: '1.5rem'
               }}
             />
             <MenuItem
               value={3}
               primaryText="ASSIGNED"
               style={{
-                fontSize: '1.5rem'
               }}
             />
           </SelectField>

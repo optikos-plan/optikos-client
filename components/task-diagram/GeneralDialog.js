@@ -38,14 +38,14 @@ const GenDialog = (props) => {
       autoScrollBodyContent={true}
     >
       <div className="genDialogSectionRow">
-        <h1
+        <span
           // style={{
           //   fontSize: '2rem',
           //   fontWeight: 'bold'
           // }}
         >
           Task Name:{' '}
-        </h1>
+        </span>
         <UpdateTitle
           handleChange={handleChange}
           task={task}
@@ -54,14 +54,10 @@ const GenDialog = (props) => {
       </div>
 
       <div className="genDialogSectionRow">
-        <h1
-          // style={{
-          //   fontSize: '2rem',
-          //   fontWeight: 'bold'
-          // }}
-        >
-          Status:{' '}
-        </h1>
+       
+         
+          Status:{'  '}
+ 
         <UpdateStatus
           handleChange={handleChange}
           task={task}
@@ -70,19 +66,19 @@ const GenDialog = (props) => {
       </div>
 
       <div className="genDialogSectionRow">
-        <h1
+        <span
           // style={{
           //   fontSize: '2rem',
           //   fontWeight: 'bold'
           // }}
         >
           Due Date:
-        </h1>
+        </span>
         <DatePicker task={task} dueDate={dueDate} handleChange={handleChange} />
       </div>
 
       <div className="genDialogSectionRow">
-        <h1>Task Assignee:</h1>
+        <span>Task Assignee:</span>
         <NodeAssigneeList
           handleChange={handleChange}
           assignee={assignee}

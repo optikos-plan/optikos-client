@@ -27,7 +27,7 @@ const muiTheme = getMuiTheme({
 
 const picker = ({ task, dueDate, handleChange }) => {
   return (
-    <div className="nodeDatePicker">
+    <div >
       <Mutation mutation={SET_DATE}>
         {setDate => (
           <MuiThemeProvider muiTheme={muiTheme}>
@@ -36,11 +36,11 @@ const picker = ({ task, dueDate, handleChange }) => {
               formatDate={date => moment(date).format('MMM Do YYYY')}
               hintText={
                 dueDate ? (
-                  <span className="nodeDatePop">
+                  <span >
                     {moment(dueDate).format('MMM Do YYYY')}
                   </span>
                 ) : (
-                  <span className="nodeDatePop">Enter Due Date</span>
+                  <span >Enter Due Date</span>
                 )
               }
               container="inline"
