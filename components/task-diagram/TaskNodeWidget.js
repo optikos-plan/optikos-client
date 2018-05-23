@@ -88,7 +88,6 @@ class UnconnectedTaskNodeWidget extends React.Component {
       }
     }
 
-    console.log(task)
 
     return (
       <Badge
@@ -146,6 +145,7 @@ class UnconnectedTaskNodeWidget extends React.Component {
           }
         </div>
         {/* Edit Dialog to Change Info on Nodes */}
+
         <GenDialog
           handleChange={this.handleChange}
           handleKeyUp={this.handleKeyUp}

@@ -32,6 +32,7 @@ const picker = ({ task, dueDate, handleChange }) => {
         {setDate => (
           <MuiThemeProvider muiTheme={muiTheme}>
             <DatePicker
+            label="Due Date"
               id={task.id.toString()}
               formatDate={date => moment(date).format('MMM Do YYYY')}
               hintText={

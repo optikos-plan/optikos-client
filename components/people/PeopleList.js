@@ -40,8 +40,8 @@ class PeopleList extends Component {
 		this.state = {
 			open: false,
 			openEdit: false,
-			name: '',
-			email: '',
+			name: 'Default Name',
+			email: 'defaultemail@email.com',
 			userSelected: ''
 		};
 	}
@@ -53,18 +53,22 @@ class PeopleList extends Component {
 		this.setState({ openEdit: true, userSelected: event.currentTarget.id });
 	};
 
-handleDeleteUser = async (event, deleteUser) => {
+	handleDeleteUser = async (event, deleteUser) => {
 		await this.setState({ userSelected: event.currentTarget.id });
 		deleteUser({
 			variables: {
 				id: this.state.userSelected
 			}
-		})
+		});
 		this.props.data.refetch();
 	};
 
 	handleClose = () => {
-		this.setState({ open: false });
+		this.setState({
+			open: false,
+			name: 'Default Name',
+			email: 'defaultemail@email.com'
+		});
 	};
 	handleCloseEdit = () => {
 		this.setState({ openEdit: false });
@@ -96,8 +100,8 @@ handleDeleteUser = async (event, deleteUser) => {
 			}
 		});
 		this.setState({
-			name: '',
-			email: ''
+			name: 'Default Name',
+			email: 'defaultemail@email.com'
 		});
 		this.handleCloseEdit();
 		this.props.data.refetch();
@@ -126,9 +130,16 @@ handleDeleteUser = async (event, deleteUser) => {
 			<div className="card-display">
 				<RaisedButton label="ADD NEW USER" style={style} primary={true} onClick={this.handleOpen} />
 
-				<Dialog title="New User" actions={actions} modal={true} open={this.state.open}>
+				<Dialog
+					contentStyle={{ width: '25%', maxWidth: 'none' }}
+					title="New User"
+					actions={actions}
+					modal={true}
+					open={this.state.open}
+				>
 					<div>
 						<TextField
+							value={this.state.name}
 							onChange={(event, newValue) => this.handleChange(event, newValue)}
 							name="name"
 							hintText="Name"
@@ -136,6 +147,7 @@ handleDeleteUser = async (event, deleteUser) => {
 					</div>
 					<div>
 						<TextField
+							value={this.state.email}
 							onChange={(event, newValue) => this.handleChange(event, newValue)}
 							name="email"
 							hintText="Email"
@@ -170,9 +182,15 @@ handleDeleteUser = async (event, deleteUser) => {
 							<CardActions>
 								<FlatButton id={user.id} label="EDIT" primary={true} onClick={this.handleOpenEdit} />
 								<Mutation mutation={mutationDeleteUser}>
-									{(deleteUser) => <FlatButton id={user.id} label="DELETE" secondary={true} onClick={(event) => this.handleDeleteUser(event, deleteUser)} />}
+									{(deleteUser) => (
+										<FlatButton
+											id={user.id}
+											label="DELETE"
+											secondary={true}
+											onClick={(event) => this.handleDeleteUser(event, deleteUser)}
+										/>
+									)}
 								</Mutation>
-
 							</CardActions>
 							<CardText expandable={true}>
 								<p>Email: {user.email}</p>

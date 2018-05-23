@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import gql from 'graphql-tag'
 import { Mutation } from 'react-apollo'
+import TextField from 'material-ui/TextField'
 
 const mutationChangeTitle = gql`
   mutation updateTitle($id: ID!, $title: String!) {
@@ -23,8 +24,11 @@ export default class UpdateTitle extends Component {
     this.handleKeyUp = this.handleKeyUp.bind(this)
   }
 
+  componentDidMount() {
+    this.setState({value: this.props.title})
+  }
+
   editTitle(evt) {
-    console.log('editing title...', evt.target.value)
     this.setState({
       value: evt.target.value
     })
@@ -50,39 +54,28 @@ export default class UpdateTitle extends Component {
     const { showTitle } = this.state
 
     return (
+      <div>
       <Mutation mutation={mutationChangeTitle}>
         {updateTitle => {
-          return showTitle && title ? (
-            <strong
-              onDoubleClick={() => {
-                this.toggleTitle()
-              }}
-            >
-              {/* {node.task.title} */}
-              {title}
-            </strong>
-          ) : (
+          return (
             // Input field to change title
-            <input
+            <TextField
+              value={title}
               onKeyUp={this.handleKeyUp}
               autoFocus={true}
-              placeholder={title}
               onChange={this.editTitle}
               onBlur={evt => {
                 const newTitle = evt.target.value
                 updateTitle({ variables: { id: task.id, title: newTitle } })
-                this.toggleTitle()
                 handleChange()
               }}
               type="text"
-              style={{
-                width: '70%'
-              }}
               value={this.state.value}
             />
           )
         }}
       </Mutation>
+      </div>
     )
   }
 }

@@ -59,10 +59,8 @@ export default class UpdateStatus extends Component {
       <Mutation mutation={mutationChangeStatus}>
         {updateTaskStatus => (
           <SelectField
-            style={{
-              display: 'flex',
-              alignItems: 'center'
-            }}
+          floatingLabelText="Status"
+       
             value={this.state.value}
             onChange={(event, key, value) =>
               this.handleChange(event, key, value, updateTaskStatus)

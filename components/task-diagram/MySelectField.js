@@ -49,14 +49,8 @@ export default class MySelectField extends Component {
           height: '100%'
         }}
       >
-        <h1
-          style={{
-            width: '10%'
-          }}
-        >
-          {nameToInitial(name)}
-        </h1>
-        <h3>{name}</h3>
+
+        <span>{name}</span>
       </div>
     )
 
@@ -64,11 +58,7 @@ export default class MySelectField extends Component {
       <Mutation mutation={mutationUpdateTaskOwner}>
         {setOwner => (
           <SelectField
-            style={{
-              width: '100%',
-              display: 'flex',
-              alignItems: 'center'
-            }}
+            floatingLabelText="Task Assignee"
             value={this.state.value}
             onChange={(event, key, value) => {
               this.handleChange(event, key, value, setOwner)
