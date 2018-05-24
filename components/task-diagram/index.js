@@ -13,13 +13,16 @@ import { SimplePortFactory } from './SimplePortFactory'
 import { TaskPortModel } from './TaskPortModel'
 import CreateTask from './mutations/createTask'
 import axios from 'axios'
-import RaisedButton from 'material-ui/RaisedButton'
+
+import { graphql } from 'react-apollo'
+import gql from 'graphql-tag'
+
 
 import 'storm-react-diagrams/dist/style.min.css'
 
 const NOP = () => console.log(`oi, this should have been nop'd`)
 
-export default class TaskNode extends React.Component {
+class TaskNode extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -103,9 +106,12 @@ export default class TaskNode extends React.Component {
       this.model.addNode(node)
       return node
     }
+ 
+    const tasks = this.props.data.projects.filter( project => project.id === this.props.projectId)[0].tasks
+
 
     // Link each child node to its parent
-    this.props.tasks.forEach(task => {
+    tasks.forEach(task => {
       const parentPort = addToScene(task).getPort('bottom')
 
       task.children.forEach(child => {
@@ -189,6 +195,7 @@ export default class TaskNode extends React.Component {
     )
     this.model.addNode(node)
     this.forceUpdate()
+    this.props.data.refetch()
   }
 
   render() {
@@ -200,7 +207,7 @@ export default class TaskNode extends React.Component {
     return (
       <div className="srd-diagram">
         <Sidebar
-          allTasks={this.props.tasks}
+          allTasks={this.props.data.projects.filter( project => project.id === this.props.projectId)[0].tasks}
           projectTitle={this.props.projectTitle}
           task={task}
           taskSelected={this.state.taskSelected}
@@ -211,6 +218,7 @@ export default class TaskNode extends React.Component {
             projectId={this.props.projectId}
             createTask={this.createTask}
           />
+          <button onClick={this.props.test} />
           </div >
           <DiagramWidget
             model={this.model}
@@ -222,3 +230,51 @@ export default class TaskNode extends React.Component {
     )
   }
 }
+
+const details = gql`
+  fragment details on User {
+    id
+    name
+  }
+`
+
+const query = gql`
+  {
+    projects {
+      tasks {
+        id
+        title
+        endDate
+        status
+        project {
+          id
+        }
+        user {
+          ...details
+        }
+        children {
+          id
+          title
+          endDate
+          status
+          project {
+            id
+          }
+          user {
+            ...details
+          }
+        }
+      }
+      owner {
+        ...details
+      }
+      id
+      status
+      title
+      description
+    }
+  }
+  ${details}
+`
+
+export default graphql(query)(TaskNode)
