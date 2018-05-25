@@ -203,10 +203,10 @@ class TaskNode extends React.Component {
 
   deleteTask() {
     this.props.data.refetch()
-    const links = this.model.getLinks(this.state.taskSelectedNode)
-    for (let x in links) {
-     this.model.removeLink(links[x])
-    }
+    // const links = this.model.getLinks(this.state.taskSelectedNode)
+    // for (let x in links) {
+    //  this.model.removeLink(links[x])
+    // }
     this.model.removeNode(this.state.taskSelectedNode)
     this.forceUpdate()
   }

@@ -190,6 +190,7 @@ if (this.props.node.selected) {
         <PortWidget name="left" node={node} />
       </div>
       <UpdateLink
+
         node={node}
         portName="top"
         style={{
@@ -210,6 +211,7 @@ if (this.props.node.selected) {
       </div>
 
       <UpdateLink
+ 
         node={node}
         portName="bottom"
         style={{
