@@ -109,7 +109,6 @@ if (this.props.node.selected) {
           position: 'absolute',
           width: size,
           height: size / 3,
-          zIndex: 1,
           border: "solid",
           borderRadius: "5px",
           borderColor: "navy"
