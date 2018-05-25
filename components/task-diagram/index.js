@@ -218,7 +218,6 @@ class TaskNode extends React.Component {
             projectId={this.props.projectId}
             createTask={this.createTask}
           />
-          <button onClick={this.props.test} />
           </div >
           <DiagramWidget
             model={this.model}
