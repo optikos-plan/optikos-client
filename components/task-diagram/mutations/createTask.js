@@ -2,7 +2,6 @@ import React from 'react';
 import gql from 'graphql-tag';
 import { Mutation } from 'react-apollo';
 import RaisedButton from 'material-ui/RaisedButton';
-import Snackbar from 'material-ui/Snackbar';
 
 const mutationCreateTask = gql`
 	mutation createTask($projectId: ID!, $userId: ID!, $title: String!) {

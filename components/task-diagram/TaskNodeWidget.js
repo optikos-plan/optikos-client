@@ -6,7 +6,6 @@ import gql from 'graphql-tag'
 
 import UpdateLink from './mutations/updateLink'
 import GenDialog from './GeneralDialog'
-import DeleteTask from './mutations/deleteTask'
 
 import nameToInitial from '../../utils/nameToInitial'
 import Badge from 'material-ui/Badge'
@@ -60,6 +59,8 @@ class UnconnectedTaskNodeWidget extends React.Component {
     })
   }
 
+  
+
   render() {
     const { size, node } = this.props
 
@@ -88,134 +89,271 @@ class UnconnectedTaskNodeWidget extends React.Component {
       }
     }
 
+if (this.props.node.selected) {
+  return (
+    <Badge
+      style={{ padding: '0px' }}
+      badgeContent={''}
+      badgeStyle={{
+        top: '58px',
+        right: '95px',
+        width: '12px',
+        height: '12px',
+        backgroundColor: color(status)
+      }}>
+      {/* // Entire node */}
+      <div
+        className={'task-node'}
+        style={{
+          display: 'flex',
+          position: 'absolute',
+          width: size,
+          height: size / 3,
+          zIndex: 1,
+          border: "solid",
+          borderRadius: "5px",
+          borderColor: "navy"
+        }}
+        onDoubleClick={this.openDialog}>
+        {/* Node Content */}
 
-    return (
-      <Badge
-        style={{ padding: '0px' }}
-        badgeContent={''}
-        badgeStyle={{
-          top: '58px',
-          right: '95px',
-          width: '12px',
-          height: '12px',
-          backgroundColor: color(status)
-        }}>
-        {/* // Entire node */}
-        <div
-          className={'task-node'}
-          style={{
-            display: 'flex',
-            position: 'absolute',
-            width: size,
-            height: size / 3
-          }}
-          onDoubleClick={this.openDialog}>
-          {/* Node Content */}
+     
+        {/* Title and Date Section */}
+        <div className="nodeTitleAndDate">
+          <h5>{title}</h5>
 
-         <DeleteTask id={node.task.id} />
-          {/* Title and Date Section */}
-          <div className="nodeTitleAndDate">
-            <h5>{title}</h5>
-
-            {/* Due Date */}
-            <p>
-              {dueDate
-                ? moment(dueDate).format('MMM Do YYYY')
-                : 'Enter due Date'}
-            </p>
+          {/* Due Date */}
+          <p>
+            {dueDate
+              ? moment(dueDate).format('MMM Do YYYY')
+              : 'Enter due Date'}
+          </p>
+        </div>
+        {/* Node Assignee Section */}
+        {
+          <div
+            style={{
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              width: '30%'
+            }}
+            >
+            {
+              <div
+                className={
+                  assignee ? 'nodeAssignee-chosen' : 'nodeAssignee-choose'
+                }>
+                {assignee ? <p>{nameToInitial(assignee.name)}</p> : <p>+</p>}
+              </div>
+            }
           </div>
-          {/* Node Assignee Section */}
-          {
-            <div
-              style={{
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-                width: '30%'
-              }}>
-              {
-                <div
-                  className={
-                    assignee ? 'nodeAssignee-chosen' : 'nodeAssignee-choose'
-                  }>
-                  {assignee ? <p>{nameToInitial(assignee.name)}</p> : <p>+</p>}
-                </div>
-              }
-            </div>
-          }
-        </div>
-        {/* Edit Dialog to Change Info on Nodes */}
+        }
+      </div>
+      {/* Edit Dialog to Change Info on Nodes */}
 
-        <GenDialog
-          handleChange={this.handleChange}
-          handleKeyUp={this.handleKeyUp}
-          node={node}
-          task={task}
-          title={title}
-          dueDate={dueDate}
-          assignee={assignee}
-          closeDialog={this.closeDialog}
-          showGenDialog={showGenDialog}
-          status={status}
-        />
+      <GenDialog
+        handleChange={this.handleChange}
+        handleKeyUp={this.handleKeyUp}
+        node={node}
+        task={task}
+        title={title}
+        dueDate={dueDate}
+        assignee={assignee}
+        closeDialog={this.closeDialog}
+        showGenDialog={showGenDialog}
+        status={status}
+      />
 
-        {/* Node Shape */}
-        <svg
-          width={size}
-          height={size / 3}
-          dangerouslySetInnerHTML={{
-            __html: `
-            <g id="Layer_1">
-            </g>
-            <g id="Layer_2">
-            <rect fill="steelblue" x="0" y="0" rx="10" ry="10" width="${size}" height="${size /
-              3}"/>
-            </g>
-          `
-          }}
-        />
-        {/* Port Widget Declaration */}
-        <div
-          style={{
-            position: 'absolute',
-            zIndex: 10,
-            top: size / 6 - 8,
-            left: -8
-          }}>
-          <PortWidget name="left" node={node} />
-        </div>
-        <UpdateLink
-          node={node}
-          portName="top"
-          style={{
-            position: 'absolute',
-            zIndex: 10,
-            left: size / 2 - 8,
-            top: -8
-          }}
-        />
-        <div
-          style={{
-            position: 'absolute',
-            zIndex: 10,
-            left: size - 8,
-            top: size / 6 - 8
-          }}>
-          <PortWidget name="right" node={node} />
-        </div>
+      {/* Node Shape */}
+      <svg
+        width={size}
+        height={size / 3}
+        dangerouslySetInnerHTML={{
+          __html: `
+          <g id="Layer_1">
+          </g>
+          <g id="Layer_2">
+          <rect fill="steelblue" x="0" y="0" rx="10" ry="10" width="${size}" height="${size /
+            3}"/>
+          </g>
+        `
+        }}
+      />
+      {/* Port Widget Declaration */}
+      <div
+        style={{
+          position: 'absolute',
+          zIndex: 10,
+          top: size / 6 - 8,
+          left: -8
+        }}>
+        <PortWidget name="left" node={node} />
+      </div>
+      <UpdateLink
+        node={node}
+        portName="top"
+        style={{
+          position: 'absolute',
+          zIndex: 10,
+          left: size / 2 - 8,
+          top: -8
+        }}
+      />
+      <div
+        style={{
+          position: 'absolute',
+          zIndex: 10,
+          left: size - 8,
+          top: size / 6 - 8
+        }}>
+        <PortWidget name="right" node={node} />
+      </div>
 
-        <UpdateLink
-          node={node}
-          portName="bottom"
-          style={{
-            position: 'absolute',
-            zIndex: 10,
-            left: size / 2 - 8,
-            top: size / 3 - 8
-          }}
-        />
-      </Badge>
-    )
+      <UpdateLink
+        node={node}
+        portName="bottom"
+        style={{
+          position: 'absolute',
+          zIndex: 10,
+          left: size / 2 - 8,
+          top: size / 3 - 8
+        }}
+      />
+    </Badge>
+  )
+} else {
+
+  return (
+    <Badge
+      style={{ padding: '0px' }}
+      badgeContent={''}
+      badgeStyle={{
+        top: '58px',
+        right: '95px',
+        width: '12px',
+        height: '12px',
+        backgroundColor: color(status)
+      }}>
+      {/* // Entire node */}
+      <div
+        className={'task-node'}
+        style={{
+          display: 'flex',
+          position: 'absolute',
+          width: size,
+          height: size / 3,
+          zIndex: 1
+        }}
+        onDoubleClick={this.openDialog}>
+        {/* Node Content */}
+
+     
+        {/* Title and Date Section */}
+        <div className="nodeTitleAndDate">
+          <h5>{title}</h5>
+
+          {/* Due Date */}
+          <p>
+            {dueDate
+              ? moment(dueDate).format('MMM Do YYYY')
+              : 'Enter due Date'}
+          </p>
+        </div>
+        {/* Node Assignee Section */}
+        {
+          <div
+            style={{
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              width: '30%'
+            }}
+            >
+            {
+              <div
+                className={
+                  assignee ? 'nodeAssignee-chosen' : 'nodeAssignee-choose'
+                }>
+                {assignee ? <p>{nameToInitial(assignee.name)}</p> : <p>+</p>}
+              </div>
+            }
+          </div>
+        }
+      </div>
+      {/* Edit Dialog to Change Info on Nodes */}
+
+      <GenDialog
+        handleChange={this.handleChange}
+        handleKeyUp={this.handleKeyUp}
+        node={node}
+        task={task}
+        title={title}
+        dueDate={dueDate}
+        assignee={assignee}
+        closeDialog={this.closeDialog}
+        showGenDialog={showGenDialog}
+        status={status}
+      />
+
+      {/* Node Shape */}
+      <svg
+        width={size}
+        height={size / 3}
+        dangerouslySetInnerHTML={{
+          __html: `
+          <g id="Layer_1">
+          </g>
+          <g id="Layer_2">
+          <rect fill="steelblue" x="0" y="0" rx="10" ry="10" width="${size}" height="${size /
+            3}"/>
+          </g>
+        `
+        }}
+      />
+      {/* Port Widget Declaration */}
+      <div
+        style={{
+          position: 'absolute',
+          zIndex: 10,
+          top: size / 6 - 8,
+          left: -8
+        }}>
+        <PortWidget name="left" node={node} />
+      </div>
+      <UpdateLink
+        node={node}
+        portName="top"
+        style={{
+          position: 'absolute',
+          zIndex: 10,
+          left: size / 2 - 8,
+          top: -8
+        }}
+      />
+      <div
+        style={{
+          position: 'absolute',
+          zIndex: 10,
+          left: size - 8,
+          top: size / 6 - 8
+        }}>
+        <PortWidget name="right" node={node} />
+      </div>
+
+      <UpdateLink
+        node={node}
+        portName="bottom"
+        style={{
+          position: 'absolute',
+          zIndex: 10,
+          left: size / 2 - 8,
+          top: size / 3 - 8
+        }}
+      />
+    </Badge>
+  )
+}
   }
 }
 

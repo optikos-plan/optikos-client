@@ -16,6 +16,7 @@ import axios from 'axios'
 
 import { graphql } from 'react-apollo'
 import gql from 'graphql-tag'
+import DeleteTask from './mutations/deleteTask'
 
 
 import 'storm-react-diagrams/dist/style.min.css'
@@ -27,8 +28,9 @@ class TaskNode extends React.Component {
     super(props)
     this.state = {
       taskSelected: false,
-      taskSelectedData: {},
-      taskPositions: {}
+      taskSelectedData: {id: "blank"},
+      taskPositions: {},
+      taskSelectedNode: {}
     }
 
     this.registerEngine()
@@ -36,6 +38,7 @@ class TaskNode extends React.Component {
     this.updateLink = this.updateLink.bind(this)
     this.switchToEdit = this.switchToEdit.bind(this)
     this.createTask = this.createTask.bind(this)
+    this.deleteTask = this.deleteTask.bind(this)
 
     // TODO: These functions need to be extracted. It will be some work
     // as there seems to be some dependency based on how they're passed
@@ -130,7 +133,7 @@ class TaskNode extends React.Component {
     for (let x of Object.keys(nodes)) {
       if (nodes[x].selected) {
         this.setState({ taskSelected: true })
-        this.setState({ taskSelectedData: nodes[x].task })
+        this.setState({ taskSelectedData: nodes[x].task, taskSelectedNode: nodes[x] })
         return true
       }
     }
@@ -198,6 +201,12 @@ class TaskNode extends React.Component {
     this.props.data.refetch()
   }
 
+  deleteTask() {
+    this.props.data.refetch()
+    this.model.removeNode(this.state.taskSelectedNode)
+    this.forceUpdate()
+  }
+
   render() {
     const task = this.state.taskSelectedData
     if (this.state.updateTasks) {
@@ -218,6 +227,7 @@ class TaskNode extends React.Component {
             projectId={this.props.projectId}
             createTask={this.createTask}
           />
+          <DeleteTask id={this.state.taskSelectedData.id} deleteTask={this.deleteTask} />
           </div >
           <DiagramWidget
             model={this.model}
