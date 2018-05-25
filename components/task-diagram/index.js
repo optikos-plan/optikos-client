@@ -203,6 +203,10 @@ class TaskNode extends React.Component {
 
   deleteTask() {
     this.props.data.refetch()
+    const links = this.model.getLinks(this.state.taskSelectedNode)
+    for (let x in links) {
+     this.model.removeLink(links[x])
+    }
     this.model.removeNode(this.state.taskSelectedNode)
     this.forceUpdate()
   }
@@ -212,7 +216,6 @@ class TaskNode extends React.Component {
     if (this.state.updateTasks) {
       this.updateTasks()
     }
-
     return (
       <div className="srd-diagram">
         <Sidebar

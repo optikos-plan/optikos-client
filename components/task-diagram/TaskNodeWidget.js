@@ -242,7 +242,6 @@ if (this.props.node.selected) {
           position: 'absolute',
           width: size,
           height: size / 3,
-          zIndex: 1
         }}
         onDoubleClick={this.openDialog}>
         {/* Node Content */}
