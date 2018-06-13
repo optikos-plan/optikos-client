@@ -3,7 +3,7 @@
 A simple project management tool that allows users to visually organize tasks by creating work flows.
 
 * [Presentation](https://youtu.be/vdUqbHtfCqs) - Team presentation
-* [Demo](https://optikos-demo.herokuapp.com) - Example demo
+* [Demo](https://optikos-demo.herokuapp.com)
   * Serialize/deserialized feature turned off due to edge case issues, position of diagrams will be reset
   * Users need to refresh in order for sidebar to show new tasks that have been added
 
