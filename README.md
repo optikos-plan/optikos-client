@@ -7,6 +7,7 @@ A simple project management tool that allows users to visually organize tasks by
   * Serialize/deserialized feature turned off due to edge case issues, position of diagrams will be reset
   * Users need to refresh in order for sidebar to show new tasks that have been added
 
+![Imgur](https://i.imgur.com/duliMWa.png)
 ## Getting Started
 
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
